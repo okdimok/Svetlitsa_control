@@ -6,7 +6,7 @@ import hydra
 import os
 from omegaconf import DictConfig, OmegaConf
 
-FS_DUMP_DIR="config/{ip}"
+FS_DUMP_DIR="config_dump/{name}"
 
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
@@ -26,8 +26,12 @@ class Wleds:
     def from_udp_multicast_table(cls, box):
         return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
 
+    @classmethod
+    def from_omegaconf(cls, box):
+        return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
+
     def get_by_ip(self, ip):
-        wleds = list(wled for wled in self.wleds if wled.ip == ip)
+        wleds = list(wled for wled in self if wled.ip == ip)
         if len(wleds) == 1:
             return wleds[0]
         elif len(wleds) == 0:
@@ -36,7 +40,7 @@ class Wleds:
             raise ValueError(f"More than one ({len(wleds)}) wled with IP {ip} found")
 
     def get_by_name(self, name):
-        wleds = list(wled for wled in self.wleds if wled.name == name)
+        wleds = list(wled for wled in self if wled.name == name)
         if len(wleds) == 1:
             return wleds[0]
         elif len(wleds) == 0:
@@ -44,8 +48,14 @@ class Wleds:
         else:
             raise ValueError(f"More than one ({len(wleds)}) wled with name '{name}' found")
 
+    def get_names(self):
+        return list(wled.name for wled in self)
+
+    def __getitem__(self, item):
+        return self.get_by_name(item)
+
     def __iter__(self):
-        return self.wleds
+        return self.wleds.__iter__()
 
 
 class Wled:
@@ -63,6 +73,16 @@ class Wled:
         wled.udp_port = int(row[1].val)
         wled.name = row[2].val
         return wled
+
+    @classmethod
+    def from_omegaconf(self, conf=""):
+        confs = ["default_cfg.yaml", "important_default_cfg.yaml"]
+        if conf: confs += [conf]
+        confs = [OmegaConf.load(f) for f in confs]
+        cfg = OmegaConf.merge(*confs)
+        self.cfg = OmegaConf.to_container(cfg)
+        self.udp_port = cfg["if"].sync.port0
+        self.name = cfg.id.name
 
     ## Endpoints 
     def http_endpoint(self):
@@ -144,6 +164,9 @@ class Wled:
     def get_fs_file(self, filename):
         return requests.get(self.edit_endpoint() + "?edit=" + filename)
 
+    def upload_fs_file(self, filename, contents):
+        return requests.post(self.edit_endpoint(), files={filename:contents})
+
     def _attr_name_from_filename(self, filename):
         if not filename.endswith(".json"): raise ValueError(f"filename {filename} in the FS does not end in json, but attr name creation requested")
         return filename[:-5]
@@ -162,11 +185,20 @@ class Wled:
     def get_presets(self):
         self.presets = self.get_fs_file("presets.json").json()
         return self.presets
+
+    def upload_cfg(self):
+        cfg_json = json.dumps(self.cfg, separators=(',', ':'))
+        return self.upload_fs_file("cfg.json", cfg_json.encode("utf-8"))
+
+    def upload_presets(self):
+        cfg_json = json.dumps(self.presets, separators=(',', ':'))
+        return self.upload_fs_file("presets.json", cfg_json.encode("utf-8"))
+        
     
     # FS Dumps
     def get_fs_dump_dir(self, fs_dump_dir=FS_DUMP_DIR):
         """Populates the template for the local directory, where FS should be dumped. Creates it, if nececery, and returns a path to it"""
-        fs_dump_dir = fs_dump_dir.format(ip=self.ip)
+        fs_dump_dir = fs_dump_dir.format(ip=self.ip, name=self.name)
         os.makedirs(fs_dump_dir, exist_ok=True)
         return fs_dump_dir
 

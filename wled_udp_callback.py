@@ -37,7 +37,7 @@ def delete_empty_rows(box):
 
 
 def onReceive(dat, rowIndex, message, bts, peer):
-	name = bts[6:6+32].decode("utf-8")
+	name = bts[6:6+32].decode("utf-8").rstrip('\x00')
 	delete_empty_rows(op("wled_nodes_table"))
 	new_row = [peer.address, peer.port, name]
 	new_row += [f"http://{peer.address}"]
