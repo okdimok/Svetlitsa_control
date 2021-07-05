@@ -5,8 +5,13 @@ import json
 import hydra
 import os
 from omegaconf import DictConfig, OmegaConf
+import dictdiffer as dd
+
+dbg = tdu.debug.debug
+
 
 FS_DUMP_DIR="config_dump/{name}"
+DEFAULT_OMAEGACONFS=["default_cfg.yaml", "important_default_cfg.yaml"]
 
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
@@ -29,6 +34,10 @@ class Wleds:
     @classmethod
     def from_omegaconf(cls, box):
         return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
+
+    @classmethod
+    def to_omegaconf(self):
+        pass
 
     def get_by_ip(self, ip):
         wleds = list(wled for wled in self if wled.ip == ip)
@@ -75,14 +84,76 @@ class Wled:
         return wled
 
     @classmethod
-    def from_omegaconf(self, conf=""):
-        confs = ["default_cfg.yaml", "important_default_cfg.yaml"]
-        if conf: confs += [conf]
-        confs = [OmegaConf.load(f) for f in confs]
+    def from_omegaconf(self, additional_confs=[]):
+        confs = DEFAULT_OMAEGACONFS
+        confs += additional_confs
+        confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
         self.cfg = OmegaConf.to_container(cfg)
         self.udp_port = cfg["if"].sync.port0
         self.name = cfg.id.name
+        return self
+
+    def to_omegaconf(self):
+        confs = DEFAULT_OMAEGACONFS
+        confs = [omegaconf_universal_load(f) for f in confs]
+        cfg = OmegaConf.merge(*confs)
+        patch = list(dd.swap(dd.diff(self.cfg, cfg)))
+        new_patch = []
+        for p in patch:
+            if p[0] == "remove":
+                continue
+            elif p[0] == "add":
+                new_patch.append(p)
+            elif p[0] == "change":
+
+                new_patch.append(("add", p[1], p[2][1]))
+            else:
+                raise ValueError()
+        new_cfg = {}
+        for p in new_patch:
+            keys = p[1] if isinstance(p[1], list) else p[1].split('.')
+            if isinstance(p[2], list):
+                p = list(p)
+                p[2] = dict(p[2])
+            if len(keys) > 1:
+                curr = new_cfg
+                prev = None
+                for k, kn in zip(keys[:-1], keys[1:]):
+                    try:
+                        prev = curr
+                        curr = curr[k]
+                    except KeyError: # it is for dicts
+                        if isinstance(kn, int):
+                            curr[k] = list()
+                        elif isinstance(kn, str):
+                            curr[k] = dict()
+                        curr = curr[k]
+                    except IndexError:
+                        if isinstance(kn, int):
+                            curr.append(list())
+                        elif isinstance(kn, str):
+                            curr.append(dict())
+                        curr = curr[-1]
+                # dbg(k, kn, curr)
+                if isinstance(curr, list):
+                    curr.append(p[2])
+                elif isinstance(curr, dict):
+                    curr[kn] = p[2]
+                else:
+                    raise ValueError(f"{type(curr)} is unexpected")
+            else:
+                new_cfg[keys[0]] = p[2]
+        dbg (patch)
+        dbg (new_patch)
+        dbg (new_cfg)
+
+        dbg(list(dd.diff(Wled.from_omegaconf(additional_confs=[new_cfg]).cfg, self.cfg)))
+        return 
+        return new_cfg
+
+        patch_dict = {}
+
 
     ## Endpoints 
     def http_endpoint(self):
@@ -230,6 +301,16 @@ class Wled:
 
     def update_time(self):
         self.http_request_one("ST", int(time.time()))
+
+def omegaconf_universal_load(conf):
+    if isinstance(conf, str):
+        if conf.endswith(".yaml"):
+            return OmegaConf.load(conf)
+        else: return OmegaConf.create(conf)
+    elif OmegaConf.is_config(conf):
+        return conf
+    else:
+        return OmegaConf.create(conf)
 
 if __name__ == "__main__":
     print("No action defined yet.")
