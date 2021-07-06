@@ -5,7 +5,7 @@
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 102, sx: 151, ix: 153, pal: 0, sel: true, rev: false, mi: false}]
-  n: RBcandle
+  n: "RB Candle"
 '2':
   on: true
   bri: 255
@@ -19,21 +19,21 @@
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 251, 0], [240, 101, 70], [201, 54, 255]], fx: 27, sx: 38, ix: 37, pal: 0, sel: true, rev: false, mi: false}]
-  n: RYandroid
+  n: "RY Android"
 '4':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
-  n: Rainbowslow
+  n: "Rainbow Slow"
 '5':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [0, 0, 255], [8, 255, 0]], fx: 81, sx: 173, ix: 86, pal: 48, sel: true, rev: false, mi: false}]
-  n: Btwinkle
+  n: "B Twinkle"
 '6':
   on: true
   bri: 255
@@ -47,9 +47,9 @@
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 200, 0], [255, 0, 0], [243, 77, 255]], fx: 71, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
-  n: BNoise
+  n: "B Noise"
 '8':
-  n: Blinkingrainbow
+  n: "Blinking Rainbow"
   on: true
   bri: 254
   transition: 7
@@ -63,14 +63,15 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 97, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
 '10':
-  n: Rainbowplasma
+  n: "Rainbow Plasma"
   on: true
   bri: 255
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 97, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
 '11':
-  n: SolidBlue
+  n: B Solid
+  ql: B
   on: true
   bri: 255
   transition: 7
@@ -82,10 +83,10 @@
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 0, col: [[0, 0, 0], [0, 255, 200], [8, 255, 0]], fx: 0, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
-  n: Off
+  n: "Off"
   ql: OF
 '13':
-  n: RedRunning
+  n: "R Running"
   on: true
   bri: 255
   transition: 7
@@ -98,8 +99,8 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 0, 0], [0, 255, 200], [8, 255, 0]], fx: 0, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
   n: Red
-  ql: r
+  ql: R
 '15':
-  n: GBScan
+  n: "GB Scan"
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[55, 28, 255], [0, 255, 200], [8, 255, 0]], fx: 60, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]

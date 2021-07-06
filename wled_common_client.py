@@ -1,16 +1,22 @@
 import requests
 import time
-import tdutils as tdu
 import json
 import hydra
 import os
 from omegaconf import DictConfig, OmegaConf, ListConfig
 import dictdiffer as dd
+from ruamel import yaml
+from ruamel.yaml import YAML
 
-dbg = tdu.debug.debug
+try:
+    import tdutils as tdu
+    dbg = tdu.debug.debug
+except ModuleNotFoundError:
+    dbg = print
 
 
 FS_DUMP_DIR="config_dump/{name}"
+OMEGACONF_DUMP_DIR="omegaconf_dump/{name}"
 DEFAULT_OMAEGACONFS=["default_cfg.yaml", "important_default_cfg.yaml"]
 DEFAULT_PRESETS=["default_presets.yaml"]
 
@@ -36,8 +42,8 @@ class Wleds:
     def from_one_node(cls, wled):
         wleds = [wled]
         for node in wled.get_nodes():
-            w = Wled(node.ip)
-            w.name = node.name
+            w = Wled(node["ip"])
+            w.name = node["name"]
             wleds.append(w)
         return cls(wleds = wleds)
 
@@ -90,15 +96,19 @@ class Wled:
         return wled
 
     @classmethod
-    def from_omegaconf(self, additional_confs=[], additional_presets=[]):
+    def from_omegaconf(cls, additional_confs=[], additional_presets=[]):
         confs = DEFAULT_OMAEGACONFS
         confs += additional_confs
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
+        ip = cfg["nw"]["ins"][0]["ip"]
+        self = cls(".".join(str(n) for n in ip))
         self.cfg = OmegaConf.to_container(cfg)
         self.udp_port = cfg["if"].sync.port0
         self.name = cfg.id.name
-        self.presets = OmegaConf.merge(configs=DEFAULT_PRESETS + additional_presets)
+        presets = DEFAULT_PRESETS + additional_presets
+        presets = [omegaconf_universal_load(f) for f in presets]
+        self.presets = OmegaConf.merge(*presets)
         return self
 
     def to_omegaconf(self):
@@ -107,10 +117,17 @@ class Wled:
         cfg = OmegaConf.merge(*confs)
         new_cfg = create_patch_from_omegaconf(self.cfg, cfg)
         new_presets = create_patch_from_omegaconf(self.presets, {})
-
         return new_cfg, new_presets
 
-        patch_dict = {}
+    def dump_omegaconf(self, omegaconf_dump_dir=OMEGACONF_DUMP_DIR):
+        oc_dir = self.get_fs_dump_dir(omegaconf_dump_dir)
+        cfg, presets = self.to_omegaconf()
+        cfg_yaml = f"{oc_dir}/cfg.yaml"
+        OmegaConf.save(cfg, cfg_yaml)
+        tidy_yaml(cfg_yaml)
+        # presets_yaml = f"{oc_dir}/presets.yaml"
+        # OmegaConf.save(presets, presets_yaml)
+        # tidy_yaml(presets_yaml)
 
 
     ## Endpoints 
@@ -246,7 +263,7 @@ class Wled:
 
     # Higher level functions
     def get_nodes(self):
-       return requests.get(self.json_endpoint() + "/nodes").json()
+       return requests.get(self.json_endpoint() + "/nodes").json()["nodes"]
 
     def set_solid_color(self, r, g, b, via_http=False):
         if via_http:
@@ -262,6 +279,9 @@ class Wled:
 
     def update_time(self):
         self.http_request_one("ST", int(time.time()))
+
+    def reset(self):
+        return requests.get(f"http://{self.ip}/reset").status_code
 
 def omegaconf_universal_load(conf):
     if isinstance(conf, str):
@@ -296,7 +316,7 @@ def create_patch_from_omegaconf(custom_cfg, general_cfg):
 
         if len(keys) == 1:
             new_cfg[keys[0]] = v
-        else:
+        elif len(keys) > 1:
             curr = new_cfg
             orig = general_cfg
             prev = None
@@ -320,6 +340,8 @@ def create_patch_from_omegaconf(custom_cfg, general_cfg):
                 curr[kn] = v
             except IndexError:
                 curr.append(v)
+        else:
+            raise ValueError
             
 
     new_cfg = OmegaConf.create(new_cfg)
@@ -334,6 +356,25 @@ def create_patch_from_omegaconf(custom_cfg, general_cfg):
     # result = Wled.from_omegaconf(additional_confs=[OmegaConf.to_container(new_cfg)]).cfg
     # dbg(list(dd.diff(result, custom_cfg)))
     return new_cfg
+
+def tidy_yaml(f):
+    yaml = YAML()
+    with open(f) as fr:
+        d = yaml.load(fr)
+    yaml.default_flow_style = True
+    d.fa.set_block_style()
+    for k in d.keys():
+        try:
+            d[k].fa.set_block_style()
+            for kk in d[k].keys():
+                try:
+                    d[k][kk].fa.set_flow_style()
+                except AttributeError:
+                    pass
+        except AttributeError:
+            pass
+    with open(f, "w") as fw:
+        yaml.dump(d, fw)
 
 if __name__ == "__main__":
     print("No action defined yet.")

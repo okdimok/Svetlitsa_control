@@ -1,0 +1,10 @@
+vid: 2104220
+id:
+  mdns: wled-m-frame-1
+  name: WLED-M-frame-1
+hw:
+  led: {total: 114, ins: [{en: true, len: 114, order: 0, pin: [4], rev: false, skip: 0,
+        start: 0, type: 22}], maxpwr: 2200}
+def:
+  bri: 255
+

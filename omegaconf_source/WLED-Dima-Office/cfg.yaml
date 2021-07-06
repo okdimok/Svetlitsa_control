@@ -1,0 +1,6 @@
+id:
+  mdns: wled-dima-office
+  name: WLED-Dima-Office
+hw:
+  led: {ins: [{en: true, len: 200, order: 0, pin: [4], rev: false, skip: 0, start: 0,
+        type: 22}], maxpwr: 6000}

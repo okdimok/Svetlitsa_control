@@ -1,5 +1,5 @@
 # See https://github.com/Aircoookie/WLED/blob/master/wled00/cfg.cpp
-def:
+def: # default on boot
   bri: 128
   'on': true
   ps: 6
