@@ -98,7 +98,7 @@ class Wled:
         confs = DEFAULT_OMAEGACONFS
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
-        patch = list(dd.swap(dd.diff(self.cfg, cfg)))
+        patch = list(dd.swap(dd.diff(self.cfg, cfg, expand=True, dot_notation=False)))
         new_patch = []
         for p in patch:
             if p[0] == "remove":
@@ -106,49 +106,52 @@ class Wled:
             elif p[0] == "add":
                 new_patch.append(p)
             elif p[0] == "change":
-
                 new_patch.append(("add", p[1], p[2][1]))
             else:
                 raise ValueError()
-        new_cfg = {}
+        new_cfg = OmegaConf.create()
         for p in new_patch:
-            keys = p[1] if isinstance(p[1], list) else p[1].split('.')
-            if isinstance(p[2], list):
-                p = list(p)
-                p[2] = dict(p[2])
-            if len(keys) > 1:
-                curr = new_cfg
-                prev = None
-                for k, kn in zip(keys[:-1], keys[1:]):
-                    try:
-                        prev = curr
-                        curr = curr[k]
-                    except KeyError: # it is for dicts
-                        if isinstance(kn, int):
-                            curr[k] = list()
-                        elif isinstance(kn, str):
-                            curr[k] = dict()
-                        curr = curr[k]
-                    except IndexError:
-                        if isinstance(kn, int):
-                            curr.append(list())
-                        elif isinstance(kn, str):
-                            curr.append(dict())
-                        curr = curr[-1]
-                # dbg(k, kn, curr)
-                if isinstance(curr, list):
-                    curr.append(p[2])
-                elif isinstance(curr, dict):
-                    curr[kn] = p[2]
-                else:
-                    raise ValueError(f"{type(curr)} is unexpected")
-            else:
-                new_cfg[keys[0]] = p[2]
-        dbg (patch)
-        dbg (new_patch)
-        dbg (new_cfg)
+            keys = ".".join(str(p) for p in p[1])
+            # keys = p[1]
+            v = dict(p[2]) if isinstance(p[2], list) else p[2] 
+            # dbg(keys, v, new_cfg)
+            OmegaConf.update(new_cfg, keys, v, merge=True)
+            # keys = p[1] if isinstance(p[1], list) else p[1].split('.')
 
-        dbg(list(dd.diff(Wled.from_omegaconf(additional_confs=[new_cfg]).cfg, self.cfg)))
+            # if len(keys) > 1:
+            #     curr = new_cfg
+            #     prev = None
+            #     for k, kn in zip(keys[:-1], keys[1:]):
+            #         try:
+            #             prev = curr
+            #             curr = curr[k]
+            #         except KeyError: # it is for dicts
+            #             if isinstance(kn, int):
+            #                 curr[k] = list()
+            #             elif isinstance(kn, str):
+            #                 curr[k] = dict()
+            #             curr = curr[k]
+            #         except IndexError:
+            #             if isinstance(kn, int):
+            #                 curr.append(list())
+            #             elif isinstance(kn, str):
+            #                 curr.append(dict())
+            #             curr = curr[-1]
+            #     # dbg(k, kn, curr)
+            #     if isinstance(curr, list):
+            #         curr.append(p[2])
+            #     elif isinstance(curr, dict):
+            #         curr[kn] = p[2]
+            #     else:
+            #         raise ValueError(f"{type(curr)} is unexpected")
+            # else:
+            #     new_cfg[keys[0]] = p[2]
+        dbg (patch)
+        # dbg (new_patch)
+        dbg (new_cfg)
+        result = Wled.from_omegaconf(additional_confs=[OmegaConf.to_container(new_cfg)]).cfg
+
+        # dbg(list(dd.diff(result, self.cfg)))
         return 
         return new_cfg
 

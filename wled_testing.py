@@ -7,9 +7,12 @@
 # 
 # Make sure the corresponding toggle is enabled in the CHOP Execute DAT.
 import importlib
+import tdutils as tdu
+dbg = tdu.debug.debug
+import os
+dbg(os.getcwd())
 import wled_common_client
 from dictdiffer import diff
-import tdutils as tdu
 from omegaconf import OmegaConf
 import yaml
 import json
