@@ -1,0 +1,95 @@
+# See https://github.com/Aircoookie/WLED/blob/master/wled00/cfg.cpp
+def:
+  bri: 128
+  'on': true
+  ps: 6
+hw:
+  led:
+    ins:
+    - en: true
+      len: ??? # how many LEDs
+      order: 0
+      pin: [4]
+      rev: false
+      skip: 0
+      start: 0
+      type: 22
+    ledma: 55
+    maxpwr: ??? # 6000
+    rgbwm: 3
+    total: ??? # how many total LEDs
+id:
+  mdns: ??? # wled-dima-office
+  name: ??? # WLED-Dima-Office
+if:
+  live:
+    dmx:
+      addr: 1
+      mode: 4
+      seqskip: false
+      uni: 1
+    en: true
+    maxbri: false
+    mc: false
+    no-gc: true
+    offset: 0
+    port: 5568
+    timeout: 25
+  nodes:
+    bcast: true
+    list: true
+  ntp:
+    ampm: false
+    en: false
+    host: 0.wled.pool.ntp.org
+    offset: 10800
+    tz: 0
+  sync:
+    port0: 21324
+    port1: 65506
+    recv:
+      bri: true
+      col: true
+      fx: true
+    send:
+      btn: false
+      dir: false
+      hue: false
+      macro: false
+      twice: false
+      va: false
+light:
+  gc:
+    bri: 1
+    col: 2.8
+  pal-mode: 0
+  scale-bri: 100
+  tr: # transition
+    dur: 7
+    mode: true
+    pal: 0 # palleteFade 
+nw:
+  ins:
+  - gw: [0,0,0,0]
+    ip: [0,0,0,0] # [192,168,0,123] for preset ip or [0,0,0,0] for DHCP
+    sn: [255, 255, 255, 0]
+    ssid: Vadkovsky_TV
+    psk: vozduhoplavanie
+timers:
+  cntdwn: 
+    goal: [20, 1, 1, 0, 0, 0] # year, month, day, hour, minute, second
+    macro: 0
+  ins: # maximum 9 timers are allowed
+  - dow: 127 # day of week, + an active bit
+    en: 1
+    hour: 10 # hour==255 -> sunrise/sunset
+    macro: 6
+    min: 0
+  - dow: 127
+    en: 1
+    hour: 23
+    macro: 12
+    min: 40
+wifi:
+  phy: 1
+  sleep: false

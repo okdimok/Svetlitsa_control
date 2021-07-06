@@ -12,6 +12,7 @@ dbg = tdu.debug.debug
 
 FS_DUMP_DIR="config_dump/{name}"
 DEFAULT_OMAEGACONFS=["default_cfg.yaml", "important_default_cfg.yaml"]
+DEFAULT_PRESETS=["default_presets.yaml"]
 
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
@@ -32,8 +33,13 @@ class Wleds:
         return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
 
     @classmethod
-    def from_omegaconf(cls, box):
-        return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
+    def from_one_node(cls, wled):
+        wleds = [wled]
+        for node in wled.get_nodes():
+            w = Wled(node.ip)
+            w.name = node.name
+            wleds.append(w)
+        return cls(wleds = wleds)
 
     @classmethod
     def to_omegaconf(self):
@@ -84,7 +90,7 @@ class Wled:
         return wled
 
     @classmethod
-    def from_omegaconf(self, additional_confs=[]):
+    def from_omegaconf(self, additional_confs=[], additional_presets=[]):
         confs = DEFAULT_OMAEGACONFS
         confs += additional_confs
         confs = [omegaconf_universal_load(f) for f in confs]
@@ -92,80 +98,17 @@ class Wled:
         self.cfg = OmegaConf.to_container(cfg)
         self.udp_port = cfg["if"].sync.port0
         self.name = cfg.id.name
+        self.presets = OmegaConf.merge(configs=DEFAULT_PRESETS + additional_presets)
         return self
 
     def to_omegaconf(self):
         confs = DEFAULT_OMAEGACONFS
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
-        patch = list(dd.swap(dd.diff(self.cfg, cfg, expand=True, dot_notation=False)))
-        new_patch = []
-        for p in patch:
-            if p[0] == "remove":
-                continue
-            elif p[0] == "add":
-                new_patch.append(p)
-            elif p[0] == "change":
-                new_patch.append(("add", p[1], p[2][1]))
-            else:
-                raise ValueError()
-        new_cfg = OmegaConf.create()
-        new_cfg = {}
-        for p in new_patch:
-            # keys = ".".join(str(p) for p in p[1])
-            keys = list(p[1])
-            v = p[2] 
-            if isinstance(p[2], list):
-                keys += [p[2][0][0]]
-                v = p[2][0][1]
-            # dbg(keys, v, new_cfg)
-            # OmegaConf.update(new_cfg, keys, v, merge=True)
-            # keys = p[1] if isinstance(p[1], list) else p[1].split('.')
+        new_cfg = create_patch_from_omegaconf(self.cfg, cfg)
+        new_presets = create_patch_from_omegaconf(self.presets, {})
 
-            if len(keys) > 1:
-                curr = new_cfg
-                orig = cfg
-                prev = None
-                for k, kn in zip(keys[:-1], keys[1:]): # key, key_next
-                    orig = orig[k]
-                    try:
-                        curr = curr[k]
-                    except KeyError: # it is for dicts
-                        if isinstance(kn, int):
-                            curr[k] = orig # as far as we create list we need to copy it from the main config
-                        elif isinstance(kn, str):
-                            curr[k] = dict()
-                        curr = curr[k]
-                    except IndexError: # for lists
-                        if isinstance(kn, int):
-                            curr.append(list())
-                        elif isinstance(kn, str):
-                            curr.append(dict())
-                        curr = curr[-1]
-                # dbg(k, kn, curr, keys)
-                try:
-                    curr[kn] = v
-                except IndexError:
-                    curr.append(v)
-            else:
-                new_cfg[keys[0]] = v
-        # dbg (patch)
-        # dbg (new_patch)
-        # dbg (new_cfg)
-        # result = Wled.from_omegaconf(additional_confs=[OmegaConf.to_container(new_cfg)]).cfg
-        new_cfg = OmegaConf.create(new_cfg)
-        result = Wled.from_omegaconf(additional_confs=[new_cfg]).cfg
-
-        dbg("="*20)
-        # dbg(patch)
-        # dbg("#"*20)
-        # dbg(new_patch)
-        # dbg("*"*20)
-        # dbg(new_cfg)
-        # dbg(">"*20  )
-        dbg(list(dd.diff(result, self.cfg)))
-        return 
-        return new_cfg
+        return new_cfg, new_presets
 
         patch_dict = {}
 
@@ -302,6 +245,9 @@ class Wled:
                     self.__setattr__(self._attr_name_from_filename(f), json.load(fr))
 
     # Higher level functions
+    def get_nodes(self):
+       return requests.get(self.json_endpoint() + "/nodes").json()
+
     def set_solid_color(self, r, g, b, via_http=False):
         if via_http:
             new_state = {
@@ -326,6 +272,68 @@ def omegaconf_universal_load(conf):
         return conf
     else:
         return OmegaConf.create(conf)
+
+def create_patch_from_omegaconf(custom_cfg, general_cfg):
+    patch = list(dd.swap(dd.diff(custom_cfg, general_cfg, expand=True, dot_notation=False)))
+    new_patch = []
+    for p in patch:
+        if p[0] == "remove":
+            continue
+        elif p[0] == "add":
+            new_patch.append(p)
+        elif p[0] == "change":
+            new_patch.append(("add", p[1], p[2][1]))
+        else:
+            raise ValueError()
+    new_cfg = OmegaConf.create()
+    new_cfg = {}
+    for p in new_patch:
+        keys = list(p[1])
+        v = p[2] 
+        if isinstance(p[2], list):
+            keys += [p[2][0][0]]
+            v = p[2][0][1]
+
+        if len(keys) == 1:
+            new_cfg[keys[0]] = v
+        else:
+            curr = new_cfg
+            orig = general_cfg
+            prev = None
+            for k, kn in zip(keys[:-1], keys[1:]): # key, key_next
+                orig = orig[k]
+                try:
+                    curr = curr[k]
+                except KeyError: # it is for dicts
+                    if isinstance(kn, int):
+                        curr[k] = orig # as far as we create list we need to copy it from the main config
+                    elif isinstance(kn, str):
+                        curr[k] = dict()
+                    curr = curr[k]
+                except IndexError: # for lists
+                    if isinstance(kn, int):
+                        curr.append(list())
+                    elif isinstance(kn, str):
+                        curr.append(dict())
+                    curr = curr[-1]
+            try:
+                curr[kn] = v
+            except IndexError:
+                curr.append(v)
+            
+
+    new_cfg = OmegaConf.create(new_cfg)
+
+    # dbg("="*20)
+    # dbg(patch)
+    # dbg("#"*20)
+    # dbg(new_patch)
+    # dbg("*"*20)
+    # dbg(new_cfg)
+    # dbg(">"*20  )
+    # result = Wled.from_omegaconf(additional_confs=[OmegaConf.to_container(new_cfg)]).cfg
+    # dbg(list(dd.diff(result, custom_cfg)))
+    return new_cfg
 
 if __name__ == "__main__":
     print("No action defined yet.")

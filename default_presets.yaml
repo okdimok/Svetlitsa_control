@@ -1,0 +1,105 @@
+'0': {}
+'1':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 102, sx: 151, ix: 153, pal: 0, sel: true, rev: false, mi: false}]
+  n: RBcandle
+'2':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  n: Rainbow
+'3':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 251, 0], [240, 101, 70], [201, 54, 255]], fx: 27, sx: 38, ix: 37, pal: 0, sel: true, rev: false, mi: false}]
+  n: RYandroid
+'4':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  n: Rainbowslow
+'5':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [0, 0, 255], [8, 255, 0]], fx: 81, sx: 173, ix: 86, pal: 48, sel: true, rev: false, mi: false}]
+  n: Btwinkle
+'6':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [0, 255, 200], [8, 255, 0]], fx: 4, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  n: RandomWipe
+'7':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 200, 0], [255, 0, 0], [243, 77, 255]], fx: 71, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  n: BNoise
+'8':
+  n: Blinkingrainbow
+  on: true
+  bri: 254
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 94, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+'9':
+  n: Plasma
+  on: true
+  bri: 254
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 97, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+'10':
+  n: Rainbowplasma
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 97, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+'11':
+  n: SolidBlue
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 0, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+'12':
+  on: true
+  bri: 0
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 0, col: [[0, 0, 0], [0, 255, 200], [8, 255, 0]], fx: 0, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  n: Off
+  ql: OF
+'13':
+  n: RedRunning
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 255, 255], [255, 0, 0], [8, 255, 0]], fx: 37, sx: 5, ix: 212, pal: 0, sel: true, rev: true, mi: false}]
+'14':
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 0, 0], [0, 255, 200], [8, 255, 0]], fx: 0, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  n: Red
+  ql: r
+'15':
+  n: GBScan
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[55, 28, 255], [0, 255, 200], [8, 255, 0]], fx: 60, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]

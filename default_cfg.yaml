@@ -1,0 +1,159 @@
+# See https://github.com/Aircoookie/WLED/blob/master/wled00/cfg.cpp
+ap:
+  behav: 0
+  chan: 1
+  hide: 0
+  ip: [4, 3, 2, 1]
+  pskl: 8
+  ssid: WLED-AP
+def:
+  bri: 256
+  'on': true
+  ps: 6
+hw:
+  btn:
+    ins:
+    - macros: [0,0,0]
+      pin: [0]
+      type: 2
+  led:
+    ins:
+    - en: true
+      len: ??? #
+      order: 0
+      pin: [4]
+      rev: false
+      skip: 0
+      start: 0
+      type: 22
+    ledma: 55
+    maxpwr: ??? # 6000
+    rgbwm: 3
+    total: 200
+  relay:
+    pin: 12
+    rev: false
+id:
+  inv: Light
+  mdns: ??? # wled-dima-office
+  name: ??? # WLED-Dima-Office
+if:
+  blynk:
+    host: blynk-cloud.com
+    port: 80
+    token: ''
+  hue:
+    en: false
+    id: 1
+    ip: [192, 168,0,0]
+    iv: 25
+    recv:
+      bri: true
+      col: true
+      'on': true
+  live:
+    dmx:
+      addr: 1
+      mode: 4
+      seqskip: false
+      uni: 1
+    en: true
+    maxbri: false
+    mc: false
+    no-gc: true
+    offset: 0
+    port: 5568
+    timeout: 25
+  mqtt:
+    en: false
+    broker: ''
+    cid: WLED-ae971c
+    port: 1883
+    pskl: 0
+    topics:
+      device: ??? # wled/ae971c
+      group: wled/all
+    user: ''
+  nodes:
+    bcast: true
+    list: true
+  ntp:
+    ampm: false
+    en: false
+    host: 0.wled.pool.ntp.org
+    offset: 10800
+    tz: 0
+  sync:
+    port0: 21324
+    port1: 65506
+    recv:
+      bri: true
+      col: true
+      fx: true
+    send:
+      btn: false
+      dir: false
+      hue: false
+      macro: false
+      twice: false
+      va: false
+  va:
+    alexa: false
+    macros: [0, 0]
+light:
+  gc:
+    bri: 1
+    col: 2.8
+  nl: # night light
+    dur: 60
+    macro: 0
+    mode: 1
+    tbri: 0
+  pal-mode: 0 # pallete blend
+  scale-bri: 100 # brightness multiplier
+  tr: # transition
+    dur: 7
+    mode: true
+    pal: 0 # pallete fade
+nw:
+  ins:
+  - gw: [0,0,0,0]
+    ip: ??? # [192,168,0,123]
+    pskl: 15
+    sn: [255, 255, 255, 0]
+    ssid: Vadkovsky_TV
+    psk: vozduhoplavanie
+ol: # overlay
+  clock: 0
+  cntdwn: false
+  max: 29
+  min: 0
+  o12pix: 0
+  o5m: false
+  osec: false
+ota:
+  aota: true
+  lock: false
+  lock-wifi: false
+  pskl: 7
+rev: [1, 0]
+timers:
+  cntdwn:
+    goal: [20, 1, 1, 0, 0, 0]
+    macro: 0
+  ins:
+  - dow: 127
+    en: 1
+    hour: 10
+    macro: 6
+    min: 0
+  - dow: 127
+    en: 1
+    hour: 23
+    macro: 12
+    min: 40
+um: {}
+vid: 2104020 # version
+wifi:
+  phy: 1
+  sleep: false

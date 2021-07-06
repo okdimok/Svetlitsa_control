@@ -39,7 +39,7 @@ def onValueChange(channel, sampleIndex, val, prev):
         if ("kitchen" in wled.name): continue
         # wled.dump_fs()
         # wled.dump_fs("config_dump/{ip}")
-        tdu.debug.debug(wled.to_omegaconf())
+        tdu.debug.debug(wled.to_omegaconf()[1])
         # break
     # tdu.debug.debug(list(diff(wleds["WLED"].cfg, wleds["WLED-Dima-Office"].cfg)))
     # tdu.debug.debug(OmegaConf.create( wleds["WLED"].cfg).nw.ins[0].ip)
