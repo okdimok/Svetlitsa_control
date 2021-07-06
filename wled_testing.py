@@ -9,8 +9,8 @@
 import importlib
 import tdutils as tdu
 dbg = tdu.debug.debug
-import os
-dbg(os.getcwd())
+import os, sys
+sys.path.insert(0, ".")
 import wled_common_client
 from dictdiffer import diff
 from omegaconf import OmegaConf
