@@ -7,6 +7,8 @@ from omegaconf import DictConfig, OmegaConf, ListConfig
 import dictdiffer as dd
 from ruamel import yaml
 from ruamel.yaml import YAML
+import sacn
+from math import ceil
 
 try:
     import tdutils as tdu
@@ -78,6 +80,42 @@ class Wleds:
     def __iter__(self):
         return self.wleds.__iter__()
 
+class WledDMX:
+    LEDS_PER_UNIVERSE = 170 # 512//3
+    def __init__(self, wled):
+        self.wled = wled
+        self.sender = None
+
+    def start(self):
+        if self.sender is None:
+            self.sender = sacn.sACNsender()
+        strips = self.wled.cfg["hw"]["led"]["ins"]
+        assert len(strips) == 1
+        for strip in strips:
+            self.n_leds = strip["len"]
+            self.n_universes = ceil(self.n_leds / WledDMX.LEDS_PER_UNIVERSE)
+            for i in range(1, self.n_universes+1):
+                self.sender.activate_output(i)
+        for sender in self.get_senders():
+            sender.destination = self.wled.ip
+        self.sender.start()
+
+    def get_senders(self):
+        return [self.sender[i] for i in self.sender.get_active_outputs()]
+
+    def set_data(self, data):
+        assert len(data) == 3 * self.n_leds
+        for i, sender in enumerate(self.get_senders()):
+            sender.dmx_data = data[i*3*WledDMX.LEDS_PER_UNIVERSE : (i+1)*3*WledDMX.LEDS_PER_UNIVERSE]
+    
+    def stop(self):
+        if self.sender is not None: self.sender.stop()
+        self.sender = None
+
+    def __del__(self):
+        self.stop()
+
+
 
 class Wled:
     def __init__(self, ip):
@@ -87,6 +125,7 @@ class Wled:
         self.current_json = None
         self.cfg = None
         self.presets = None
+        self.dmx = WledDMX(self)
 
     @classmethod
     def from_udp_multicast(cls, row):
