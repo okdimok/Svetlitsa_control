@@ -50,6 +50,19 @@ class Wleds:
         return cls(wleds = wleds)
 
     @classmethod
+    def from_one_ip(cls, ip, cache_fs=True):
+        w = Wled(ip)
+        w.cache_fs()
+        w.name = w.cfg["id"]["name"]
+        wleds =  Wleds.from_one_node(w)
+        if cache_fs: wleds.cache_fs()
+        return wleds
+
+    def cache_fs(self):
+        for w in self:
+            w.cache_fs()
+
+    @classmethod
     def to_omegaconf(self):
         pass
 

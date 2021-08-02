@@ -16,5 +16,6 @@ class Show:
         while True:
             self.run_once()
 
-def show_1()
-    return
+show_1 = Show([
+    ColorCycle(60),
+])
