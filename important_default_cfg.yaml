@@ -53,10 +53,10 @@ if:
       fx: true
     send:
       btn: false
-      dir: false
+      dir: true
       hue: false
       macro: false
-      twice: false
+      twice: true
       va: false
 light:
   gc:
@@ -79,17 +79,17 @@ timers:
   cntdwn: 
     goal: [20, 1, 1, 0, 0, 0] # year, month, day, hour, minute, second
     macro: 0
-  ins: # maximum 9 timers are allowed
-  - dow: 127 # day of week, + an active bit
-    en: 1
-    hour: 10 # hour==255 -> sunrise/sunset
-    macro: 6
-    min: 0
-  - dow: 127
-    en: 1
-    hour: 23
-    macro: 12
-    min: 40
+  # ins: # maximum 9 timers are allowed
+  # - dow: 127 # day of week, + an active bit
+  #   en: 1
+  #   hour: 10 # hour==255 -> sunrise/sunset
+  #   macro: 6
+  #   min: 0
+  # - dow: 127
+  #   en: 1
+  #   hour: 23
+  #   macro: 12
+  #   min: 40
 wifi:
   phy: 1
   sleep: false

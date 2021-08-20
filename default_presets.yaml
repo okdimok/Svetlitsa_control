@@ -1,52 +1,59 @@
-'0': {}
+'0':
+  n: W Solid
+  ql: W
+  on: true
+  bri: 70
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 213, 158], [255, 0, 0], [8, 255, 0]], fx: 0, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
 '1':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 102, sx: 151, ix: 153, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 102, sx: 151, ix: 153, pal: 0, sel: true, rev: false, mi: false}]
   n: "RB Candle"
 '2':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
   n: Rainbow
 '3':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 251, 0], [240, 101, 70], [201, 54, 255]], fx: 27, sx: 38, ix: 37, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 251, 0], [240, 101, 70], [201, 54, 255]], fx: 27, sx: 38, ix: 37, pal: 0, sel: true, rev: false, mi: false}]
   n: "RY Android"
 '4':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
   n: "Rainbow Slow"
 '5':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [0, 0, 255], [8, 255, 0]], fx: 81, sx: 173, ix: 86, pal: 48, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [0, 0, 255], [8, 255, 0]], fx: 81, sx: 173, ix: 86, pal: 48, sel: true, rev: false, mi: false}]
   n: "B Twinkle"
 '6':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [0, 255, 200], [8, 255, 0]], fx: 4, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [0, 255, 200], [8, 255, 0]], fx: 4, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
   n: RandomWipe
 '7':
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 200, 0], [255, 0, 0], [243, 77, 255]], fx: 71, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 200, 0], [255, 0, 0], [243, 77, 255]], fx: 71, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
   n: "B Noise"
 '8':
   n: "Blinking Rainbow"
@@ -54,21 +61,21 @@
   bri: 254
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 94, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 94, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
 '9':
   n: Plasma
   on: true
   bri: 254
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 97, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 160, 0], [255, 0, 0], [0, 0, 255]], fx: 97, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
 '10':
   n: "Rainbow Plasma"
   on: true
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 97, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 97, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
 '11':
   n: B Solid
   ql: B
@@ -91,7 +98,7 @@
   bri: 255
   transition: 7
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 255, 255], [255, 0, 0], [8, 255, 0]], fx: 37, sx: 5, ix: 212, pal: 0, sel: true, rev: true, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 255, 255], [255, 0, 0], [8, 255, 0]], fx: 37, sx: 5, ix: 212, pal: 0, sel: true, rev: true, mi: false}]
 '14':
   on: true
   bri: 255
@@ -103,4 +110,49 @@
 '15':
   n: "GB Scan"
   mainseg: 0
-  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[55, 28, 255], [0, 255, 200], [8, 255, 0]], fx: 60, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[55, 28, 255], [0, 255, 200], [8, 255, 0]], fx: 60, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+'16':
+  n: Chase random / autumn
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 160, 0], [0, 0, 0],
+        [0, 0, 0]], fx: 29, sx: 128, ix: 128, pal: 39, sel: true, rev: false, mi: false}]
+'17':
+  on: true
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 255, 0], [0, 255, 200], [8, 255, 0]], fx: 0, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
+  n: Green
+  ql: G
+'18':
+  n: Fire lighthouse
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 160, 0], [0, 0, 0],
+        [0, 0, 0]], fx: 64, sx: 128, ix: 128, pal: 35, sel: true, rev: false, mi: false}]
+'19':
+  n: Colorwaves / autumn
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[255, 200, 0], [0, 0, 0],
+        [0, 0, 0]], fx: 67, sx: 128, ix: 128, pal: 39, sel: true, rev: false, mi: false}]
+'20':
+  n: W Solid Warm
+  ql: WW
+  on: true
+  bri: 70
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 213, 158], [255, 0, 0], [8, 255, 0]], fx: 0, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+'21':
+  n: W Solid True
+  ql: TW
+  on: true
+  bri: 70
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 255, 255], [255, 0, 0], [8, 255, 0]], fx: 0, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
+'22':
+  n: Colorloop
+  on: true
+  bri: 256
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [0, 0, 0],
+        [0, 0, 0]], fx: 8, sx: 27, ix: 255, pal: 0, sel: true, rev: false, mi: false}]

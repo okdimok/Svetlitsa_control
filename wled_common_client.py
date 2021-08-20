@@ -47,7 +47,7 @@ class Wleds:
             w = Wled(node["ip"])
             w.name = node["name"]
             wleds.append(w)
-        return cls(wleds = wleds)
+        return cls(wleds = list(sorted(wleds, key=lambda w: w.name)))
 
     @classmethod
     def from_one_ip(cls, ip, cache_fs=True):
@@ -177,9 +177,9 @@ class Wled:
         cfg_yaml = f"{oc_dir}/cfg.yaml"
         OmegaConf.save(cfg, cfg_yaml)
         tidy_yaml(cfg_yaml)
-        # presets_yaml = f"{oc_dir}/presets.yaml"
-        # OmegaConf.save(presets, presets_yaml)
-        # tidy_yaml(presets_yaml)
+        presets_yaml = f"{oc_dir}/presets.yaml"
+        OmegaConf.save(presets, presets_yaml)
+        tidy_yaml(presets_yaml)
 
 
     ## Endpoints 
@@ -188,6 +188,9 @@ class Wled:
 
     def json_endpoint(self):
         return f"http://{self.ip}/json"
+    
+    def json_si_endpoint(self):
+        return f"http://{self.ip}/json/si"
 
     def edit_endpoint(self):
         return f"http://{self.ip}/edit"
@@ -254,6 +257,10 @@ class Wled:
     
     def post_json_state(self, new_json={}):
         return requests.post(self.json_endpoint(), json=new_json)
+
+    # Json si
+    def post_json_si(self, new_json={}):
+        return requests.post(self.json_si_endpoint(), json=new_json)
 
     # FS helpers
     def get_fs_list(self):
@@ -328,6 +335,24 @@ class Wled:
             self.http_request_multi(new_state.items())
         else:
             self.send_udp_sync(fx=0, col=[r, g, b])
+
+    def set_preset(self, ps=0, eff_intensity=None, eff_speed=None):
+        new_state = {
+            "ps": ps,
+        }
+        if eff_intensity is not None or eff_speed is not None:
+            seg = {}
+            if eff_intensity is not None: seg['ix'] = eff_intensity
+            if eff_speed is not None: seg['sx'] = eff_speed
+            new_state["seg"] = seg
+            
+        self.post_json_si(new_state)
+
+    def set_effect(self, fx=0):
+        new_state = {
+            "FX": fx,
+        }
+        self.http_request_multi(new_state.items())
 
     def update_time(self):
         self.http_request_one("ST", int(time.time()))

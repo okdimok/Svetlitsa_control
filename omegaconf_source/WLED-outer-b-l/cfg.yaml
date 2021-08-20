@@ -1,0 +1,9 @@
+vid: 2104220
+id:
+  mdns: wled-outer-b-l
+  name: WLED-outer-b-l
+hw:
+  led: {total: 50, ins: [{en: true, len: 50, order: 0, pin: [4], rev: false, skip: 0,
+        start: 0, type: 22}], maxpwr: 850}
+def:
+  ps: 0
