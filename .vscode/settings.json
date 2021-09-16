@@ -1,0 +1,4 @@
+{
+    "jupyter.jupyterServerType": "local",
+    "terminal.integrated.env.windows": {"PYTHONPATH": "${workspaceFolder}/dep/python"},
+}
