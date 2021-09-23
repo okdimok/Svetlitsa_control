@@ -16,11 +16,12 @@ try:
 except ModuleNotFoundError:
     dbg = print
 
+file_path = os.path.dirname(os.path.realpath(__file__))
 
-FS_DUMP_DIR="config_dump/{name}"
-OMEGACONF_DUMP_DIR="omegaconf_dump/{name}"
-DEFAULT_OMAEGACONFS=["default_cfg.yaml", "important_default_cfg.yaml"]
-DEFAULT_PRESETS=["default_presets.yaml"]
+FS_DUMP_DIR= file_path + "/config_dump/{name}"
+OMEGACONF_DUMP_DIR=file_path + "/omegaconf_dump/{name}"
+DEFAULT_OMAEGACONFS=(file_path + "/default_cfg.yaml", file_path + "/important_default_cfg.yaml")
+DEFAULT_PRESETS=(file_path + "/default_presets.yaml",)
 
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
@@ -139,6 +140,9 @@ class Wled:
         self.cfg = None
         self.presets = None
         self.dmx = WledDMX(self)
+    
+    def __str__(self):
+        return f"WLED '{self.name}' at {self.ip}"
 
     @classmethod
     def from_udp_multicast(cls, row):
@@ -149,7 +153,7 @@ class Wled:
 
     @classmethod
     def from_omegaconf(cls, additional_confs=[], additional_presets=[]):
-        confs = DEFAULT_OMAEGACONFS
+        confs = list(DEFAULT_OMAEGACONFS)
         confs += additional_confs
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
@@ -158,7 +162,7 @@ class Wled:
         self.cfg = OmegaConf.to_container(cfg)
         self.udp_port = cfg["if"].sync.port0
         self.name = cfg.id.name
-        presets = DEFAULT_PRESETS + additional_presets
+        presets = list(DEFAULT_PRESETS) + additional_presets
         presets = [omegaconf_universal_load(f) for f in presets]
         self.presets = OmegaConf.merge(*presets)
         return self
@@ -323,6 +327,10 @@ class Wled:
     # Higher level functions
     def get_nodes(self):
        return requests.get(self.json_endpoint() + "/nodes").json()["nodes"]
+
+    def reset_timers_cfg(self):
+        for t in self.cfg["timers"]["ins"]:
+            t["en"] = 0
 
     def set_solid_color(self, r, g, b, via_http=False):
         if via_http:

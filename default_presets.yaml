@@ -156,3 +156,8 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [0, 0, 0],
         [0, 0, 0]], fx: 8, sx: 27, ix: 255, pal: 0, sel: true, rev: false, mi: false}]
+'23':
+  playlist: {ps: [6, 4], dur: [1200, 600], transition: [7, 7], repeat: 0, r: false,
+    end: 0}
+  n: 'Wipe + Rainbow'
+  ql: "1"

@@ -5,11 +5,13 @@ nw:
   ins: [{gw: [0, 0, 0, 0], ip: [192, 168, 0, 121], sn: [255, 255, 255, 0], ssid: Vadkovsky_TV,
       psk: vozduhoplavanie, pskl: 15}]
 hw:
-  led: {total: 600, ins: [{en: true, len: 600, order: 0, pin: [2], rev: true, skip: 0,
+  led: {total: 600, ins: [{en: true, len: 600, order: 0, pin: [4], rev: true, skip: 0,
         start: 0, type: 22}], maxpwr: 15000}
 def:
   ps: 2
   bri: 255
 if:
   sync: {recv: {bri: false, col: false, fx: false}, send: {dir: true}}
+timers:
+  ins: []
 

@@ -1,7 +1,8 @@
 import time
 from wled_common_client import Wled, Wleds
+from scripts.local_env import default_wled_ip
 
-wleds = Wleds.from_one_ip("192.168.0.22")
+wleds = Wleds.from_one_ip(default_wled_ip())
 
 class ShowElement:
     def __init__(self, duration, eff_intensity=256, eff_speed=20):
