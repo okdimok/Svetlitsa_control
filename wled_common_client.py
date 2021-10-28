@@ -1,3 +1,4 @@
+from typing import Optional, Type
 import requests
 import time
 import json
@@ -13,7 +14,7 @@ from math import ceil
 try:
     import tdutils as tdu
     dbg = tdu.debug.debug
-except ModuleNotFoundError:
+except (ModuleNotFoundError, AttributeError):
     dbg = print
 
 file_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,73 +27,11 @@ DEFAULT_PRESETS=(file_path + "/default_presets.yaml",)
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
 # https://github.com/Aircoookie/WLED/wiki/Sync-WLED-devices-(UDP-Notifier)
-# https://github.com/Aircoookie/WLED/blob/master/wled00/udp.cpp
+# https://github.com/Aircoookie/WLED/blob/master/wled00/udp.cpp#L11
 
 import socket
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
+sock = None
 
-
-class Wleds:
-    def __init__(self, wleds=[]):
-        self.wleds = wleds
-    
-    @classmethod
-    def from_udp_multicast_table(cls, box):
-        return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
-
-    @classmethod
-    def from_one_node(cls, wled):
-        wleds = [wled]
-        for node in wled.get_nodes():
-            w = Wled(node["ip"])
-            w.name = node["name"]
-            wleds.append(w)
-        return cls(wleds = list(sorted(wleds, key=lambda w: w.name)))
-
-    @classmethod
-    def from_one_ip(cls, ip, cache_fs=True):
-        w = Wled(ip)
-        w.cache_fs()
-        w.name = w.cfg["id"]["name"]
-        wleds =  Wleds.from_one_node(w)
-        if cache_fs: wleds.cache_fs()
-        return wleds
-
-    def cache_fs(self):
-        for w in self:
-            w.cache_fs()
-
-    @classmethod
-    def to_omegaconf(self):
-        pass
-
-    def get_by_ip(self, ip):
-        wleds = list(wled for wled in self if wled.ip == ip)
-        if len(wleds) == 1:
-            return wleds[0]
-        elif len(wleds) == 0:
-            return None
-        else:
-            raise ValueError(f"More than one ({len(wleds)}) wled with IP {ip} found")
-
-    def get_by_name(self, name):
-        wleds = list(wled for wled in self if wled.name == name)
-        if len(wleds) == 1:
-            return wleds[0]
-        elif len(wleds) == 0:
-            return None
-        else:
-            raise ValueError(f"More than one ({len(wleds)}) wled with name '{name}' found")
-
-    def get_names(self):
-        return list(wled.name for wled in self)
-
-    def __getitem__(self, item):
-        return self.get_by_name(item)
-
-    def __iter__(self):
-        return self.wleds.__iter__()
 
 class WledDMX:
     LEDS_PER_UNIVERSE = 170 # 512//3
@@ -192,6 +131,12 @@ class Wled:
 
     def json_endpoint(self):
         return f"http://{self.ip}/json"
+
+    def json_state_endpoint(self):
+        return f"http://{self.ip}/json/state"
+
+    def json_info_endpoint(self):
+        return f"http://{self.ip}/json/info"
     
     def json_si_endpoint(self):
         return f"http://{self.ip}/json/si"
@@ -211,11 +156,16 @@ class Wled:
 
     def _send_udp(self, msg):
         # tdu.debug.debug(f"udp {self.udp_port}, msg: {msg}")
+        global sock
+        if sock is None:
+            sock = socket.socket(socket.AF_INET, # Internet
+                                 socket.SOCK_DGRAM) # UDP
         sock.sendto(msg, (self.ip, self.udp_port))
 
     def send_udp_sync(self, brightness=255, col=[255,0,0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=0, palette=0):
         p = []
         # Byte Index	Var Name	Description	Notifier Version
+        # https://github.com/Aircoookie/WLED/blob/master/wled00/udp.cpp#L11
         # 0	-	Packet Purpose Byte*	0
         p += [0]
         # 1	callMode	Packet Reason**	0
@@ -258,9 +208,18 @@ class Wled:
     def get_json(self):
         self.current_json = requests.get(self.json_endpoint()).json()
         return self.current_json
-    
+
+    def get_json_info(self):
+        return requests.get(self.json_info_endpoint()).json()
+
+    def get_json_state(self):
+        return requests.get(self.json_state_endpoint()).json()
+
     def post_json_state(self, new_json={}):
-        return requests.post(self.json_endpoint(), json=new_json)
+        return requests.post(self.json_state_endpoint(), json=new_json)
+
+    def post_json_info(self, new_json={}):
+        return requests.post(self.json_info_endpoint(), json=new_json)
 
     # Json si
     def post_json_si(self, new_json={}):
@@ -356,6 +315,13 @@ class Wled:
             
         self.post_json_si(new_state)
 
+    def set_playlist(self, pl=0):
+        new_state = {
+            "ps": pl, # Note you should always set the preset, not the playlist
+        }            
+        self.post_json_state(new_state)
+
+
     def set_effect(self, fx=0):
         new_state = {
             "FX": fx,
@@ -367,6 +333,82 @@ class Wled:
 
     def reset(self):
         return requests.get(f"http://{self.ip}/reset").status_code
+
+    def update_firmware(self, filename):
+        if not os.path.isfile(filename):
+            raise ValueError(f"The specified firmware file {filename} does not exist")
+        with open(filename, "rb") as firmware:
+            return requests.post(f"http://{self.ip}/update", files={"update": firmware })
+
+    def set_random_seed(self, seed=42):
+        return self.post_json_state({"random_seed": seed})
+
+    def set_fake_NTP(self, time_source):
+        return self.post_json_state({"time_source": time_source})
+
+
+class Wleds:
+    def __init__(self, wleds=[]):
+        self.wleds = wleds
+    
+    @classmethod
+    def from_udp_multicast_table(cls, box):
+        return cls(wleds = list(Wled.from_udp_multicast(row) for row in box.rows()))
+
+    @classmethod
+    def from_one_node(cls, wled):
+        wleds = [wled]
+        for node in wled.get_nodes():
+            w = Wled(node["ip"])
+            w.name = node["name"]
+            wleds.append(w)
+        return cls(wleds = list(sorted(wleds, key=lambda w: w.name)))
+
+    @classmethod
+    def from_one_ip(cls, ip, cache_fs=True):
+        w = Wled(ip)
+        w.cache_fs()
+        w.name = w.cfg["id"]["name"]
+        wleds =  Wleds.from_one_node(w)
+        if cache_fs: wleds.cache_fs()
+        return wleds
+
+    def cache_fs(self):
+        for w in self:
+            w.cache_fs()
+
+    @classmethod
+    def to_omegaconf(self):
+        pass
+
+    def get_by_ip(self, ip) -> Optional[Type[Wled]]:
+        wleds = list(wled for wled in self if wled.ip == ip)
+        if len(wleds) == 1:
+            return wleds[0]
+        elif len(wleds) == 0:
+            return None
+        else:
+            raise ValueError(f"More than one ({len(wleds)}) wled with IP {ip} found")
+
+    def get_by_name(self, name):
+        wleds = list(wled for wled in self if wled.name == name)
+        if len(wleds) == 1:
+            return wleds[0]
+        elif len(wleds) == 0:
+            return None
+        else:
+            raise ValueError(f"More than one ({len(wleds)}) wled with name '{name}' found")
+
+    def get_names(self):
+        return list(wled.name for wled in self)
+
+    def __getitem__(self, item):
+        return self.get_by_name(item)
+
+    def __iter__(self):
+        return self.wleds.__iter__()
+
+
 
 def omegaconf_universal_load(conf):
     if isinstance(conf, str):
