@@ -7,19 +7,20 @@ from local_env import *
 # from shows import *
 from wled_common_client import Wled, Wleds
 from time import sleep
-
+# from multiprocessing.pool import ThreadPool
+from concurrent.futures import ThreadPoolExecutor
 
 if __name__ == "__main__":
     print("Getting the list of nodes")
     wleds = Wleds.from_one_ip(default_wled_ip(), cache_fs=False)
     default_wled = wleds.get_by_ip(default_wled_ip())
-    pl, ps = default_wled.get_json_state()["pl"], default_wled.get_json_state()["ps"]
+    state = default_wled.get_json_state()
+    pl, ps = state["pl"], state["ps"]
     print(f"pl {pl} ps {ps}")
-    for wled in wleds:
-        print (f"Syncing {wled.name} at {wled.ip}")
-        wled.set_effect(0)
-        wled.set_random_seed(42)
-        wled.update_time()
+    wleds.print("Updating ")
+    wleds.set_effect(0)
+    wleds.set_random_seed(42)
+    wleds.update_time()
     default_wled.set_fake_NTP(130)
     default_wled.set_effect(0)
     sleep(1)
@@ -28,7 +29,4 @@ if __name__ == "__main__":
     elif ps > 0:
         default_wled.set_preset(ps)
 
-
-
-
-print("Done updating times")
+    print("Done updating times")

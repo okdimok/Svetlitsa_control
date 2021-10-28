@@ -10,6 +10,8 @@ from ruamel import yaml
 from ruamel.yaml import YAML
 import sacn
 from math import ceil
+from concurrent.futures import ThreadPoolExecutor
+
 
 try:
     import tdutils as tdu
@@ -82,6 +84,9 @@ class Wled:
     
     def __str__(self):
         return f"WLED '{self.name}' at {self.ip}"
+
+    def print(self, intro=""):
+        print(f"{intro}{self}")
 
     @classmethod
     def from_udp_multicast(cls, row):
@@ -373,9 +378,10 @@ class Wleds:
         if cache_fs: wleds.cache_fs()
         return wleds
 
-    def cache_fs(self):
-        for w in self:
-            w.cache_fs()
+    # def cache_fs(self):
+    #     with ThreadPoolExecutor() as ex:
+    #         for w in self:
+    #             ex.submit(w.cache_fs)
 
     @classmethod
     def to_omegaconf(self):
@@ -407,6 +413,17 @@ class Wleds:
 
     def __iter__(self):
         return self.wleds.__iter__()
+    
+    def __getattr__(self, attr):
+        if attr not in Wled.__dict__.keys():
+            raise AttributeError(f"Neither '{self.__class__.__name__}' nor Wled object has no attribute '{attr}'")
+        orig_fun = getattr(Wled, attr)
+        def new_fun(*args, **kwargs):
+            with ThreadPoolExecutor() as ex:
+                for wled in self:
+                    ex.submit(orig_fun, wled, *args, **kwargs)
+        return new_fun
+        
 
 
 
