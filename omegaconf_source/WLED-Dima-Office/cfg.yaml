@@ -13,6 +13,6 @@ um:
   FakeNTPUsermod: {fakeSource: 130}
   SyncRandomUsermod: {random_seed: 42, notify_other_nodes_every_s: 10}
 if:
-  mqtt: {en: true, broker: maqiatto.com, user: okdimok@gmail.com, psk: "7cKB4QOf4BXG", pskl: 12, cid: WLED-Dima-Office,
+  mqtt: {en: true, broker: mqtt.dealgate.ru, user: UMWIdIAm17au, psk: "nuGNbO80wT7Z", pskl: 12, cid: WLED-Dima-Office,
     topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/office}}
   ntp: {en: true, host: pool.ntp.org, ln: 0, lt: 0}
