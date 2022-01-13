@@ -161,3 +161,62 @@
     end: 0}
   n: 'Wipe + Rainbow'
   ql: "1"
+'24':
+  n: Orange moving bugs
+  on: true
+  bri: 70
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [255, 160, 0], [255, 0, 0], [8, 255, 0]], fx: 112, sx: 19, ix: 196, pal: 0,
+      sel: true, rev: false, mi: false}]
+  ql: "🐜"
+'25':
+  n: Color twinkles
+  on: true
+  bri: 108
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [255, 255, 255], [0, 94, 255], [0, 0, 0]], fx: 74, sx: 130, ix: 152, pal: 0,
+      sel: true, rev: false, mi: false}]
+'26':
+  n: Sand Worm
+  on: true
+  bri: 108
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[255, 61, 43], [
+          189, 186, 96], [255, 94, 151]], fx: 75, sx: 247, ix: 80, pal: 4, sel: true,
+      rev: false, mi: false}]
+  ql: "🐛"
+'27':
+  n: Halloween Twinkle 🎃
+  on: true
+  bri: 108
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [255, 160, 0], [0, 0, 0], [0, 0, 0]], fx: 81, sx: 139, ix: 155, pal: 0, sel: true,
+      rev: false, mi: false}]
+  ql: "🎃"
+'28':
+  n: Gost Parade
+  on: true
+  bri: 108
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[255, 224, 160],
+        [0, 0, 0], [0, 0, 0]], fx: 16, sx: 76, ix: 50, pal: 0, sel: true, rev: false,
+      mi: false}]
+  ql: "👻"
+'29':
+  n: RB Pills
+  on: true
+  bri: 88
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[0, 0, 255], [255,
+          0, 0], [0, 0, 0]], fx: 54, sx: 255, ix: 72, pal: 0, sel: true, rev: false,
+      mi: false}]
+  ql: "💊"

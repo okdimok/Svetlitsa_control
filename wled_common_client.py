@@ -86,7 +86,7 @@ class Wled:
         return f"WLED '{self.name}' at {self.ip}"
 
     def print(self, intro=""):
-        print(f"{intro}{self}")
+        print(f"{intro}{self}", flush=True)
 
     @classmethod
     def from_udp_multicast(cls, row):
@@ -110,6 +110,22 @@ class Wled:
         presets = [omegaconf_universal_load(f) for f in presets]
         self.presets = OmegaConf.merge(*presets)
         return self
+
+    @classmethod
+    def reconfig_from_omegaconf(cls, wled, keep_presets=True):
+        oc_dir = wled.get_fs_dump_dir(file_path + "/omegaconf_source/{name}")
+        if not keep_presets:
+            presets_yaml = f"{oc_dir}/presets.yaml"
+            if not os.path.isfile(presets_yaml): presets_yaml = file_path + "/default_presets.yaml"
+            wled.presets = OmegaConf.to_container(OmegaConf.load(presets_yaml))
+            wled.upload_presets()
+        cfg_yaml = f"{oc_dir}/cfg.yaml"
+        ww = Wled.from_omegaconf(additional_confs=[cfg_yaml])
+        ww.ip = wled.ip
+        # ww.reset_timers_cfg()
+        ww.upload_cfg()
+        ww.reset()
+        return ww
 
     def to_omegaconf(self):
         confs = DEFAULT_OMAEGACONFS
@@ -343,7 +359,9 @@ class Wled:
         if not os.path.isfile(filename):
             raise ValueError(f"The specified firmware file {filename} does not exist")
         with open(filename, "rb") as firmware:
-            return requests.post(f"http://{self.ip}/update", files={"update": firmware })
+            req = requests.post(f"http://{self.ip}/update", files={"update": firmware })
+            print(f"Done sending firmware: {self}")
+            return req
 
     def set_random_seed(self, seed=42):
         return self.post_json_state({"random_seed": seed})
@@ -383,9 +401,9 @@ class Wleds:
     #         for w in self:
     #             ex.submit(w.cache_fs)
 
-    @classmethod
-    def to_omegaconf(self):
-        pass
+    # @classmethod
+    # def to_omegaconf(self):
+    #     pass
 
     def get_by_ip(self, ip) -> Optional[Type[Wled]]:
         wleds = list(wled for wled in self if wled.ip == ip)
@@ -396,7 +414,7 @@ class Wleds:
         else:
             raise ValueError(f"More than one ({len(wleds)}) wled with IP {ip} found")
 
-    def get_by_name(self, name):
+    def get_by_name(self, name) -> Optional[Type[Wled]]:
         wleds = list(wled for wled in self if wled.name == name)
         if len(wleds) == 1:
             return wleds[0]
@@ -408,7 +426,7 @@ class Wleds:
     def get_names(self):
         return list(wled.name for wled in self)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Optional[Type[Wled]]:
         return self.get_by_name(item)
 
     def __iter__(self):
@@ -419,9 +437,11 @@ class Wleds:
             raise AttributeError(f"Neither '{self.__class__.__name__}' nor Wled object has no attribute '{attr}'")
         orig_fun = getattr(Wled, attr)
         def new_fun(*args, **kwargs):
+            returns = []
             with ThreadPoolExecutor() as ex:
                 for wled in self:
-                    ex.submit(orig_fun, wled, *args, **kwargs)
+                    returns.append(ex.submit(orig_fun, wled, *args, **kwargs))
+            return [r.result() for r in returns]
         return new_fun
         
 
@@ -503,7 +523,7 @@ def create_patch_from_omegaconf(custom_cfg, general_cfg):
 
 def tidy_yaml(f):
     yaml = YAML()
-    with open(f) as fr:
+    with open(f, encoding="utf-8") as fr:
         d = yaml.load(fr)
     yaml.default_flow_style = True
     d.fa.set_block_style()
@@ -517,7 +537,7 @@ def tidy_yaml(f):
                     pass
         except AttributeError:
             pass
-    with open(f, "w") as fw:
+    with open(f, "w", encoding="utf-8") as fw:
         yaml.dump(d, fw)
 
 if __name__ == "__main__":

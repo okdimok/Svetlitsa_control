@@ -1,0 +1,565 @@
+'0': {}
+'4':
+  n: Bpm mirroring
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 31, ix: 26, pal: 0, sel: true, rev: false, mi: true}, {id: 2, start: 103,
+      stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [
+          0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 4, start: 186, stop: 210, grp: 1,
+      spc: 0, on: true, bri: 253, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0,
+          0, 0]], fx: 68, sx: 31, ix: 26, pal: 0, sel: true, rev: false, mi: true},
+    {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 6, start: 245, stop: 260, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 31, ix: 26, pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264,
+      stop: 275, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [
+          0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 31, ix: 26,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'2':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 115, sx: 128, ix: 128, pal: 0,
+      sel: false, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 115, sx: 157, ix: 67, pal: 0, sel: false, rev: false, mi: false}, {id: 2,
+      start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 115, sx: 128, ix: 128, pal: 0,
+      sel: false, rev: false, mi: false}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 115, sx: 128, ix: 128, pal: 0, sel: false, rev: false, mi: false}, {id: 4,
+      start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 115, sx: 128, ix: 128, pal: 0,
+      sel: false, rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 115, sx: 128, ix: 128, pal: 0, sel: false, rev: false, mi: false}, {id: 6,
+      start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 115, sx: 128, ix: 128, pal: 0,
+      sel: false, rev: false, mi: false}, {id: 7, start: 264, stop: 275, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 115, sx: 128, ix: 128, pal: 0, sel: false, rev: false, mi: false}, {id: 8,
+      start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Warm
+  ql: 🟡
+'3':
+  n: Bpm colorful
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 157, ix: 67, pal: 0, sel: true, rev: false, mi: false}, {id: 2,
+      start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 4,
+      start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 6,
+      start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 7, start: 264, stop: 275, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]],
+      fx: 68, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 8,
+      start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 187,
+          46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'5':
+  n: Baubles colorful
+  on: true
+  bri: 128
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 3, spc: 5, on: true, bri: 255, col: [[255,
+          224, 160, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[102, 153, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0,
+      sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 2, start: 103,
+      stop: 138, grp: 3, spc: 5, on: true, bri: 255, col: [[0, 204, 51, 0], [0, 0,
+          0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false,
+      mi: false}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[0, 51, 204, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 4, start: 186, stop: 210, grp: 3,
+      spc: 5, on: true, bri: 255, col: [[102, 0, 153, 0], [0, 0, 0, 0], [0, 0, 0,
+          0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false},
+    {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 6, start: 245, stop: 260, grp: 2, spc: 2,
+      on: true, bri: 255, col: [[105, 150, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0,
+      sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 7, start: 264,
+      stop: 275, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 207, 48, 0], [0, 0,
+          0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false,
+      mi: false}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[0, 54, 201, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'7':
+  on: true
+  bri: 218
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[168,
+          195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4,
+      sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true}, {id: 2, start: 103,
+      stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[168, 195, 0, 137], [0,
+          0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 4, start: 186, stop: 210, grp: 1,
+      spc: 0, on: true, bri: 253, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0,
+          0]], fx: 4, sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true},
+    {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true, bri: 255, col: [[168,
+          195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 6, start: 245, stop: 260, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4,
+      sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264,
+      stop: 275, grp: 1, spc: 0, on: true, bri: 255, col: [[168, 195, 0, 137], [0,
+          0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 4, sx: 230, ix: 234,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Wipe random mir
+  ql: 🎎
+'1':
+  on: true
+  bri: 128
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          224, 160, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[102, 153, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0,
+      sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 2, start: 103,
+      stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 204, 51, 0], [0, 0,
+          0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false,
+      mi: false}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[0, 51, 204, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 4, start: 186, stop: 210, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[102, 0, 153, 0], [0, 0, 0, 0], [0, 0, 0,
+          0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false},
+    {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 6, start: 245, stop: 260, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[105, 150, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0,
+      sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false}, {id: 7, start: 264,
+      stop: 275, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 207, 48, 0], [0, 0,
+          0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128, pal: 0, sel: true, rev: false,
+      mi: false}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[0, 54, 201, 0], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 0, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: 'Segments '
+  ql: 🏳
+'9':
+  n: Gentle baubles white
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[0,
+          0, 0, 0], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 80, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 0, 0], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 80, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          0, 0], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 80, sx: 63, ix: 167, pal: 0,
+      sel: true, rev: false, mi: false}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[0, 0, 0, 0], [255, 160, 0, 0], [225, 221, 187, 0]],
+      fx: 80, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 4,
+      start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 0, 0],
+        [255, 160, 0, 0], [225, 221, 187, 0]], fx: 80, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true,
+      bri: 255, col: [[0, 0, 0, 0], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 80,
+      sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 6, start: 245,
+      stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 0, 0], [255, 160,
+          0, 0], [225, 221, 187, 0]], fx: 80, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, {id: 7, start: 264, stop: 275, grp: 1, spc: 0, on: true,
+      bri: 255, col: [[0, 0, 0, 0], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 80,
+      sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 8, start: 284,
+      stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 0, 0], [255, 160,
+          0, 0], [225, 221, 187, 0]], fx: 80, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'11':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 83, sx: 175, ix: 150,
+      pal: 5, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 83, sx: 175, ix: 150, pal: 5, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 83, sx: 175, ix: 150,
+      pal: 5, sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 83, sx: 175, ix: 150, pal: 5, sel: true, rev: false, mi: true},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 83, sx: 175, ix: 150,
+      pal: 5, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 83, sx: 175, ix: 150, pal: 5, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 83, sx: 175, ix: 150,
+      pal: 5, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 83, sx: 175, ix: 150, pal: 5, sel: true, rev: false, mi: true},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 83, sx: 175, ix: 150,
+      pal: 5, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Triangular
+  ql: 🎄
+'6':
+  on: true
+  bri: 218
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[168,
+          195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3,
+      sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true}, {id: 2, start: 103,
+      stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[168, 195, 0, 137], [0,
+          0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 4, start: 186, stop: 210, grp: 1,
+      spc: 0, on: true, bri: 253, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0,
+          0]], fx: 3, sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true},
+    {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true, bri: 255, col: [[168,
+          195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234, pal: 0,
+      sel: true, rev: false, mi: true}, {id: 6, start: 245, stop: 260, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3,
+      sx: 230, ix: 234, pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264,
+      stop: 275, grp: 1, spc: 0, on: true, bri: 255, col: [[168, 195, 0, 137], [0,
+          0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[168, 195, 0, 137], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 3, sx: 230, ix: 234,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Green mir wipe
+  ql: 💚
+'12':
+  n: Inside out
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 60, sx: 175, ix: 150,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 60, sx: 175, ix: 150, pal: 0, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 60, sx: 175, ix: 150,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 60, sx: 175, ix: 150, pal: 0, sel: true, rev: false, mi: true},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 60, sx: 175, ix: 150,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 60, sx: 175, ix: 150, pal: 0, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 60, sx: 175, ix: 150,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 60, sx: 175, ix: 150, pal: 0, sel: true, rev: false, mi: true},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 60, sx: 175, ix: 150,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'13':
+  n: Rainbow
+  ql: 🌈
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 85, ix: 110,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 85, ix: 110, pal: 0, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 85, ix: 110,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 85, ix: 110, pal: 0, sel: true, rev: false, mi: true},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 85, ix: 110,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 85, ix: 110, pal: 0, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 85, ix: 110,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 85, ix: 110, pal: 0, sel: true, rev: false, mi: true},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 85, ix: 110,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'14':
+  n: Rainbow fast
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 255, ix: 78,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 255, ix: 78, pal: 0, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 255, ix: 78,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 255, ix: 78, pal: 0, sel: true, rev: false, mi: true},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 255, ix: 78,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 255, ix: 78, pal: 0, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 255, ix: 78,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 0, 255, 255], [255, 200, 0, 0], [8,
+          255, 0, 0]], fx: 9, sx: 255, ix: 78, pal: 0, sel: true, rev: false, mi: true},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          0, 255, 255], [255, 200, 0, 0], [8, 255, 0, 0]], fx: 9, sx: 255, ix: 78,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+'15':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[0,
+          0, 8, 158], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 8, 158], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          8, 158], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 8, 158], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          8, 158], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 8, 158], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          8, 158], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 8, 158], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          8, 158], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: 'Just white '
+  ql: ◻️
+'10':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[0,
+          0, 0, 255], [255, 224, 160, 0], [0, 0, 0, 0]], fx: 104, sx: 175, ix: 150,
+      pal: 3, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 0, 255], [255, 224, 160, 0], [0, 0,
+          0, 0]], fx: 104, sx: 175, ix: 150, pal: 3, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0,
+          0, 255], [255, 224, 160, 0], [0, 0, 0, 0]], fx: 104, sx: 175, ix: 150, pal: 3,
+      sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1, spc: 0,
+      on: true, bri: 255, col: [[0, 0, 0, 255], [255, 224, 160, 0], [0, 0, 0, 0]],
+      fx: 104, sx: 175, ix: 150, pal: 3, sel: true, rev: false, mi: true}, {id: 4,
+      start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[0, 0, 0, 255],
+        [255, 224, 160, 0], [0, 0, 0, 0]], fx: 104, sx: 175, ix: 150, pal: 3, sel: true,
+      rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0, on: true,
+      bri: 255, col: [[0, 0, 0, 255], [255, 224, 160, 0], [0, 0, 0, 0]], fx: 104,
+      sx: 175, ix: 150, pal: 3, sel: true, rev: false, mi: true}, {id: 6, start: 245,
+      stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[0, 0, 0, 255], [255, 224,
+          160, 0], [0, 0, 0, 0]], fx: 104, sx: 175, ix: 150, pal: 3, sel: true, rev: false,
+      mi: true}, {id: 7, start: 264, stop: 275, grp: 1, spc: 0, on: true, bri: 255,
+      col: [[0, 0, 0, 255], [255, 224, 160, 0], [0, 0, 0, 0]], fx: 104, sx: 175, ix: 150,
+      pal: 3, sel: true, rev: false, mi: true}, {id: 8, start: 284, stop: 294, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[0, 0, 0, 255], [255, 224, 160, 0], [0, 0,
+          0, 0]], fx: 104, sx: 175, ix: 150, pal: 3, sel: true, rev: false, mi: false},
+    stop: 0, stop: 0, stop: 0]
+  n: Two lines
+  ql: 🔼
+'17':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [213, 225, 255, 0]], fx: 88, sx: 0, ix: 255,
+      pal: 14, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [213, 225,
+          255, 0]], fx: 88, sx: 0, ix: 255, pal: 14, sel: true, rev: false, mi: true},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [213, 225, 255, 0]], fx: 88, sx: 0, ix: 255,
+      pal: 14, sel: true, rev: false, mi: true}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [213, 225,
+          255, 0]], fx: 88, sx: 0, ix: 255, pal: 14, sel: true, rev: false, mi: true},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 253, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [213, 225, 255, 0]], fx: 88, sx: 0, ix: 255,
+      pal: 14, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [213, 225,
+          255, 0]], fx: 88, sx: 0, ix: 255, pal: 14, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [213, 225, 255, 0]], fx: 88, sx: 0, ix: 255,
+      pal: 14, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 187, 46, 255], [0, 0, 0, 0], [213, 225,
+          255, 0]], fx: 88, sx: 0, ix: 255, pal: 14, sel: true, rev: false, mi: true},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          187, 46, 255], [0, 0, 0, 0], [213, 225, 255, 0]], fx: 88, sx: 0, ix: 255,
+      pal: 14, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Candle Rivendell mir
+  ql: 🌲
+'18':
+  n: Green tree
+  ql: 🌲
+  on: true
+  bri: 255
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [115, 166, 20, 120], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63,
+      ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93,
+      grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[115, 166, 20, 120], [255,
+          160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, {id: 2, start: 103, stop: 138, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, col: [[115, 166, 20, 120], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 3, start: 144, stop: 176, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [115, 166, 20, 120], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63,
+      ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 4, start: 186, stop: 210,
+      grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[115, 166, 20, 120], [255,
+          160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, col: [[115, 166, 20, 120], [255, 160, 0, 0], [225, 221,
+          187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true, rev: false, mi: false},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [
+        [115, 166, 20, 120], [255, 160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63,
+      ix: 167, pal: 0, sel: true, rev: false, mi: false}, {id: 7, start: 264, stop: 275,
+      grp: 1, spc: 0, of: 0, on: true, bri: 255, col: [[115, 166, 20, 120], [255,
+          160, 0, 0], [225, 221, 187, 0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: true,
+      rev: false, mi: false}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, col: [[255, 172, 0, 255], [255, 160, 0, 0], [225, 221, 187,
+          0]], fx: 0, sx: 63, ix: 167, pal: 0, sel: false, rev: false, mi: false},
+    stop: 0, stop: 0, stop: 0, stop: 0, stop: 0, stop: 0, stop: 0]
+'8':
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          209, 118, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 106, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 209, 118, 255], [0, 0, 0, 0], [0, 0,
+          0, 0]], fx: 106, sx: 157, ix: 67, pal: 0, sel: true, rev: false, mi: false},
+    {id: 2, start: 103, stop: 138, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          209, 118, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 106, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 3, start: 144, stop: 176, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 209, 118, 255], [0, 0, 0, 0], [0, 0,
+          0, 0]], fx: 106, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false},
+    {id: 4, start: 186, stop: 210, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          209, 118, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 106, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 5, start: 216, stop: 237, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 209, 118, 255], [0, 0, 0, 0], [0, 0,
+          0, 0]], fx: 106, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          209, 118, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 106, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, on: true, bri: 255, col: [[255, 209, 118, 255], [0, 0, 0, 0], [0, 0,
+          0, 0]], fx: 106, sx: 128, ix: 128, pal: 0, sel: true, rev: false, mi: false},
+    {id: 8, start: 284, stop: 294, grp: 1, spc: 0, on: true, bri: 255, col: [[255,
+          209, 118, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 106, sx: 128, ix: 128,
+      pal: 0, sel: true, rev: false, mi: false}, stop: 0, stop: 0, stop: 0]
+  n: Twinkle baubles white
+  ql: ⚪
+'19':
+  on: true
+  bri: 100
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, of: 0, on: true, bri: 255, cct: 127,
+      col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255,
+      pal: 35, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, of: 0, on: true, bri: 255, cct: 127, col: [[255, 160, 0, 0], [0, 0,
+          0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true,
+      rev: false, mi: true}, {id: 2, start: 103, stop: 138, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, cct: 127, col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160,
+          0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true, rev: false, mi: true},
+    {id: 3, start: 144, stop: 176, grp: 1, spc: 0, of: 0, on: true, bri: 255, cct: 127,
+      col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255,
+      pal: 35, sel: true, rev: false, mi: true}, {id: 4, start: 186, stop: 210, grp: 1,
+      spc: 0, of: 0, on: true, bri: 230, cct: 127, col: [[255, 160, 0, 0], [0, 0,
+          0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true,
+      rev: false, mi: true}, {id: 5, start: 216, stop: 237, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, cct: 127, col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160,
+          0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true, rev: false, mi: true},
+    {id: 6, start: 245, stop: 260, grp: 1, spc: 0, of: 0, on: true, bri: 240, cct: 127,
+      col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255,
+      pal: 35, sel: true, rev: false, mi: true}, {id: 7, start: 264, stop: 275, grp: 1,
+      spc: 0, of: 0, on: true, bri: 255, cct: 127, col: [[255, 160, 0, 0], [0, 0,
+          0, 0], [255, 160, 0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true,
+      rev: false, mi: true}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, of: 0,
+      on: true, bri: 255, cct: 127, col: [[255, 160, 0, 0], [0, 0, 0, 0], [255, 160,
+          0, 0]], fx: 102, sx: 212, ix: 255, pal: 35, sel: true, rev: false, mi: true},
+    stop: 0, stop: 0, stop: 0, stop: 0, stop: 0, stop: 0, stop: 0]
+  n: Fire
+  ql: 🔥
+'16':
+  n: Bpm mir reversed
+  ql: 🎊
+  on: true
+  bri: 209
+  transition: 7
+  mainseg: 0
+  seg: [{id: 0, start: 0, stop: 45, grp: 1, spc: 0, of: 0, on: true, bri: 255, cct: 127,
+      col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37, ix: 156,
+      pal: 0, sel: true, rev: false, mi: true}, {id: 1, start: 50, stop: 93, grp: 1,
+      spc: 0, of: 0, on: true, bri: 255, cct: 127, col: [[255, 187, 46, 255], [0,
+          0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37, ix: 156, pal: 0, sel: true, rev: true,
+      mi: true}, {id: 2, start: 103, stop: 138, grp: 1, spc: 0, of: 0, on: true, bri: 255,
+      cct: 127, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37,
+      ix: 156, pal: 0, sel: true, rev: true, mi: true}, {id: 3, start: 144, stop: 176,
+      grp: 1, spc: 0, of: 0, on: true, bri: 255, cct: 127, col: [[255, 187, 46, 255],
+        [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37, ix: 156, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 4, start: 186, stop: 210, grp: 1, spc: 0, of: 0, on: true, bri: 253,
+      cct: 127, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37,
+      ix: 156, pal: 0, sel: true, rev: false, mi: true}, {id: 5, start: 216, stop: 237,
+      grp: 1, spc: 0, of: 0, on: true, bri: 197, cct: 127, col: [[255, 187, 46, 255],
+        [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37, ix: 156, pal: 0, sel: true, rev: true,
+      mi: true}, {id: 6, start: 245, stop: 260, grp: 1, spc: 0, of: 0, on: true, bri: 255,
+      cct: 127, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37,
+      ix: 156, pal: 0, sel: true, rev: true, mi: true}, {id: 7, start: 264, stop: 275,
+      grp: 1, spc: 0, of: 0, on: true, bri: 255, cct: 127, col: [[255, 187, 46, 255],
+        [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37, ix: 156, pal: 0, sel: true, rev: false,
+      mi: true}, {id: 8, start: 284, stop: 294, grp: 1, spc: 0, of: 0, on: true, bri: 225,
+      cct: 127, col: [[255, 187, 46, 255], [0, 0, 0, 0], [0, 0, 0, 0]], fx: 68, sx: 37,
+      ix: 156, pal: 0, sel: true, rev: true, mi: false}, stop: 0, stop: 0, stop: 0,
+    stop: 0, stop: 0, stop: 0, stop: 0]

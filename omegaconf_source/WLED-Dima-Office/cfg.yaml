@@ -3,4 +3,16 @@ id:
   name: WLED-Dima-Office
 hw:
   led: {ins: [{en: true, len: 200, order: 0, pin: [4], rev: false, skip: 0, start: 0,
-        type: 22}], maxpwr: 6000}
+        type: 22, ref: false, rgbw: false}], maxpwr: 6000}
+light:
+  tr: {mode: false}
+def:
+  ps: 12
+  bri: 5
+um:
+  FakeNTPUsermod: {fakeSource: 130}
+  SyncRandomUsermod: {random_seed: 42, notify_other_nodes_every_s: 10}
+if:
+  mqtt: {en: true, broker: maqiatto.com, user: okdimok@gmail.com, psk: "7cKB4QOf4BXG", pskl: 12, cid: WLED-Dima-Office,
+    topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/office}}
+  ntp: {en: true, host: pool.ntp.org, ln: 0, lt: 0}

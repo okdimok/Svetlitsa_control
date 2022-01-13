@@ -18,15 +18,7 @@ if __name__ == "__main__":
         #     continue
         print (f"Updating {wled.name} at {wled.ip}")
         # wled.update_time() # useless, because a reset is required
-        wled.presets = OmegaConf.to_container(OmegaConf.load(file_path + "/../default_presets.yaml"))
-        wled.upload_presets()
-        oc_dir = wled.get_fs_dump_dir(file_path + "/../omegaconf_source/{name}")
-        cfg_yaml = f"{oc_dir}/cfg.yaml"
-        ww = Wled.from_omegaconf(additional_confs=[cfg_yaml])
-        ww.ip = wled.ip
-        # ww.reset_timers_cfg()
-        ww.upload_cfg()
-        ww.reset()
+        ww = Wled.reconfig_from_omegaconf(wled, keep_presets=True)
 
 t_sleep = 15
 print(f"Sleeping for {t_sleep} seconds before the time update cycle")

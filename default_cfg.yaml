@@ -16,6 +16,9 @@ hw:
     - macros: [0,0,0]
       pin: [0]
       type: 2
+    max: 2
+    tt: 32
+    mqtt: true
   led:
     ins:
     - en: true
@@ -33,6 +36,7 @@ hw:
   relay:
     pin: 12
     rev: false
+  ir: {pin: -1, type: 0}
 id:
   inv: Light
   mdns: ??? # wled-dima-office
@@ -90,6 +94,7 @@ if:
       bri: true
       col: true
       fx: true
+      grp: 1
     send:
       btn: false
       dir: false
@@ -97,10 +102,12 @@ if:
       macro: false
       twice: false
       va: false
+      grp: 1
   va:
     alexa: false
     macros: [0, 0]
 light:
+  aseg: false # auto segments
   gc:
     bri: 1
     col: 2.8

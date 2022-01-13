@@ -51,6 +51,7 @@ if:
       bri: true
       col: true
       fx: true
+      grp: 1
     send:
       btn: false
       dir: true
@@ -58,6 +59,7 @@ if:
       macro: false
       twice: true
       va: false
+      grp: 1
 light:
   gc:
     bri: 1
@@ -93,3 +95,6 @@ timers:
 wifi:
   phy: 1
   sleep: false
+um:
+  FakeNTPUsermod: {fakeSource: 0}
+  SyncRandomUsermod: { notify_other_nodes_every_s: -1 }

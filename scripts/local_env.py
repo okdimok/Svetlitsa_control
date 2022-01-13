@@ -17,5 +17,5 @@ def sleep_show(secs):
     print(f"Waiting for {secs} seconds")
     for _ in range(secs):
         sleep(1)
-        print(".", end="")
-    print("")
+        print(".", end="", flush=True)
+    print("", flush=True)
