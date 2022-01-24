@@ -1,0 +1,10 @@
+vid: 2104220
+id:
+  mdns: wled-uv
+  name: WLED-UV
+hw:
+  led: {total: 1, ledma: 0, ins: [{en: true, len: 1, order: 1, pin: [4], rev: false,
+        skip: 0, start: 0, type: 41, ref: false, rgbw: true}], maxpwr: 850}
+def:
+  ps: 0
+

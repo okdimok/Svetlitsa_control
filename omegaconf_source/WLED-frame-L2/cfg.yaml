@@ -1,0 +1,11 @@
+vid: 2104220
+id:
+  mdns: wled-frame-l2
+  name: WLED-frame-L2
+hw:
+  led: {total: 145, ins: [{en: true, len: 145, order: 0, pin: [4], rev: false, skip: 0,
+        start: 0, type: 22, ref: false, rgbw: false}], maxpwr: 5_000, cct: false, cr: false,
+    cb: 0}
+def:
+  ps: 0
+
