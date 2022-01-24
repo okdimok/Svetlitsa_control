@@ -10,6 +10,6 @@ if __name__ == "__main__":
         print("Another instance is already running, exiting")
         sys.exit(1)
     print(f"Running from crontab {os.getpid()} at {datetime.datetime.now()}")
-    print(show_1)
-    show_1.run_infinetely()
+    print(show)
+    show.run_infinetely()
     print(f"Stopping from crontab {os.getpid()} at {datetime.datetime.now()}")

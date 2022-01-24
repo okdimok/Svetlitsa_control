@@ -36,3 +36,18 @@ show_1 = Show([
     Colorloop(30),
     WarmWhite(5)
 ])
+
+show_short = Show([
+    ShowElement(0),
+    Colorloop(5),
+    Red(5),
+])
+
+dt = 0.3
+show_fast = [
+    ShowElement(0),
+    Colorloop(5),
+] + [Red(dt), Green(dt), Off(dt)] * 3
+show_fast = Show(show_fast)
+
+show = show_fast

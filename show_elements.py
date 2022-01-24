@@ -14,8 +14,7 @@ class ShowElement:
         time.sleep(self.duration)
 
     def activate(self):
-        for wled in wleds:
-            print(wled.name)
+        wleds.print()
 
     def run(self):
         self.activate()
@@ -30,9 +29,17 @@ class TotalPreset(ShowElement):
         self.ps = ps
 
     def activate(self):
-        for wled in wleds:
-            for i in range(3):
-                wled.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+        for i in range(3):
+            wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+
+class TotalFX(ShowElement):
+    def __init__(self, fx, duration, eff_intensity, eff_speed):
+        super().__init__(duration, eff_intensity, eff_speed)
+        self.fx = fx
+
+    def activate(self):
+        for i in range(3):
+            wleds.send_udp_sync(fx=self.fx, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
 
 class RYAndroid(TotalPreset):
     def __init__(self, duration):
@@ -54,9 +61,22 @@ class WarmWhite(TotalPreset):
     def __init__(self, duration):
         super().__init__(20, duration)
 
-class Colorloop(TotalPreset):
+# This one is deprecated: the UDP one is much more reliable in terms of synchronously setting the same mode
+# class Colorloop(TotalPreset):
+#     def __init__(self, duration):
+#         super().__init__(22, duration)
+
+class Colorloop(TotalFX):
+    def __init__(self, duration, eff_speed = 20):
+        super().__init__(8, duration, 255, eff_speed)
+        
+class Off(ShowElement):
     def __init__(self, duration):
-        super().__init__(22, duration)
+        super().__init__(duration)
+
+    def activate(self):
+        for i in range(3):
+            wleds.send_udp_sync(fx=0, brightness=0)
 
 class TotalEffect(ShowElement):
     def __init__(self, duration,  eff_intensity, eff_speed):

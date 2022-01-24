@@ -151,7 +151,7 @@
 '22':
   n: Colorloop
   on: true
-  bri: 256
+  bri: 255
   transition: 7
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, bri: 255, col: [[255, 160, 0], [0, 0, 0],

@@ -85,6 +85,9 @@ class Wled:
     def __str__(self):
         return f"WLED '{self.name}' at {self.ip}"
 
+    def __repr__(self) -> str:
+        return self.__str__()
+
     def print(self, intro=""):
         print(f"{intro}{self}", flush=True)
 
@@ -202,6 +205,8 @@ class Wled:
         p += [0, 0]
         # 8	effectCurrent	Effect Index	0
         # 9	effectSpeed	Effect Speed	0
+        # https://github.com/Aircoookie/WLED/blob/master/wled00/FX.h#L121
+        # https://github.com/Aircoookie/WLED/blob/master/wled00/FX.h#L931
         p += [fx, fx_speed]
         # 10	white	Primary White Value	1
         p += [255]
@@ -266,6 +271,8 @@ class Wled:
             fn = fp["name"]
             if fn.endswith(".json"):
                 self.__setattr__(self._attr_name_from_filename(fn), self.get_fs_file(fn).json())
+        self.udp_port = self.cfg["if"]["sync"]["port0"]
+        
 
     def get_cfg(self):
         self.cfg = self.get_fs_file("cfg.json").json()
@@ -443,6 +450,21 @@ class Wleds:
                     returns.append(ex.submit(orig_fun, wled, *args, **kwargs))
             return [r.result() for r in returns]
         return new_fun
+
+    def reconfig_from_omegaconf(self, keep_presets=True):
+        returns = []
+        with ThreadPoolExecutor() as ex:
+            for wled in self:
+                returns.append(ex.submit(Wled.reconfig_from_omegaconf, wled, keep_presets=keep_presets))
+        return [r.result() for r in returns]
+        self.wleds = returns
+        return self
+
+    def __str__(self):
+        return str(self.wleds)
+
+    def __repr__(self) -> str:
+        return self.__str__()
         
 
 

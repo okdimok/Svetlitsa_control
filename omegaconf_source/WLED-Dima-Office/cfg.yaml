@@ -11,7 +11,7 @@ def:
   bri: 5
 um:
   FakeNTPUsermod: {fakeSource: 130}
-  SyncRandomUsermod: { notify_other_nodes_every_s: 10}
+  SyncRandomUsermod: { notify_other_nodes_every_s: -1}
 if:
   mqtt: {en: true, broker: mqtt.dealgate.ru, user: UMWIdIAm17au, psk: "nuGNbO80wT7Z", pskl: 12, cid: WLED-Dima-Office,
     topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/office}}
