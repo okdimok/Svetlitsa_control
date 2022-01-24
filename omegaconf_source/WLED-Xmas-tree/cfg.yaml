@@ -1,19 +1,15 @@
-vid: 2110290
 id:
   mdns: wled-xmas-tree
   name: WLED-Xmas-tree
 hw:
   led: {total: 300, ins: [{en: true, len: 300, order: 0, pin: [4], rev: true, skip: 0,
         start: 0, type: 30, ref: false, rgbw: true}], maxpwr: 4000}
-  btn: {ins: [{macros: [0, 0, 0], pin: [0], type: 2}, {type: 0, pin: [-1], macros: [
-          0, 0, 0]}], mqtt: false}
 def:
   ps: 0
 if:
-  sync: {recv: {bri: false, col: false, fx: false, grp: 0}, send: {dir: false, twice: false,
-      grp: 0}}
-  mqtt: {cid: WLED-56ac97, topics: {device: wled/56ac97}}
-  ntp: {offset: 0, ln: 0, lt: 0}
+  sync: {recv: {grp: 2}, send: {grp: 2}}
+  mqtt: {en: true, broker: mqtt.dealgate.ru, user: UMWIdIAm17au, psk: "nuGNbO80wT7Z", pskl: 12, cid: WLED-Xmas-tree,
+    topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/xmas}}
 um:
   FakeNTPUsermod: {fakeSource: 0}
-  SyncRandomUsermod: {random_seed: 51708, notify_other_nodes_every_s: -1}
+  SyncRandomUsermod: { notify_other_nodes_every_s: -1}
