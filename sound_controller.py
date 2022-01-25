@@ -31,7 +31,7 @@ class SoundController:
 
     def start_ambient(self):
         self.ambient_channel.set_volume(self._default_ambient_volume)
-        self.ambient_channel.play(self.get_sound("ambient_blues"))
+        self.ambient_channel.play(self.get_sound("ambient_blues"), loops=-1) # see https://www.pygame.org/docs/ref/mixer.html#pygame.mixer.Sound.play
         self._ambient_volume_thread_start()
         
 
@@ -52,7 +52,7 @@ class SoundController:
         sound = self.get_sound(sound_name)
         if sound is not None:
             self.ambient_channel.set_volume(0.3)
-            self.overlay_channel.play(sound)
+            self.overlay_channel.play(sound, fade_ms=200)
         else:
             print(f"WARNING: Trying to play sound {sound_name} before it is loaded")
 
