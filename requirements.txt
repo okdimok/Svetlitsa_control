@@ -4,3 +4,5 @@ pygame
 hydra-core
 dictdiffer
 requests
+gpiozero; "arm" in platform.machine
+RPi.GPIO; "arm" in platform.machine
