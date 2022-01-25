@@ -23,8 +23,7 @@ class MainRunner:
 
     def on_button(self):
         print("Button pressed")
-        self.sound_controller.sounds["squeak"].play()
-
+        self.sound_controller.play_overlay("squeak")
 
     def run(self):
         self.current_show.run_infinetely()
