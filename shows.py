@@ -43,7 +43,7 @@ show_short = Show([
     Red(5),
 ])
 
-dt = 0.3
+dt = 1.0 # minimal reasonable time has to be larger, than transition
 show_fast = [
     ShowElement(0),
     Colorloop(5),
