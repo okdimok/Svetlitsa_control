@@ -2,6 +2,7 @@ from threading import Thread, Lock
 from typing import Callable
 import shows
 from sound_controller import SoundController
+from time import sleep
 try:
     from gpiozero import Button
 except ModuleNotFoundError:
@@ -38,7 +39,11 @@ class MainRunner:
                 self._show_thread.start()
 
     def run(self):
-        self.start_show(shows.show_short)
+        while True:
+            self.start_show(shows.show_1)
+            sleep(5)
+            self.start_show(shows.show_short)
+            sleep(5)
 
     def _show_loop(self):
         while True:

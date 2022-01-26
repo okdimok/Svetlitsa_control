@@ -7,9 +7,10 @@ class Show:
     _needs_stop: Event = Event()
     _is_not_running: Event = Event()
 
-    def __init__(self, elements=[]) -> None:
+    def __init__(self, elements=[], name="") -> None:
         self.elements = list(elements)
         self._is_not_running.set()
+        self.name = name
 
     def __str__(self) -> str:
         s = ""
@@ -19,6 +20,7 @@ class Show:
 
     def run_once(self):
         self._is_not_running.clear()
+        print(f"Running {self}.")
         for se in self.elements:
             if self._needs_stop.is_set():
                 break
@@ -42,6 +44,9 @@ class Show:
             if self._needs_stop.is_set():
                 break
 
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__} {self.name}"
+
 
 show_1 = Show([
     ShowElement(0),
@@ -58,19 +63,19 @@ show_1 = Show([
     Red(5),
     Colorloop(30),
     WarmWhite(5)
-])
+], "show_1")
 
 show_short = Show([
     ShowElement(0),
     Colorloop(5),
     Red(5),
-])
+], "short")
 
 dt = 1.0 # minimal reasonable time has to be larger, than transition
 show_fast = [
     ShowElement(0),
     Colorloop(5),
 ] + [Red(dt), Green(dt), Off(dt)] * 3
-show_fast = Show(show_fast)
+show_fast = Show(show_fast, "fast")
 
 show = show_fast
