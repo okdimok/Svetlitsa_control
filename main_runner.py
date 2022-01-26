@@ -1,3 +1,4 @@
+from threading import Thread, Lock
 from typing import Callable
 import shows
 from sound_controller import SoundController
@@ -14,6 +15,8 @@ class MainRunner:
     current_show: shows.Show
     button: Button
     sound_controller: SoundController
+    _show_thread: Thread = None
+    _show_lock: Lock = Lock()
 
     def __init__(self) -> None:
         self.current_show = shows.show_fast
@@ -25,5 +28,22 @@ class MainRunner:
         print("Button pressed")
         self.sound_controller.play_overlay("squeak")
 
+    def start_show(self, show):
+        with self._show_lock:
+            if self.current_show is not None:
+                self.current_show.stop()
+            self.current_show = show
+            if self._show_thread is None:
+                self._show_thread = Thread(target=self._show_loop)
+                self._show_thread.start()
+
     def run(self):
-        self.current_show.run_infinetely()
+        self.start_show(shows.show_short)
+
+    def _show_loop(self):
+        while True:
+            self.current_show.run_once()
+            with self._show_lock:
+                pass
+
+    

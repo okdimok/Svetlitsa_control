@@ -1,9 +1,15 @@
+from threading import Event, Lock
 import time
 from show_elements import *
 
 class Show:
+    _current_show_element: ShowElement = None
+    _needs_stop: Event = Event()
+    _is_not_running: Event = Event()
+
     def __init__(self, elements=[]) -> None:
         self.elements = list(elements)
+        self._is_not_running.set()
 
     def __str__(self) -> str:
         s = ""
@@ -12,13 +18,30 @@ class Show:
         return s
 
     def run_once(self):
+        self._is_not_running.clear()
         for se in self.elements:
+            if self._needs_stop.is_set():
+                break
             print(f"# launching {se}")
+            self._current_show_element = se
             se.run()
+        self._is_not_running.set()
 
+    def stop(self):
+        self._needs_stop.set()
+        if self._current_show_element is not None: self._current_show_element.stop()
+        self._is_not_running.wait()
+        self._needs_stop.clear()
+
+    def is_running(self) -> bool:
+        return not self._is_not_running.is_set()
+        
     def run_infinetely(self):
         while True:
             self.run_once()
+            if self._needs_stop.is_set():
+                break
+
 
 show_1 = Show([
     ShowElement(0),

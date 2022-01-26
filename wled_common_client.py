@@ -73,6 +73,8 @@ class WledDMX:
 
 
 class Wled:
+    _tcp_state_post_timeout: float = 2. # seconds
+
     def __init__(self, ip):
         self.ip = ip
         self.udp_port = None
@@ -242,14 +244,14 @@ class Wled:
         return requests.get(self.json_state_endpoint()).json()
 
     def post_json_state(self, new_json={}):
-        return requests.post(self.json_state_endpoint(), json=new_json)
+        return requests.post(self.json_state_endpoint(), json=new_json, timeout=self._tcp_state_post_timeout)
 
     def post_json_info(self, new_json={}):
         return requests.post(self.json_info_endpoint(), json=new_json)
 
     # Json si
     def post_json_si(self, new_json={}):
-        return requests.post(self.json_si_endpoint(), json=new_json)
+        return requests.post(self.json_si_endpoint(), json=new_json, timeout=self._tcp_state_post_timeout)
 
     # FS helpers
     def get_fs_list(self):
@@ -456,7 +458,7 @@ class Wleds:
         with ThreadPoolExecutor() as ex:
             for wled in self:
                 returns.append(ex.submit(Wled.reconfig_from_omegaconf, wled, keep_presets=keep_presets))
-        return [r.result() for r in returns]
+        returns = [r.result() for r in returns]
         self.wleds = returns
         return self
 

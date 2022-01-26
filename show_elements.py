@@ -1,17 +1,24 @@
+from threading import Event, Timer
 import time
 from wled_common_client import Wled, Wleds
 from scripts.local_env import default_wled_ip
 
 wleds = Wleds.from_one_ip(default_wled_ip())
 
+_sleep_quant = 0.1
+
 class ShowElement:
+    _sleep_timer: Timer
+
     def __init__(self, duration, eff_intensity=256, eff_speed=20):
         self.duration = duration
         self.eff_intensity = eff_intensity
         self.eff_speed = eff_speed
 
     def sleep(self):
-        time.sleep(self.duration)
+        self._sleep_timer = Timer(self.duration, lambda: True)
+        self._sleep_timer.start()
+        self._sleep_timer.join()
 
     def activate(self):
         wleds.print()
@@ -19,6 +26,10 @@ class ShowElement:
     def run(self):
         self.activate()
         self.sleep()
+
+    def stop(self):
+        self._sleep_timer.cancel() # it is OK to cancel Timer twice
+
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(pow {self.eff_intensity}, spd {self.eff_speed}) for {self.duration} s"
