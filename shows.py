@@ -12,9 +12,10 @@ class Show:
         self._is_not_running.set()
         self.name = name
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         s = ""
-        s += f"Total {len(self.elements)} effects for {sum(e.duration for e in self.elements)} s\n"
+        s += self.__str__()
+        s += f"\nTotal {len(self.elements)} effects for {sum(e.duration for e in self.elements)} s\n"
         s += ",\n".join(str(se) for se in self.elements)
         return s
 
