@@ -1,8 +1,9 @@
 from threading import Thread, Lock
-from typing import Callable
+from typing import Callable, Iterable
 import shows
 from sound_controller import SoundController
 from time import sleep
+from itertools import cycle
 try:
     from gpiozero import Button
 except ModuleNotFoundError:
@@ -18,6 +19,7 @@ class MainRunner:
     sound_controller: SoundController
     _show_thread: Thread = None
     _show_lock: Lock = Lock()
+    shows_on_button: Iterable = cycle([shows.show_red, shows.show_green, shows.show_blue])
 
     def __init__(self) -> None:
         self.current_show = shows.show_fast
@@ -28,6 +30,7 @@ class MainRunner:
     def on_button(self):
         print("Button pressed")
         self.sound_controller.play_overlay("squeak")
+        self.start_show(next(self.shows_on_button))
 
     def start_show(self, show):
         with self._show_lock:

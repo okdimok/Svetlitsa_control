@@ -2,8 +2,8 @@ from threading import Event, Timer
 import time
 from wled_common_client import Wled, Wleds
 from scripts.local_env import default_wled_ip
+import wled_listener as wl
 
-wleds = Wleds.from_one_ip(default_wled_ip())
 
 _sleep_quant = 0.1
 
@@ -21,7 +21,7 @@ class ShowElement:
         self._sleep_timer.join()
 
     def activate(self):
-        wleds.print()
+        wl.wleds.print()
 
     def run(self):
         self.activate()
@@ -41,7 +41,7 @@ class TotalPreset(ShowElement):
 
     def activate(self):
         for i in range(3):
-            wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+            wl.wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
 
 class TotalFX(ShowElement):
     def __init__(self, fx, duration, eff_intensity, eff_speed):
@@ -50,7 +50,7 @@ class TotalFX(ShowElement):
 
     def activate(self):
         for i in range(3):
-            wleds.send_udp_sync(fx=self.fx, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
+            wl.wleds.send_udp_sync(fx=self.fx, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
 
 class RYAndroid(TotalPreset):
     def __init__(self, duration):
@@ -87,7 +87,7 @@ class Off(ShowElement):
 
     def activate(self):
         for i in range(3):
-            wleds.send_udp_sync(fx=0, brightness=0)
+            wl.wleds.send_udp_sync(fx=0, brightness=0)
 
 class TotalEffect(ShowElement):
     def __init__(self, duration,  eff_intensity, eff_speed):

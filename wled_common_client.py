@@ -132,6 +132,15 @@ class Wled:
         ww.reset()
         return ww
 
+    @classmethod
+    def from_one_ip(cls, ip, name=None, cache_fs=True):
+        w = Wled(ip)
+        w.name = name
+        if not name or cache_fs:
+            w.cache_fs()
+            w.name = w.cfg["id"]["name"]
+        return w
+
     def to_omegaconf(self):
         confs = DEFAULT_OMAEGACONFS
         confs = [omegaconf_universal_load(f) for f in confs]
@@ -231,6 +240,10 @@ class Wled:
         p += [0]*4
         p = bytes(p)
         self._send_udp(p)
+
+    @classmethod
+    def parse_udp_sync(cls, bytes): # this hasa to be a classmethod, because the sync can come from any of the Wleds
+        pass
 
     # Json state requests
     def get_json(self):
@@ -391,16 +404,15 @@ class Wleds:
     def from_one_node(cls, wled):
         wleds = [wled]
         for node in wled.get_nodes():
-            w = Wled(node["ip"])
-            w.name = node["name"]
+            w = Wled.from_one_ip(node["ip"], node["name"])
             wleds.append(w)
-        return cls(wleds = list(sorted(wleds, key=lambda w: w.name)))
+        new_wleds = cls(wleds = wleds)
+        new_wleds.sort()
+        return new_wleds
 
     @classmethod
     def from_one_ip(cls, ip, cache_fs=True):
-        w = Wled(ip)
-        w.cache_fs()
-        w.name = w.cfg["id"]["name"]
+        w = Wled.from_one_ip(ip)      
         wleds =  Wleds.from_one_node(w)
         if cache_fs: wleds.cache_fs()
         return wleds
@@ -434,6 +446,20 @@ class Wleds:
 
     def get_names(self):
         return list(wled.name for wled in self)
+
+    def get_ips(self):
+        return list(wled.ip for wled in self)
+
+    def remove(self, wled):
+        return self.wleds.remove(wled)
+
+    def append(self, wled):
+        return self.wleds.append(wled)
+
+    def sort(self):
+        self.wleds = list(sorted(self.wleds, key=lambda w: w.name))
+        return self
+        
 
     def __getitem__(self, item) -> Optional[Type[Wled]]:
         return self.get_by_name(item)

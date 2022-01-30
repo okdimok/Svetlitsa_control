@@ -79,4 +79,8 @@ show_fast = [
 ] + [Red(dt), Green(dt), Off(dt)] * 3
 show_fast = Show(show_fast, "fast")
 
+show_red = Show([Red(5)], "red")
+show_green = Show([Green(5)], "green")
+show_blue = Show([Blue(5)], "blue")
+
 show = show_fast
