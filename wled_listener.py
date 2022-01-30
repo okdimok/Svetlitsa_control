@@ -6,13 +6,20 @@ from time import time
 import logging
 logger = logging.getLogger(__name__)
 
-wleds = Wleds.from_one_ip(default_wled_ip())
+wleds = []
+try:
+    wleds = Wleds.from_one_ip(default_wled_ip())
+except Exception as e:
+    logger.exception(f"Intializing wleds as empty list due to: {e}\nHoping to get some updates via WledListener, if it is being launched")
 # requests.exceptions.ConnectionError: HTTPConnectionPool(host='192.168.0.4', port=80): Max retries exceeded with url: /edit?list (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xb592d2d0>: Failed to establish a new connection: [Errno 113] No route to host'))
 
 class WledListener:
     # https://github.com/Aircoookie/WLED/blob/master/wled00/udp.cpp#L9 — WLEDPACKETSIZE 
     # https://github.com/Aircoookie/WLED/blob/master/wled00/FX.h#L57 — MAX_NUM_SEGMENTS 
-    _max_packet_size: int = 41 + 16*28
+    # https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/udp.cpp#L7
+    # C:\Users\okdim\YandexDisk\coding_leisure\Arduino\WLED\wled00\udp.cpp:L7
+    
+    _max_packet_size: int = 37
     _ip_update_times: dict = dict()
 
     def __init__(self, port=65506):

@@ -1,3 +1,13 @@
+import logging
+logging.basicConfig(level=logging.DEBUG)
+try:
+    import coloredlogs
+    coloredlogs.install(logging.getLogger().getEffectiveLevel())
+except:
+    pass
+
+logger = logging.getLogger(__name__)
+
 from threading import Thread, Lock
 from typing import Callable, Iterable
 from wled_listener import WledListener
@@ -13,15 +23,6 @@ except ModuleNotFoundError:
         def __init__(self, pin) -> None:
             pass
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
-try:
-    import coloredlogs
-    coloredlogs.install(logging.getLogger().getEffectiveLevel())
-except:
-    pass
-
-logger = logging.getLogger(__name__)
 
 class MainRunner:
     current_show: shows.Show

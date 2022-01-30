@@ -1,4 +1,4 @@
-from threading import Event, Timer
+from threading import Event, Timer, Lock
 import time
 from wled_common_client import Wled, Wleds
 from scripts.local_env import default_wled_ip
@@ -11,6 +11,7 @@ _sleep_quant = 0.1
 
 class ShowElement:
     _sleep_timer: Timer
+    _is_activating_lock: Lock = Lock()
 
     def __init__(self, duration, eff_intensity=256, eff_speed=20):
         self.duration = duration
@@ -26,11 +27,16 @@ class ShowElement:
         logger.debug(wl.wleds)
 
     def run(self):
-        self.activate()
+        with self._is_activating_lock:
+            self.activate()
         self.sleep()
 
     def stop(self):
-        self._sleep_timer.cancel() # it is OK to cancel Timer twice
+        with self._is_activating_lock:
+            try:
+                self._sleep_timer.cancel() # it is OK to cancel Timer twice
+            except Exception as e:
+                logger.exception(f"Was unable to stop {self}: {e}")
 
 
     def __str__(self) -> str:
@@ -43,7 +49,10 @@ class TotalPreset(ShowElement):
 
     def activate(self):
         for i in range(3):
-            wl.wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+            try:
+                wl.wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+            except Exception as e:
+                logger.warning(f"{e} while setting {self}")
 
 class TotalFX(ShowElement):
     def __init__(self, fx, duration, eff_intensity, eff_speed):

@@ -9,7 +9,7 @@ import dictdiffer as dd
 from ruamel import yaml
 from ruamel.yaml import YAML
 import sacn
-from math import ceil
+from math import ceil, floor
 from concurrent.futures import ThreadPoolExecutor
 
 
@@ -17,7 +17,9 @@ try:
     import tdutils as tdu
     dbg = tdu.debug.debug
 except (ModuleNotFoundError, AttributeError):
-    dbg = print
+    import logging
+    logger = logging.getLogger(__name__)
+    dbg = logger.debug
 
 file_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -199,7 +201,7 @@ class Wled:
                                  socket.SOCK_DGRAM) # UDP
         sock.sendto(msg, (self.ip, self.udp_port))
 
-    def send_udp_sync(self, brightness=255, col=[255,0,0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=0, palette=0):
+    def send_udp_sync_v5(self, brightness=255, col=[255,0,0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=0, palette=0):
         p = []
         # Byte Index	Var Name	Description	Notifier Version
         # https://github.com/Aircoookie/WLED/blob/master/wled00/udp.cpp#L11
@@ -242,6 +244,101 @@ class Wled:
         p += [0]*4
         p = bytes(p)
         self._send_udp(p)
+
+    def send_udp_sync_v9(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=1000, palette=0, 
+            nightlightActive=0, nightlightDelayMins=60,
+            seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
+            this_is_a_follow_up=False, sync_groups={1}):
+        udpOut = [0] * 37
+        callMode = 1 # CALL_MODE_DIRECT_CHANGE
+        bri = brightness
+        col += [0] * (len(col) - 4)
+        effectCurrent = fx
+        effectSpeed = fx_speed
+        colSec = seconday_color + ([0] * (len(seconday_color) - 4))
+        effectIntensity = fx_intensity
+        transitionDelay = int(transition_delay) # in milliseconds
+        effectPalette = palette
+        tertiary_color += ([0] * (len(tertiary_color) - 4))
+        colTer = 0
+        colTer += (tertiary_color[0] & 0xFF) << 16
+        colTer += (tertiary_color[1] & 0xFF) << 8
+        colTer += (tertiary_color[2] & 0xFF) << 0
+        colTer += (tertiary_color[3] & 0xFF) << 24
+        followUp = this_is_a_follow_up
+        current_time = time.time()
+        t = floor(current_time)
+        unix = t
+        ms = floor((current_time % 1) * 1000)
+        syncGroups = 0
+        for g in sync_groups:
+            syncGroups += 1 << (int(g)-1)
+
+        # Copy below from
+        # C:\Users\okdim\YandexDisk\coding_leisure\Arduino\WLED\wled00\udp.cpp:L7
+        udpOut[0] = 0; # //0: wled notifier protocol 1: WARLS protocol
+        udpOut[1] = callMode;
+        udpOut[2] = bri;
+        udpOut[3] = col[0];
+        udpOut[4] = col[1];
+        udpOut[5] = col[2];
+        udpOut[6] = nightlightActive;
+        udpOut[7] = nightlightDelayMins;
+        udpOut[8] = effectCurrent;
+        udpOut[9] = effectSpeed;
+        udpOut[10] = col[3];
+        # //compatibilityVersionByte: 
+        # //0: old 1: supports white 2: supports secondary color
+        # //3: supports FX intensity, 24 byte packet 4: supports transitionDelay 5: sup palette
+        # //6: supports timebase syncing, 29 byte packet 7: supports tertiary color 8: supports sys time sync, 36 byte packet
+        # //9: supports sync groups, 37 byte packet
+        udpOut[11] = 9; 
+        udpOut[12] = colSec[0];
+        udpOut[13] = colSec[1];
+        udpOut[14] = colSec[2];
+        udpOut[15] = colSec[3];
+        udpOut[16] = effectIntensity;
+        udpOut[17] = (transitionDelay >> 0) & 0xFF;
+        udpOut[18] = (transitionDelay >> 8) & 0xFF;
+        udpOut[19] = effectPalette;
+        # uint32_t colTer = strip.getSegment(strip.getMainSegmentId()).colors[2];
+        udpOut[20] = (colTer >> 16) & 0xFF;
+        udpOut[21] = (colTer >>  8) & 0xFF;
+        udpOut[22] = (colTer >>  0) & 0xFF;
+        udpOut[23] = (colTer >> 24) & 0xFF;
+        
+        udpOut[24] = followUp;
+        # uint32_t t = millis() + strip.timebase;
+        udpOut[25] = (t >> 24) & 0xFF;
+        udpOut[26] = (t >> 16) & 0xFF;
+        udpOut[27] = (t >>  8) & 0xFF;
+        udpOut[28] = (t >>  0) & 0xFF;
+
+        # //sync system time
+        # udpOut[29] = toki.getTimeSource();
+        # Toki::Time tm = toki.getTime();
+        # uint32_t unix = tm.sec;
+        udpOut[30] = (unix >> 24) & 0xFF;
+        udpOut[31] = (unix >> 16) & 0xFF;
+        udpOut[32] = (unix >>  8) & 0xFF;
+        udpOut[33] = (unix >>  0) & 0xFF;
+        # uint16_t ms = tm.ms;
+        udpOut[34] = (ms >> 8) & 0xFF;
+        udpOut[35] = (ms >> 0) & 0xFF;
+
+        # //sync groups
+        udpOut[36] = syncGroups;
+        udpOut = bytes(udpOut)
+        self._send_udp(udpOut)
+
+    def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=1000, palette=0, 
+            nightlightActive=0, nightlightDelayMins=60,
+            seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
+            this_is_a_follow_up=False, sync_groups={1}):
+        self.send_udp_sync_v9(brightness, col, fx, fx_speed, fx_intensity, col_sec, transition_delay, palette,
+                nightlightActive, nightlightDelayMins,
+                seconday_color, tertiary_color,
+                this_is_a_follow_up, sync_groups)
 
     @classmethod
     def parse_udp_sync(cls, bytes): # this hasa to be a classmethod, because the sync can come from any of the Wleds
@@ -384,7 +481,7 @@ class Wled:
             raise ValueError(f"The specified firmware file {filename} does not exist")
         with open(filename, "rb") as firmware:
             req = requests.post(f"http://{self.ip}/update", files={"update": firmware })
-            print(f"Done sending firmware: {self}")
+            logger.info(f"Done sending firmware: {self}")
             return req
 
     def set_random_seed(self, seed=42):
@@ -410,7 +507,7 @@ class Wleds:
                 w = Wled.from_one_ip(node["ip"], node["name"])
                 wleds.append(w)
             except Exception as e:
-                print(f"WARNING: exception {e}")
+                logger.warning(f"Error while initializing {e}")
         new_wleds = cls(wleds = wleds)
         new_wleds.sort()
         return new_wleds
