@@ -3,6 +3,8 @@ from wled_common_client import Wleds, Wled
 from scripts.local_env import default_wled_ip
 import socket
 from time import time
+import logging
+logger = logging.getLogger(__name__)
 
 wleds = Wleds.from_one_ip(default_wled_ip())
 # requests.exceptions.ConnectionError: HTTPConnectionPool(host='192.168.0.4', port=80): Max retries exceeded with url: /edit?list (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xb592d2d0>: Failed to establish a new connection: [Errno 113] No route to host'))
@@ -41,22 +43,26 @@ class WledListener:
                 # If we know about any pair, containing elements of this pair, we should invalidate it
                 # If we don't know, we should add a wled and (probably), cache its FS
 
-            print(f"DEBUG: Got update from {ip}, {name}")
+            logger.debug(f"Got update from {ip}, {name}")
             self._ip_update_times[ip] = time()
             if not WledListener.check_if_ip_name_pair_is_in_wleds(ip, name, wleds): # there is some novelty
                 if ip in self._get_known_ips(): # the ip is known, but the name has changed
                     wled_to_remove = wleds.get_by_ip(ip)
                     wleds.remove(wled_to_remove) # removing the old wled from wleds
-                    print(f"WARNING: A new WLED name with the same IP ({ip}): {wled_to_remove.name} → {name}")
+                    logger.warning(f"A new WLED name with the same IP ({ip}): {wled_to_remove.name} → {name}")
                 if name in self._get_known_names(): # the ip is known, but the name has changed
                     wled_to_remove = wleds.get_by_name(name)
                     wleds.remove(wled_to_remove) # removing the old wled from wleds
-                    print(f"WARNING: A WLED name with the same name ({name}) but a different IP: {wled_to_remove.ip} → {ip}")
-                new_wled = Wled.from_one_ip(ip, name)
-                wleds.append(new_wled)
-                wleds.sort()
-                print(f"INFO adding new wled: {new_wled}")
-                print(f"DEBUG new wleds: {wleds}")
+                    logger.warning(f"A WLED name with the same name ({name}) but a different IP: {wled_to_remove.ip} → {ip}")
+                try:
+                    new_wled = Wled.from_one_ip(ip, name)
+                    wleds.append(new_wled)
+                    wleds.sort()
+                    logger.info(f"adding new wled: {new_wled}")
+                    logger.debug(f"new wleds: {wleds}")
+                except:
+                    pass
+            
 
     @classmethod
     def check_if_ip_name_pair_is_in_wleds(cls, ip, name, wleds):

@@ -3,6 +3,8 @@ import time
 from wled_common_client import Wled, Wleds
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
+import logging
+logger = logging.getLogger(__name__)
 
 
 _sleep_quant = 0.1
@@ -21,7 +23,7 @@ class ShowElement:
         self._sleep_timer.join()
 
     def activate(self):
-        wl.wleds.print()
+        logger.debug(wl.wleds)
 
     def run(self):
         self.activate()

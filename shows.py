@@ -1,6 +1,8 @@
 from threading import Event, Lock
 import time
 from show_elements import *
+import logging
+logger = logging.getLogger(__name__)
 
 class Show:
     _current_show_element: ShowElement = None
@@ -21,11 +23,11 @@ class Show:
 
     def run_once(self):
         self._is_not_running.clear()
-        print(f"Running {self}.")
+        logger.info(f"#"*6 + f" Running {self}.")
         for se in self.elements:
             if self._needs_stop.is_set():
                 break
-            print(f"# launching {se}")
+            logger.info(f"#"*3 + f" launching {se}")
             self._current_show_element = se
             se.run()
         self._is_not_running.set()

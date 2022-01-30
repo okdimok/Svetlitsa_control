@@ -1,8 +1,11 @@
+from math import log
 from time import sleep
 from xml.dom.pulldom import parseString
 import pygame
 from typing import Dict
 from threading import Thread
+import logging
+logger = logging.getLogger(__name__)
 
 MUSIC_END = pygame.USEREVENT+1
 
@@ -22,10 +25,10 @@ class SoundController:
         self.overlay_channel = pygame.mixer.Channel(1)
 
     def load_sounds(self):
-        print("Loading sounds...")
+        logger.info("Loading sounds...")
         self.sounds["ambient_blues"] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
         self.sounds["squeak"] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
-        print("Loading sounds completed!")
+        logger.info("Loading sounds completed!")
         self.sounds_ready = True
         self.start_ambient()
 
@@ -54,7 +57,7 @@ class SoundController:
             self.ambient_channel.set_volume(0.3)
             self.overlay_channel.play(sound, fade_ms=200)
         else:
-            print(f"WARNING: Trying to play sound {sound_name} before it is loaded")
+            logging.warning(f"Trying to play sound {sound_name} before it is loaded")
 
     def get_sound(self, sound_name):
         if not self.sounds_ready:

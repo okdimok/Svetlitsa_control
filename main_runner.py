@@ -1,5 +1,6 @@
 from threading import Thread, Lock
 from typing import Callable, Iterable
+from wled_listener import WledListener
 import shows
 from sound_controller import SoundController
 from time import sleep
@@ -12,6 +13,15 @@ except ModuleNotFoundError:
         def __init__(self, pin) -> None:
             pass
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+try:
+    import coloredlogs
+    coloredlogs.install(logging.getLogger().getEffectiveLevel())
+except:
+    pass
+
+logger = logging.getLogger(__name__)
 
 class MainRunner:
     current_show: shows.Show
@@ -26,9 +36,10 @@ class MainRunner:
         self.sound_controller = SoundController()
         self.button = Button(17)
         self.button.when_activated = self.on_button
+        self.wled_listener = WledListener()
 
     def on_button(self):
-        print("Button pressed")
+        logger.info("Button pressed")
         self.sound_controller.play_overlay("squeak")
         self.start_show(next(self.shows_on_button))
 

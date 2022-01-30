@@ -74,6 +74,8 @@ class WledDMX:
 
 class Wled:
     _tcp_state_post_timeout: float = 2. # seconds
+    _tcp_fs_list_timeout: float = 2. # seconds
+
 
     def __init__(self, ip):
         self.ip = ip
@@ -268,7 +270,7 @@ class Wled:
 
     # FS helpers
     def get_fs_list(self):
-        return requests.get(self.edit_endpoint() + "?list").json()
+        return requests.get(self.edit_endpoint() + "?list", timeout=self._tcp_fs_list_timeout).json()
 
     def get_fs_file(self, filename):
         return requests.get(self.edit_endpoint() + "?edit=" + filename)
@@ -404,8 +406,11 @@ class Wleds:
     def from_one_node(cls, wled):
         wleds = [wled]
         for node in wled.get_nodes():
-            w = Wled.from_one_ip(node["ip"], node["name"])
-            wleds.append(w)
+            try:
+                w = Wled.from_one_ip(node["ip"], node["name"])
+                wleds.append(w)
+            except Exception as e:
+                print(f"WARNING: exception {e}")
         new_wleds = cls(wleds = wleds)
         new_wleds.sort()
         return new_wleds

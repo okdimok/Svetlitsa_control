@@ -6,3 +6,4 @@ dictdiffer
 requests
 gpiozero; "arm" in platform.machine
 RPi.GPIO; "arm" in platform.machine
+coloredlogs; "posix" == os.name
