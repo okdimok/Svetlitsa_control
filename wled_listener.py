@@ -18,11 +18,13 @@ class WledListener:
     # https://github.com/Aircoookie/WLED/blob/master/wled00/FX.h#L57 — MAX_NUM_SEGMENTS 
     # https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/udp.cpp#L7
     # C:\Users\okdim\YandexDisk\coding_leisure\Arduino\WLED\wled00\udp.cpp:L7
+    # sometimes udp sys info is bigger than UDP sync
+    # but buffer size should be just big
     
-    _max_packet_size: int = 37
+    _max_packet_size: int = 64 
     _ip_update_times: dict = dict()
 
-    def __init__(self, port=65506):
+    def __init__(self, port=65506, parse_callback=None):
         self.datasock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self.datasock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
         self.datasock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -31,14 +33,16 @@ class WledListener:
             self._ip_update_times[ip] = time()
         self._listen_thread = Thread(target=self.recv)
         self._listen_thread.start()
+        self.parse_callback = parse_callback
 
 
-    def _rcv_udp_simple(self, ):
-            bts, addr = self.datasock.recvfrom(self._max_packet_size)
-            name = bts[6:6+32].decode("utf-8").rstrip('\x00')
-            ip = addr[0]
-            port = addr[1]
-            return bts, ip, port, name
+    def _rcv_udp_simple(self):
+        bts, addr = self.datasock.recvfrom(self._max_packet_size)
+        ip = addr[0]
+        port = addr[1]
+        if (bts[0] != 0xFF): return bts, ip, port, None
+        name = bts[6:6+32].decode("utf-8").rstrip('\x00')
+        return bts, ip, port, name
 
 
     def recv(self):
@@ -52,23 +56,26 @@ class WledListener:
 
             logger.debug(f"Got update from {ip}, {name}")
             self._ip_update_times[ip] = time()
-            if not WledListener.check_if_ip_name_pair_is_in_wleds(ip, name, wleds): # there is some novelty
-                if ip in self._get_known_ips(): # the ip is known, but the name has changed
-                    wled_to_remove = wleds.get_by_ip(ip)
-                    wleds.remove(wled_to_remove) # removing the old wled from wleds
-                    logger.warning(f"A new WLED name with the same IP ({ip}): {wled_to_remove.name} → {name}")
-                if name in self._get_known_names(): # the ip is known, but the name has changed
-                    wled_to_remove = wleds.get_by_name(name)
-                    wleds.remove(wled_to_remove) # removing the old wled from wleds
-                    logger.warning(f"A WLED name with the same name ({name}) but a different IP: {wled_to_remove.ip} → {ip}")
-                try:
-                    new_wled = Wled.from_one_ip(ip, name)
-                    wleds.append(new_wled)
-                    wleds.sort()
-                    logger.info(f"adding new wled: {new_wled}")
-                    logger.debug(f"new wleds: {wleds}")
-                except:
-                    pass
+            if (name is not None): # this is an update of proper type
+                if not WledListener.check_if_ip_name_pair_is_in_wleds(ip, name, wleds): # there is some novelty
+                    if ip in self._get_known_ips(): # the ip is known, but the name has changed
+                        wled_to_remove = wleds.get_by_ip(ip)
+                        wleds.remove(wled_to_remove) # removing the old wled from wleds
+                        logger.warning(f"A new WLED name with the same IP ({ip}): {wled_to_remove.name} → {name}")
+                    if name in self._get_known_names(): # the ip is known, but the name has changed
+                        wled_to_remove = wleds.get_by_name(name)
+                        wleds.remove(wled_to_remove) # removing the old wled from wleds
+                        logger.warning(f"A WLED name with the same name ({name}) but a different IP: {wled_to_remove.ip} → {ip}")
+                    try:
+                        new_wled = Wled.from_one_ip(ip, name)
+                        wleds.append(new_wled)
+                        wleds.sort()
+                        logger.info(f"adding new wled: {new_wled}")
+                        logger.debug(f"new wleds: {wleds}")
+                    except:
+                        pass
+            if self.parse_callback is not None:
+                self.parse_callback(bts, ip=ip, port=port, name=name)
             
 
     @classmethod
@@ -88,5 +95,22 @@ class WledListener:
     
 
 if __name__ == "__main__":
-    listener = WledListener()
+    try:
+        import coloredlogs
+        coloredlogs.install(logging.DEBUG)
+    except:
+        pass
+
+    logger.setLevel(logging.DEBUG)
+
+    def parse_and_print(bts, ip, port, name):
+        if bts[0] == 0xFF: return
+        logger.debug(f"Callback for {name} at {ip}:{port}" )
+        v = Wled.parse_udp_sync(bts)
+        logger.debug(v)
+    
+    logger.debug("Starting the WledListener")
+    listener = WledListener(port=65506, parse_callback=parse_and_print) # just listen
+    state_tracker = WledListener(port=21324, parse_callback=parse_and_print)
     listener._listen_thread.join()
+    state_tracker._listen_thread.join()

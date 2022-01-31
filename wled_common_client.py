@@ -245,10 +245,10 @@ class Wled:
         p = bytes(p)
         self._send_udp(p)
 
-    def send_udp_sync_v9(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=1000, palette=0, 
+    def send_udp_sync_v9(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
             seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
-            this_is_a_follow_up=False, sync_groups={1}):
+            this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
         udpOut = [0] * 37
         callMode = 1 # CALL_MODE_DIRECT_CHANGE
         bri = brightness
@@ -266,9 +266,14 @@ class Wled:
         colTer += (tertiary_color[2] & 0xFF) << 0
         colTer += (tertiary_color[3] & 0xFF) << 24
         followUp = this_is_a_follow_up
+        # timebase is the base for calculating all the times in the effects, in ms
+        # see https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/FX_fcn.cpp#L119
+        # https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/src/dependencies/toki/Toki.h#L31
+
         current_time = time.time()
-        t = floor(current_time)
-        unix = t
+        t = floor(current_time*1000 + timebase_shift) # just millis
+        unix = floor(current_time)
+        toki_getTimeSource = 160 
         ms = floor((current_time % 1) * 1000)
         syncGroups = 0
         for g in sync_groups:
@@ -308,7 +313,7 @@ class Wled:
         udpOut[23] = (colTer >> 24) & 0xFF;
         
         udpOut[24] = followUp;
-        # uint32_t t = millis() + strip.timebase;
+        # uint32_t t = millis() + strip.timebase_shift;
         udpOut[25] = (t >> 24) & 0xFF;
         udpOut[26] = (t >> 16) & 0xFF;
         udpOut[27] = (t >>  8) & 0xFF;
@@ -316,6 +321,7 @@ class Wled:
 
         # //sync system time
         # udpOut[29] = toki.getTimeSource();
+        udpOut[29] = toki_getTimeSource
         # Toki::Time tm = toki.getTime();
         # uint32_t unix = tm.sec;
         udpOut[30] = (unix >> 24) & 0xFF;
@@ -331,18 +337,140 @@ class Wled:
         udpOut = bytes(udpOut)
         self._send_udp(udpOut)
 
-    def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, col_sec=[0, 255,0], transition_delay=1000, palette=0, 
+    def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
             seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
-            this_is_a_follow_up=False, sync_groups={1}):
-        self.send_udp_sync_v9(brightness, col, fx, fx_speed, fx_intensity, col_sec, transition_delay, palette,
-                nightlightActive, nightlightDelayMins,
-                seconday_color, tertiary_color,
-                this_is_a_follow_up, sync_groups)
+            this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
+        self.send_udp_sync_v9(brightness=brightness, col=col, fx=fx, fx_speed=fx_speed, fx_intensity=fx_intensity,
+                transition_delay=transition_delay, palette=palette,
+                nightlightActive=nightlightActive, nightlightDelayMins=nightlightDelayMins,
+                seconday_color=seconday_color, tertiary_color=tertiary_color,
+                this_is_a_follow_up=this_is_a_follow_up, sync_groups=sync_groups, timebase_shift=timebase_shift)
 
     @classmethod
-    def parse_udp_sync(cls, bytes): # this hasa to be a classmethod, because the sync can come from any of the Wleds
-        pass
+    def parse_udp_sync(cls, bts): # this hasa to be a classmethod, because the sync can come from any of the Wleds
+        udp_in = list(bts)
+        if udp_in[0] == 0:
+            version = udp_in[11]
+            if (version >= 9):
+                return cls.parse_udp_sync_v9(bts)
+            else:
+                logger.exception(f"Recieved a WLED UDP notification with version {version} < 9: {udp_in}")
+                return {}
+        elif udp_in[0] == 255:
+            return cls.parse_udp_sys_info(bts)
+        else:
+            logger.exception(f"Recieved a realtime protocol notification, skipping: {udp_in}")
+            return {}
+
+    @classmethod
+    def parse_udp_sync_v9(cls, bts): # this hasa to be a classmethod, because the sync can come from any of the Wleds
+        udp_in = list(bts)
+        if (len(udp_in) < 37):
+            logger.exception(f"Recieved a short WLED UDP notification ({len(udp_in)} < 37) : {udp_in}")
+            return {}
+
+        # Prepare the variables
+        col = [0]*4
+        colSec = [0]*4
+        msg_type = "udp_sync"
+
+        # Copy below from
+        # C:\Users\okdim\YandexDisk\coding_leisure\Arduino\WLED\wled00\udp.cpp:L7
+        # then select, press Ctrl+H to Replace, then press the Find In Selection button
+        #
+        # udpOut\[(\d+)\] = (.*);
+        # $2 = udp_in[$1]
+        # 0 = udp_in[0] # //0: wled notifier protocol 1: WARLS protocol
+        # and then modify to taste
+        callMode = udp_in[1]
+        bri = udp_in[2]
+        col[0] = udp_in[3]
+        col[1] = udp_in[4]
+        col[2] = udp_in[5]
+        nightlightActive = udp_in[6]
+        nightlightDelayMins = udp_in[7]
+        effectCurrent = udp_in[8]
+        effectSpeed = udp_in[9]
+        col[3] = udp_in[10]
+        # //compatibilityVersionByte: 
+        # //0: old 1: supports white 2: supports secondary color
+        # //3: supports FX intensity, 24 byte packet 4: supports transitionDelay 5: sup palette
+        # //6: supports timebase_shift syncing, 29 byte packet 7: supports tertiary color 8: supports sys time sync, 36 byte packet
+        # //9: supports sync groups, 37 byte packet
+        version = udp_in[11] 
+        colSec[0] = udp_in[12]
+        colSec[1] = udp_in[13]
+        colSec[2] = udp_in[14]
+        colSec[3] = udp_in[15]
+        effectIntensity = udp_in[16]
+        transitionDelay = (udp_in[17] & 0xFF) << 0
+        transitionDelay += (udp_in[18] & 0xFF) << 8
+        effectPalette = udp_in[19]
+        # uint32_t colTer = strip.getSegment(strip.getMainSegmentId()).colors[2];
+        colTer  = (udp_in[20] & 0xFF) << 16
+        colTer += (udp_in[21] & 0xFF) << 8
+        colTer += (udp_in[22] & 0xFF) << 0
+        colTer += (udp_in[23] & 0xFF) << 24
+        
+        followUp = udp_in[24]
+        # uint32_t t = millis() + strip.timebase_shift;
+        t  = (udp_in[25] & 0xFF) << 24
+        t += (udp_in[26] & 0xFF) << 16
+        t += (udp_in[27] & 0xFF) << 8
+        t += (udp_in[28] & 0xFF) << 0
+
+        # //sync system time
+        # toki.getTimeSource() = udp_in[29]
+        toki_getTimeSource = udp_in[29]
+        # Toki::Time tm = toki.getTime();
+        # uint32_t unix = tm.sec;
+        unix  = (udp_in[30] & 0xFF) << 24
+        unix += (udp_in[31] & 0xFF) << 16
+        unix += (udp_in[32] & 0xFF) << 8
+        unix += (udp_in[33] & 0xFF) << 0
+        # uint16_t ms = tm.ms;
+        ms = (udp_in[34] & 0xFF) << 8
+        ms += (udp_in[35] & 0xFF) << 0
+
+        # //sync groups
+        syncGroups = udp_in[36]
+
+        # modify the needed
+        return locals()
+
+    @classmethod
+    def parse_udp_sys_info(cls, bts): # this hasa to be a classmethod, because the sync can come from any of the Wleds
+        # see https://github.com/Aircoookie/WLED/blob/7e1920dc4b871f442ea7de2889fd8ce8db63c088/wled00/udp.cpp#L481
+        udp_in = list(bts)
+        msg_type = "udp_sys_info"
+        if (len(udp_in) < 44):
+            logger.exception(f"Recieved a short udp_sys_info notification ({len(udp_in)} < 44) : {udp_in}")
+            return {}
+        if (udp_in[1] != 1):
+            logger.exception(f"Recieved a strange udp_sys_info, skipping: {udp_in}")
+            return {}
+        ip = udp_in[2:6]
+        name = bts[6:6+32].decode("utf-8").rstrip('\x00')
+        #define NODE_TYPE_ID_UNDEFINED        0
+        #define NODE_TYPE_ID_ESP8266         82
+        #define NODE_TYPE_ID_ESP32           32
+        node_type = "undefined"
+        if udp_in[38] == 82:
+            node_type = "esp8266"
+        elif udp_in[38] == 32:
+            node_type = "esp32"
+
+        wled_id = udp_in[39]
+        build  = (udp_in[40] & 0xFF) << 0
+        build += (udp_in[41] & 0xFF) << 8
+        build += (udp_in[42] & 0xFF) << 16
+        build += (udp_in[43] & 0xFF) << 24
+
+        return locals()
+
+
+
 
     # Json state requests
     def get_json(self):
