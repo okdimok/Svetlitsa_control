@@ -5,12 +5,11 @@ import json
 import hydra
 import os
 from omegaconf import DictConfig, OmegaConf, ListConfig
-import dictdiffer as dd
-from ruamel import yaml
-from ruamel.yaml import YAML
 import sacn
 from math import ceil, floor
 from concurrent.futures import ThreadPoolExecutor
+from omegaconf_helpers import omegaconf_universal_load, create_patch_from_omegaconf, tidy_yaml
+from scripts.local_env import DEFAULT_OMAEGACONFS, FS_DUMP_DIR, DEFAULT_PRESETS, OMEGACONF_DUMP_DIR
 
 
 try:
@@ -23,10 +22,8 @@ except (ModuleNotFoundError, AttributeError):
 
 file_path = os.path.dirname(os.path.realpath(__file__))
 
-FS_DUMP_DIR= file_path + "/config_dump/{name}"
-OMEGACONF_DUMP_DIR=file_path + "/omegaconf_dump/{name}"
-DEFAULT_OMAEGACONFS=(file_path + "/default_cfg.yaml", file_path + "/important_default_cfg.yaml")
-DEFAULT_PRESETS=(file_path + "/default_presets.yaml",)
+
+
 
 # https://github.com/Aircoookie/WLED/wiki/HTTP-request-API
 # https://github.com/Aircoookie/WLED/wiki/JSON-API
@@ -35,6 +32,8 @@ DEFAULT_PRESETS=(file_path + "/default_presets.yaml",)
 
 import socket
 sock = None
+
+from preset_manager import get_udp_kwargs
 
 
 class WledDMX:
@@ -106,7 +105,7 @@ class Wled:
 
     @classmethod
     def from_omegaconf(cls, additional_confs=[], additional_presets=[]):
-        confs = list(DEFAULT_OMAEGACONFS)
+        confs = list(DEFAULT_OMAEGACONFS())
         confs += additional_confs
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
@@ -115,7 +114,7 @@ class Wled:
         self.cfg = OmegaConf.to_container(cfg)
         self.udp_port = cfg["if"].sync.port0
         self.name = cfg.id.name
-        presets = list(DEFAULT_PRESETS) + additional_presets
+        presets = list(DEFAULT_PRESETS()) + additional_presets
         presets = [omegaconf_universal_load(f) for f in presets]
         self.presets = OmegaConf.merge(*presets)
         return self
@@ -146,14 +145,14 @@ class Wled:
         return w
 
     def to_omegaconf(self):
-        confs = DEFAULT_OMAEGACONFS
+        confs = DEFAULT_OMAEGACONFS()
         confs = [omegaconf_universal_load(f) for f in confs]
         cfg = OmegaConf.merge(*confs)
         new_cfg = create_patch_from_omegaconf(self.cfg, cfg)
         new_presets = create_patch_from_omegaconf(self.presets, {})
         return new_cfg, new_presets
 
-    def dump_omegaconf(self, omegaconf_dump_dir=OMEGACONF_DUMP_DIR):
+    def dump_omegaconf(self, omegaconf_dump_dir=OMEGACONF_DUMP_DIR()):
         oc_dir = self.get_fs_dump_dir(omegaconf_dump_dir)
         cfg, presets = self.to_omegaconf()
         cfg_yaml = f"{oc_dir}/cfg.yaml"
@@ -247,19 +246,19 @@ class Wled:
 
     def send_udp_sync_v9(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
-            seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
+            secondary_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
             this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
         udpOut = [0] * 37
         callMode = 1 # CALL_MODE_DIRECT_CHANGE
         bri = brightness
-        col += [0] * (len(col) - 4)
+        col += [0] * (4 - len(col))
         effectCurrent = fx
         effectSpeed = fx_speed
-        colSec = seconday_color + ([0] * (len(seconday_color) - 4))
+        colSec = secondary_color + ([0] * (4 - len(secondary_color)))
         effectIntensity = fx_intensity
         transitionDelay = int(transition_delay) # in milliseconds
         effectPalette = palette
-        tertiary_color += ([0] * (len(tertiary_color) - 4))
+        tertiary_color += ([0] * (4 - len(tertiary_color)))
         colTer = 0
         colTer += (tertiary_color[0] & 0xFF) << 16
         colTer += (tertiary_color[1] & 0xFF) << 8
@@ -339,12 +338,12 @@ class Wled:
 
     def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
-            seconday_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
+            secondary_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
             this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
         self.send_udp_sync_v9(brightness=brightness, col=col, fx=fx, fx_speed=fx_speed, fx_intensity=fx_intensity,
                 transition_delay=transition_delay, palette=palette,
                 nightlightActive=nightlightActive, nightlightDelayMins=nightlightDelayMins,
-                seconday_color=seconday_color, tertiary_color=tertiary_color,
+                secondary_color=secondary_color, tertiary_color=tertiary_color,
                 this_is_a_follow_up=this_is_a_follow_up, sync_groups=sync_groups, timebase_shift=timebase_shift)
 
     @classmethod
@@ -534,20 +533,20 @@ class Wled:
         
     
     # FS Dumps
-    def get_fs_dump_dir(self, fs_dump_dir=FS_DUMP_DIR):
+    def get_fs_dump_dir(self, fs_dump_dir=FS_DUMP_DIR()):
         """Populates the template for the local directory, where FS should be dumped. Creates it, if nececery, and returns a path to it"""
         fs_dump_dir = fs_dump_dir.format(ip=self.ip, name=self.name)
         os.makedirs(fs_dump_dir, exist_ok=True)
         return fs_dump_dir
 
-    def dump_fs(self, fs_dump_dir=FS_DUMP_DIR):
+    def dump_fs(self, fs_dump_dir=FS_DUMP_DIR()):
         """Dumps all the files from the device to a local fs_dump_dir"""
         for fp in self.get_fs_list():
             fn = fp["name"]
             with open(f"{self.get_fs_dump_dir(fs_dump_dir)}/{fn}", "w") as fd:
                 fd.write(self.get_fs_file(fn).text)
 
-    def read_config_dump(self, fs_dump_dir=FS_DUMP_DIR):
+    def read_config_dump(self, fs_dump_dir=FS_DUMP_DIR()):
         for f in os.listdir(self.get_fs_dump_dir(fs_dump_dir)):
             if f.endswith(".json"):
                 with open(f"{self.get_fs_dump_dir(fs_dump_dir)}/{f}", "r") as fr:
@@ -584,6 +583,10 @@ class Wled:
             new_state["seg"] = seg
             
         self.post_json_si(new_state)
+
+    def set_preset_udp(self, ps_id=0, eff_intensity=None, eff_speed=None, follow_up=None, transition_delay=None):
+        kwargs = get_udp_kwargs(ps_id, eff_intensity=eff_intensity, eff_speed=eff_speed, follow_up=follow_up, transition_delay=transition_delay)
+        self.send_udp_sync(**kwargs)
 
     def set_playlist(self, pl=0):
         new_state = {
@@ -724,102 +727,6 @@ class Wleds:
     def __repr__(self) -> str:
         return self.__str__()
         
-
-
-
-def omegaconf_universal_load(conf):
-    if isinstance(conf, str):
-        if conf.endswith(".yaml"):
-            return OmegaConf.load(conf)
-        else: return OmegaConf.create(conf)
-    elif OmegaConf.is_config(conf):
-        return conf
-    else:
-        return OmegaConf.create(conf)
-
-def create_patch_from_omegaconf(custom_cfg, general_cfg):
-    patch = list(dd.swap(dd.diff(custom_cfg, general_cfg, expand=True, dot_notation=False)))
-    new_patch = []
-    for p in patch:
-        if p[0] == "remove":
-            continue
-        elif p[0] == "add":
-            new_patch.append(p)
-        elif p[0] == "change":
-            new_patch.append(("add", p[1], p[2][1]))
-        else:
-            raise ValueError()
-    new_cfg = OmegaConf.create()
-    new_cfg = {}
-    for p in new_patch:
-        keys = list(p[1])
-        v = p[2] 
-        if isinstance(p[2], list):
-            keys += [p[2][0][0]]
-            v = p[2][0][1]
-
-        if len(keys) == 1:
-            new_cfg[keys[0]] = v
-        elif len(keys) > 1:
-            curr = new_cfg
-            orig = general_cfg
-            prev = None
-            for k, kn in zip(keys[:-1], keys[1:]): # key, key_next
-                orig = orig[k]
-                try:
-                    curr = curr[k]
-                except KeyError: # it is for dicts
-                    if isinstance(kn, int):
-                        curr[k] = orig # as far as we create list we need to copy it from the main config
-                    elif isinstance(kn, str):
-                        curr[k] = dict()
-                    curr = curr[k]
-                except IndexError: # for lists
-                    if isinstance(kn, int):
-                        curr.append(list())
-                    elif isinstance(kn, str):
-                        curr.append(dict())
-                    curr = curr[-1]
-            try:
-                curr[kn] = v
-            except IndexError:
-                curr.append(v)
-        else:
-            raise ValueError
-            
-
-    new_cfg = OmegaConf.create(new_cfg)
-
-    # dbg("="*20)
-    # dbg(patch)
-    # dbg("#"*20)
-    # dbg(new_patch)
-    # dbg("*"*20)
-    # dbg(new_cfg)
-    # dbg(">"*20  )
-    # result = Wled.from_omegaconf(additional_confs=[OmegaConf.to_container(new_cfg)]).cfg
-    # dbg(list(dd.diff(result, custom_cfg)))
-    return new_cfg
-
-def tidy_yaml(f):
-    yaml = YAML()
-    with open(f, encoding="utf-8") as fr:
-        d = yaml.load(fr)
-    yaml.default_flow_style = True
-    d.fa.set_block_style()
-    for k in d.keys():
-        try:
-            d[k].fa.set_block_style()
-            for kk in d[k].keys():
-                try:
-                    d[k][kk].fa.set_flow_style()
-                except AttributeError:
-                    pass
-        except AttributeError:
-            pass
-    with open(f, "w", encoding="utf-8") as fw:
-        yaml.dump(d, fw)
-
 if __name__ == "__main__":
     print("No action defined yet.")
 

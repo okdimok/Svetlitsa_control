@@ -55,10 +55,10 @@ class MainRunner:
 
     def run(self):
         while True:
-            self.start_show(shows.show_1)
-            sleep(5)
+            self.start_show(shows.show_fast)
+            sleep(20)
             self.start_show(shows.show_short)
-            sleep(5)
+            sleep(20)
 
     def _show_loop(self):
         while True:

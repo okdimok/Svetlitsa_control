@@ -13,7 +13,7 @@ class ShowElement:
     _sleep_timer: Timer
     _is_activating_lock: Lock = Lock()
 
-    def __init__(self, duration, eff_intensity=256, eff_speed=20):
+    def __init__(self, duration, eff_intensity=255, eff_speed=20):
         self.duration = duration
         self.eff_intensity = eff_intensity
         self.eff_speed = eff_speed
@@ -43,14 +43,15 @@ class ShowElement:
         return f"{self.__class__.__name__}(pow {self.eff_intensity}, spd {self.eff_speed}) for {self.duration} s"
 
 class TotalPreset(ShowElement):
-    def __init__(self, ps, duration):
+    def __init__(self, ps_id, duration, transition_delay=None):
         super().__init__(duration)
-        self.ps = ps
+        self.ps = ps_id
+        self.transition_delay = transition_delay
 
     def activate(self):
         for i in range(3):
             try:
-                wl.wleds.set_preset(self.ps, self.eff_intensity, self.eff_speed)
+                wl.wleds.set_preset_udp(self.ps, self.eff_intensity, self.eff_speed, follow_up = (i != 0), transition_delay=self.transition_delay)
             except Exception as e:
                 logger.warning(f"{e} while setting {self}")
 
@@ -78,6 +79,18 @@ class Green(TotalPreset):
 class Blue(TotalPreset):
     def __init__(self, duration):
         super().__init__(11, duration)
+
+class RedImmediate(TotalPreset):
+    def __init__(self, duration):
+        super().__init__(14, duration, transition_delay=0)
+
+class GreenImmediate(TotalPreset):
+    def __init__(self, duration):
+        super().__init__(17, duration, transition_delay=0)
+
+class BlueImmediate(TotalPreset):
+    def __init__(self, duration):
+        super().__init__(11, duration, transition_delay=0)
 
 class WarmWhite(TotalPreset):
     def __init__(self, duration):
