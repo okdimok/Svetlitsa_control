@@ -19,7 +19,7 @@ class ShowElement:
         self.eff_speed = eff_speed
 
     def sleep(self):
-        self._sleep_timer = Timer(self.duration, lambda: True)
+        self._sleep_timer = Timer(self.duration, lambda: True) # No name for timers:(  name=f"{self.__class__.__name__}_sleep_timer")
         self._sleep_timer.start()
         self._sleep_timer.join()
 

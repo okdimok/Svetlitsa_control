@@ -31,7 +31,7 @@ class WledListener:
         self.datasock.bind(("0.0.0.0", port))
         for ip in self._get_known_ips():
             self._ip_update_times[ip] = time()
-        self._listen_thread = Thread(target=self.recv)
+        self._listen_thread = Thread(target=self.recv, name=f"{self.__class__.__name__}_{port}_listen_thread")
         self._listen_thread.start()
         self.parse_callback = parse_callback
 

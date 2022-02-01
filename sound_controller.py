@@ -20,7 +20,7 @@ class SoundController:
     def __init__(self) -> None:
         pygame.mixer.init()  # Initialize the mixer module.
         self.sounds = dict()
-        Thread(target=self.load_sounds).start()
+        Thread(target=self.load_sounds, name=f"{self.__class__.__name__}_load_sounds").start()
         self.ambient_channel = pygame.mixer.Channel(0)
         self.overlay_channel = pygame.mixer.Channel(1)
 
@@ -48,7 +48,7 @@ class SoundController:
             sleep(0.1)
 
     def _ambient_volume_thread_start(self):
-        self._ambient_volume_thread = Thread(target=self._ambient_volume_loop)
+        self._ambient_volume_thread = Thread(target=self._ambient_volume_loop, name=f"{self.__class__.__name__}_ambient_volume")
         self._ambient_volume_thread.start()
 
     def play_overlay(self, sound_name):
