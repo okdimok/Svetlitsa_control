@@ -40,18 +40,11 @@ class MainRunner:
         self.button = Button(17)
         self.button.when_activated = self.on_button
         self.wled_listener = WledListener()
-        # self._button_show_not_running.set()
-
-    def _after_button_show(self):
-        # self._button_show_not_running.set()
-        self.run_next_background_show()
 
     def on_button(self):
-        logger.info("Button pressed")
         self.sound_controller.play_overlay("squeak")
         next_show = next(self.shows_on_button)
-        # next_show.on_the_run_end = self._after_button_show
-        # self._button_show_not_running.clear()
+        logger.info(f"Button pressed, starting {next_show}")
         self.start_show(next_show)
 
     def start_show(self, show):
@@ -65,34 +58,23 @@ class MainRunner:
                 self._show_thread.start()
         logger.debug(f"In MainRunner.start_show: started {show}")
 
-    def run_next_background_show(self):
-        # self._button_show_not_running.wait()
-        next_show = next(self.background_shows)
-        # next_show.on_the_run_end = self.run_next_background_show
-        self.start_show(next_show)
-        
-
     def run(self):
-        # self.run_next_background_show()
-
+        next_show = next(self.background_shows)
+        self.start_show(next_show)
+        main_thread = threading.main_thread()
         while True:
-            show = next(self.background_shows)
-            self.start_show(show)
-            sleep(show.get_duration())
-
-        # main_thread = threading.main_thread()
-        # while True:
-        #     L = threading.enumerate()
-        #     L.remove(main_thread)  # or avoid it in the for loop
-        #     for t in L:
-        #         t.join()
+            L = threading.enumerate()
+            L.remove(main_thread)  # or avoid it in the for loop
+            for t in L:
+                t.join()
 
     def _show_loop(self):
         while True:
             logger.debug(f"In MainRunner._show_loop: running once {self.current_show}")
-            self.current_show.run_once()
-            logger.debug(f"In MainRunner._show_loop: ran once {self.current_show}")
+            has_been_cancelled = self.current_show.run_once()
+            reason = "canceled" if has_been_cancelled else "finished"
+            logger.debug(f"In MainRunner._show_loop: ran once ({reason}) {self.current_show}")
             with self._show_lock:
-                pass
+                if (not has_been_cancelled): self.current_show = next(self.background_shows)
 
     

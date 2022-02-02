@@ -9,13 +9,11 @@ class Show:
     _current_show_element: ShowElement = None
     _needs_stop: Event = Event()
     _is_not_running: Event = Event()
-    on_the_run_end: Callable = None
 
     def __init__(self, elements=[], name="", on_the_run_end=None) -> None:
         self.elements = list(elements)
         self._is_not_running.set()
         self.name = name
-        # self.on_the_run_end = on_the_run_end
 
     def __repr__(self) -> str:
         s = ""
@@ -34,11 +32,10 @@ class Show:
             self._current_show_element = se
             se.run()
         self._is_not_running.set()
-        reason = "Canceled" if self._needs_stop.is_set() else "Finished"
+        cancelled = self._needs_stop.is_set()
+        reason = "Canceled" if cancelled else "Finished"
         logger.debug(f"#"*6 + f" {reason} {self}.")
-        # if self.on_the_run_end is not None and not self._needs_stop.is_set(): 
-        #     self.on_the_run_end()
-        #     logger.debug(f"#"*6 + f" Executed on_the_run_end in {self}.")
+        return cancelled # returns, whether it has been cancelled (error 1), or everything is fine (0)
 
     def stop(self):
         logger.debug(f"#"*6 + f" Stopping {self}.")
