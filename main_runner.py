@@ -42,8 +42,9 @@ class MainRunner:
         self.wled_listener = WledListener()
 
     def on_button(self):
-        self.sound_controller.play_overlay(Sounds.squeak)
         next_show = next(self.shows_on_button)
+        if next_show.sound is not None:
+            self.sound_controller.play_overlay(next_show.sound)
         logger.info(f"Button pressed, starting {next_show}")
         self.start_show(next_show)
 
