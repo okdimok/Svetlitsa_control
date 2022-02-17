@@ -13,7 +13,7 @@ from threading import Thread, Lock, Event, Timer
 from typing import Callable, Iterable
 from wled_listener import WledListener
 import shows
-from sound_controller import SoundController, Sounds
+from sound_controller import SoundController, Sound
 from time import sleep
 from itertools import cycle
 try:

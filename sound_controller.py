@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 from enum import Enum, auto
 
-class Sounds(Enum):
+class Sound(Enum):
     ambient_blues = auto()
     squeak = auto()
 
@@ -29,15 +29,15 @@ class SoundController:
 
     def load_sounds(self):
         logger.info("Loading sounds...")
-        self.sounds[Sounds.ambient_blues] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
-        self.sounds[Sounds.squeak] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
+        self.sounds[Sound.ambient_blues] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
+        self.sounds[Sound.squeak] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
         logger.info("Loading sounds completed!")
         self.sounds_ready = True
         self.start_ambient()
 
     def start_ambient(self):
         self.ambient_channel.set_volume(self._default_ambient_volume)
-        self.ambient_channel.play(self.get_sound(Sounds.ambient_blues), loops=-1) # see https://www.pygame.org/docs/ref/mixer.html#pygame.mixer.Sound.play
+        self.ambient_channel.play(self.get_sound(Sound.ambient_blues), loops=-1) # see https://www.pygame.org/docs/ref/mixer.html#pygame.mixer.Sound.play
         self._ambient_volume_thread_start()
         
 
@@ -54,7 +54,7 @@ class SoundController:
         self._ambient_volume_thread = Thread(target=self._ambient_volume_loop, name=f"{self.__class__.__name__}_ambient_volume")
         self._ambient_volume_thread.start()
 
-    def play_overlay(self, sound: Sounds):
+    def play_overlay(self, sound: Sound):
         sound = self.get_sound(sound)
         if sound is not None:
             self.ambient_channel.set_volume(0.3)
@@ -62,7 +62,7 @@ class SoundController:
         else:
             logging.warning(f"Trying to play sound {sound} before it is loaded")
 
-    def get_sound(self, sound: Sounds):
+    def get_sound(self, sound: Sound):
         if not self.sounds_ready:
             return None
         if sound in self.sounds.keys():

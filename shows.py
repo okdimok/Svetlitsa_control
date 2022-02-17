@@ -2,7 +2,7 @@ from threading import Event, Lock
 import time
 from typing import Callable
 from show_elements import *
-from sound_controller import Sounds
+from sound_controller import Sound
 import logging
 logger = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ class Show:
     _current_show_element: ShowElement = None
     _needs_stop: Event = Event()
     _is_not_running: Event = Event()
-    sound: Sounds = None
+    sound: Sound = None
 
     def __init__(self, elements=[], name="", sound=None) -> None:
         self.elements = list(elements)
@@ -99,7 +99,7 @@ show_fast = [
 ] + [Red(dt), Green(dt), Blue(dt)] * 2
 show_fast = Show(show_fast, "fast")
 
-show_red = Show([RedImmediate(5)], "red", Sounds.squeak)
+show_red = Show([RedImmediate(5)], "red", Sound.squeak)
 show_green = Show([GreenImmediate(5)], "green")
 show_blue = Show([BlueImmediate(5)], "blue")
 
