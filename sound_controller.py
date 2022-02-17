@@ -6,8 +6,11 @@ from typing import Dict
 from threading import Thread
 import logging
 logger = logging.getLogger(__name__)
+from enum import Enum, auto
 
-MUSIC_END = pygame.USEREVENT+1
+class Sounds(Enum):
+    ambient_blues = auto()
+    squeak = auto()
 
 class SoundController:
     sounds: Dict[str, pygame.mixer.Sound]
@@ -26,15 +29,15 @@ class SoundController:
 
     def load_sounds(self):
         logger.info("Loading sounds...")
-        self.sounds["ambient_blues"] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
-        self.sounds["squeak"] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
+        self.sounds[Sounds.ambient_blues] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
+        self.sounds[Sounds.squeak] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
         logger.info("Loading sounds completed!")
         self.sounds_ready = True
         self.start_ambient()
 
     def start_ambient(self):
         self.ambient_channel.set_volume(self._default_ambient_volume)
-        self.ambient_channel.play(self.get_sound("ambient_blues"), loops=-1) # see https://www.pygame.org/docs/ref/mixer.html#pygame.mixer.Sound.play
+        self.ambient_channel.play(self.get_sound(Sounds.ambient_blues), loops=-1) # see https://www.pygame.org/docs/ref/mixer.html#pygame.mixer.Sound.play
         self._ambient_volume_thread_start()
         
 
@@ -51,19 +54,19 @@ class SoundController:
         self._ambient_volume_thread = Thread(target=self._ambient_volume_loop, name=f"{self.__class__.__name__}_ambient_volume")
         self._ambient_volume_thread.start()
 
-    def play_overlay(self, sound_name):
-        sound = self.get_sound(sound_name)
+    def play_overlay(self, sound: Sounds):
+        sound = self.get_sound(sound)
         if sound is not None:
             self.ambient_channel.set_volume(0.3)
             self.overlay_channel.play(sound, fade_ms=200)
         else:
-            logging.warning(f"Trying to play sound {sound_name} before it is loaded")
+            logging.warning(f"Trying to play sound {sound} before it is loaded")
 
-    def get_sound(self, sound_name):
+    def get_sound(self, sound: Sounds):
         if not self.sounds_ready:
             return None
-        if sound_name in self.sounds.keys():
-            return self.sounds[sound_name]
+        if sound in self.sounds.keys():
+            return self.sounds[sound]
         return None
 
 

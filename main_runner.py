@@ -13,7 +13,7 @@ from threading import Thread, Lock, Event, Timer
 from typing import Callable, Iterable
 from wled_listener import WledListener
 import shows
-from sound_controller import SoundController
+from sound_controller import SoundController, Sounds
 from time import sleep
 from itertools import cycle
 try:
@@ -42,7 +42,7 @@ class MainRunner:
         self.wled_listener = WledListener()
 
     def on_button(self):
-        self.sound_controller.play_overlay("squeak")
+        self.sound_controller.play_overlay(Sounds.squeak)
         next_show = next(self.shows_on_button)
         logger.info(f"Button pressed, starting {next_show}")
         self.start_show(next_show)
