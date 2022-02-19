@@ -33,6 +33,7 @@ class MainRunner:
     _show_lock: Lock = Lock()
     shows_on_button: Iterable[shows.Show] = cycle([shows.show_red, shows.show_green, shows.show_blue, shows.show_tube])
     background_shows: Iterable[shows.Show] = cycle([shows.show_fast, shows.show_short])
+    sounds: Iterable[Sound] = cycle(Sound)
     # _button_show_not_running: Event = Event()
 
     def __init__(self) -> None:
@@ -43,9 +44,11 @@ class MainRunner:
 
     def on_button(self):
         next_show = next(self.shows_on_button)
-        if next_show.sound is not None:
-            self.sound_controller.play_overlay(next_show.sound)
-        logger.info(f"Button pressed, starting {next_show}")
+        # if next_show.sound is not None:
+        #     self.sound_controller.play_overlay(next_show.sound)
+        next_sound = next(self.sounds)
+        self.sound_controller.play_overlay(next_sound)
+        logger.info(f"Button pressed, starting {next_show}, and sound {next_sound}")
         self.start_show(next_show)
 
     def start_show(self, show):

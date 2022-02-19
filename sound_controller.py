@@ -11,6 +11,30 @@ from enum import Enum, auto
 class Sound(Enum):
     ambient_blues = auto()
     squeak = auto()
+    blue = auto()
+    color_change = auto()
+    colorful = auto()
+    convex_concave = auto()
+    cozy = auto()
+    forwarded = auto()
+    important = auto()
+    kaleidoscope_mirrors = auto()
+    laser_light = auto()
+    lenticular_caleidoscope = auto()
+    lenticular_triangles = auto()
+    muller_lyer = auto()
+    oops = auto()
+    rectangles_color = auto()
+    rectangles_stroop = auto()
+    red = auto()
+    red_philosophy = auto()
+    same_different_colors = auto()
+    scandal = auto()
+    showers = auto()
+    spring = auto()
+    wait = auto()
+    walking = auto()
+    yes = auto()
 
 class SoundController:
     sounds: Dict[str, pygame.mixer.Sound]
@@ -31,6 +55,13 @@ class SoundController:
         logger.info("Loading sounds...")
         self.sounds[Sound.ambient_blues] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
         self.sounds[Sound.squeak] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
+        for sound in Sound:
+            if sound in self.sounds.keys():
+                continue
+            try:
+                self.sounds[sound] = pygame.mixer.Sound(f'sounds/{sound.name}.mp3')  # Load a sound.
+            except:
+                logging.warning(f"No mp3 for {sound}")
         logger.info("Loading sounds completed!")
         self.sounds_ready = True
         self.start_ambient()
@@ -55,10 +86,10 @@ class SoundController:
         self._ambient_volume_thread.start()
 
     def play_overlay(self, sound: Sound):
-        sound = self.get_sound(sound)
-        if sound is not None:
-            self.ambient_channel.set_volume(0.3)
-            self.overlay_channel.play(sound, fade_ms=200)
+        loaded_sound = self.get_sound(sound)
+        if loaded_sound is not None:
+            self.ambient_channel.set_volume(0.2)
+            self.overlay_channel.play(loaded_sound, fade_ms=200)
         else:
             logging.warning(f"Trying to play sound {sound} before it is loaded")
 
