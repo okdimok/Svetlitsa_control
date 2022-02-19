@@ -38,11 +38,13 @@ from preset_manager import get_udp_kwargs
 
 class WledDMX:
     LEDS_PER_UNIVERSE = 170 # 512//3
+    SEND_OUT_INTERVAL = 0.3
     def __init__(self, wled):
         self.wled = wled
         self.sender = None
 
     def start(self):
+        WledDMX.set_send_interval(WledDMX.SEND_OUT_INTERVAL)
         if self.sender is None:
             self.sender = sacn.sACNsender()
         strips = self.wled.cfg["hw"]["led"]["ins"]
@@ -70,6 +72,10 @@ class WledDMX:
 
     def __del__(self):
         self.stop()
+
+    @classmethod
+    def set_send_interval(cls, interval_s=1.0):
+        sacn.sending.sender_handler.SEND_OUT_INTERVAL = interval_s
 
 
 

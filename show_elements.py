@@ -1,6 +1,6 @@
 from threading import Event, Timer, Lock
 import time
-from wled_common_client import Wled, Wleds
+from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
 import logging
@@ -26,10 +26,14 @@ class ShowElement:
     def activate(self):
         logger.debug(wl.wleds)
 
+    def deactivate(self):
+        pass
+
     def run(self):
         with self._is_activating_lock:
             self.activate()
         self.sleep()
+        self.deactivate()
 
     def stop(self):
         with self._is_activating_lock:
@@ -117,6 +121,26 @@ class TotalEffect(ShowElement):
     def __init__(self, duration,  eff_intensity, eff_speed):
         super().__init__(duration, eff_intensity=eff_intensity, eff_speed=eff_speed)
 
+class SegmentOnDMX(ShowElement):
+    def __init__(self, duration):
+        super().__init__(duration)
+
+    def activate(self):
+        for i in range(3):
+            wl.wleds.send_udp_sync(brightness=255, col=[0,0,0,0])
+        self.tube = wl.wleds["WLED-tube-1"]
+        self.tube.dmx.start() # this sets the n_leds
+        n_leds = self.tube.dmx.n_leds
+        data = []
+        data += [0, 0, 0] * (n_leds//3 )
+        data += [255, 255, 255] * (n_leds//3 )
+        data += [255, 255, 0] * (n_leds-len(data)//3 )
+        self.tube.dmx.set_data(data)
+
+    def deactivate(self):
+        logging.debug("Deactivating sACN sender.")
+        self.tube.dmx.stop()
+        time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
 
 
 

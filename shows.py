@@ -102,5 +102,8 @@ show_fast = Show(show_fast, "fast")
 show_red = Show([RedImmediate(5)], "red", Sound.squeak)
 show_green = Show([GreenImmediate(5)], "green")
 show_blue = Show([BlueImmediate(5)], "blue")
+show_tube = Show([SegmentOnDMX(10)], "tube")
+
+
 
 show = show_fast
