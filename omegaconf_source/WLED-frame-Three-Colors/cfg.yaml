@@ -1,7 +1,7 @@
 vid: 2104220
 id:
-  mdns: wled-frame-cubes
-  name: WLED-frame-Cubes
+  mdns: wled-frame-three-colors
+  name: WLED-frame-Three-Colors
 hw:
   led: {total: 150, ledma: 0, ins: [{en: true, len: 150, order: 0, pin: [4], rev: false,
         skip: 0, start: 0, type: 22}], maxpwr: 5_000}

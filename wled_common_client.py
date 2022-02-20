@@ -102,6 +102,9 @@ class Wled:
     def print(self, intro=""):
         print(f"{intro}{self}", flush=True)
 
+    def log(self, intro=""):
+        logger.info(f"{intro}{self}")
+
     @classmethod
     def from_udp_multicast(cls, row):
         wled =  cls(ip=row[0].val)

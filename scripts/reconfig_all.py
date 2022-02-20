@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, sys, time
 from local_env import *
 from run_once import should_this_continue_running
