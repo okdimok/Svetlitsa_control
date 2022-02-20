@@ -47,6 +47,7 @@ class MainRunner:
         # if next_show.sound is not None:
         #     self.sound_controller.play_overlay(next_show.sound)
         next_sound = next(self.sounds)
+        self.sound_controller.stop_overlay()
         self.sound_controller.play_overlay(next_sound)
         logger.info(f"Button pressed, starting {next_show}, and sound {next_sound}")
         self.start_show(next_show)

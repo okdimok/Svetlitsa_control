@@ -93,6 +93,9 @@ class SoundController:
         else:
             logging.warning(f"Trying to play sound {sound} before it is loaded")
 
+    def stop_overlay(self):
+        self.overlay_channel.stop()
+
     def get_sound(self, sound: Sound):
         if not self.sounds_ready:
             return None
