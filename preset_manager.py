@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 # def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
 #         nightlightActive=0, nightlightDelayMins=60,
 #         secondary_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
-#         this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
+#         follow_up=False, sync_groups={1}, timebase_shift=0):
 
 # https://github.com/Aircoookie/WLED/blob/bc403440bac6d8f3d074153d2d8a2f5c838efe2e/wled00/json.cpp#L149
 
@@ -78,7 +78,7 @@ def get_udp_kwargs(ps_id, eff_intensity=None, eff_speed=None, follow_up=None, tr
     if eff_speed is not None:
         kwargs["fx_speed"] = eff_speed
     if follow_up is not None:
-        kwargs["this_is_a_follow_up"] = follow_up
+        kwargs["follow_up"] = follow_up
     if transition_delay is not None:
         kwargs["transition_delay"] = transition_delay
     return kwargs

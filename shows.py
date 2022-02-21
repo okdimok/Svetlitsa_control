@@ -99,11 +99,33 @@ show_fast = [
 ] + [Red(dt), Green(dt), Blue(dt)] * 2
 show_fast = Show(show_fast, "fast")
 
-show_red = Show([RedImmediate(5)], "red", Sound.squeak)
+show_red_silent = Show([RedImmediate(5)], "red_silent", Sound.squeak)
 show_green = Show([GreenImmediate(5)], "green")
-show_blue = Show([BlueImmediate(5)], "blue")
-show_tube = Show([SegmentOnDMX(10)], "tube")
+show_blue_silent = Show([BlueImmediate(5)], "blue_silent")
+show_tube = Show([SegmentOnDMX(10, lambda w: "tube-1" in w.name)], "tube")
 
+show_colorloop = Show([Colorloop(10)], "colorloop_silent")
 
+show_cubes = Show([
+    RedImmediate(3, lambda w: "Cubes" in w.name),
+    GreenImmediate(3, lambda w: "Cubes" in w.name),
+    BlueImmediate(3, lambda w: "Cubes" in w.name),
+], "cubes")
 
-show = show_fast
+## The audio guide shows for Holodok 2022
+
+show_oops = Show([Off(3)], "oops", Sound.oops)
+show_showers = Show([
+    FXOnFiltered(0, 2, 255, 255, col=[255, 92, 119]),
+    FXOnFiltered(0, 2, 255, 255, col=[66, 170, 255]),
+]*2, "showers", Sound.showers)
+show_blue = Show([BlueImmediate(10)], "blue", Sound.blue)
+show_red = Show([RedImmediate(10)], "red", Sound.red)
+# show_kaleidoscope_mirrors
+show_color_change = Show([Colorloop(30, 50)], "color_change", Sound.color_change)
+show_walking = Show([
+    FXOnFiltered(0, 5, 255, 255, col=[50, 255, 50], filter_lambda=lambda w: "Cubes" in w.name),
+    FXOnFiltered(0, 5, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
+    Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
+], "walking", Sound.walking)
+

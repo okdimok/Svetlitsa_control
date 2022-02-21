@@ -256,7 +256,7 @@ class Wled:
     def send_udp_sync_v9(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
             secondary_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
-            this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
+            follow_up=False, sync_groups={1}, timebase_shift=0):
         udpOut = [0] * 37
         callMode = 1 # CALL_MODE_DIRECT_CHANGE
         bri = brightness
@@ -273,7 +273,7 @@ class Wled:
         colTer += (tertiary_color[1] & 0xFF) << 8
         colTer += (tertiary_color[2] & 0xFF) << 0
         colTer += (tertiary_color[3] & 0xFF) << 24
-        followUp = this_is_a_follow_up
+        followUp = follow_up
         # timebase is the base for calculating all the times in the effects, in ms
         # see https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/FX_fcn.cpp#L119
         # https://github.com/Aircoookie/WLED/blob/v0.13.0-b5/wled00/src/dependencies/toki/Toki.h#L31
@@ -348,12 +348,12 @@ class Wled:
     def send_udp_sync(self, brightness=255, col=[255,0,0, 0], fx=0, fx_speed=10, fx_intensity=255, transition_delay=1000, palette=0, 
             nightlightActive=0, nightlightDelayMins=60,
             secondary_color=[0, 255, 0, 0], tertiary_color=[0, 0, 255, 0],
-            this_is_a_follow_up=False, sync_groups={1}, timebase_shift=0):
+            follow_up=False, sync_groups={1}, timebase_shift=0):
         self.send_udp_sync_v9(brightness=brightness, col=col, fx=fx, fx_speed=fx_speed, fx_intensity=fx_intensity,
                 transition_delay=transition_delay, palette=palette,
                 nightlightActive=nightlightActive, nightlightDelayMins=nightlightDelayMins,
                 secondary_color=secondary_color, tertiary_color=tertiary_color,
-                this_is_a_follow_up=this_is_a_follow_up, sync_groups=sync_groups, timebase_shift=timebase_shift)
+                follow_up=follow_up, sync_groups=sync_groups, timebase_shift=timebase_shift)
 
     @classmethod
     def parse_udp_sync(cls, bts): # this hasa to be a classmethod, because the sync can come from any of the Wleds
@@ -701,7 +701,10 @@ class Wleds:
     def sort(self):
         self.wleds = list(sorted(self.wleds, key=lambda w: w.name))
         return self
-        
+    
+    def filter(self, filter_lambda):
+        wleds = list(filter(filter_lambda, self.wleds))
+        return self.__class__(wleds)
 
     def __getitem__(self, item) -> Optional[Type[Wled]]:
         return self.get_by_name(item)

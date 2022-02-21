@@ -31,7 +31,7 @@ class MainRunner:
     sound_controller: SoundController
     _show_thread: Thread = None
     _show_lock: Lock = Lock()
-    shows_on_button: Iterable[shows.Show] = cycle([shows.show_red, shows.show_green, shows.show_blue, shows.show_tube])
+    shows_on_button: Iterable[shows.Show] = cycle([shows.show_red, shows.show_green, shows.show_cubes, shows.show_tube])
     background_shows: Iterable[shows.Show] = cycle([shows.show_fast, shows.show_short])
     sounds: Iterable[Sound] = cycle(Sound)
     # _button_show_not_running: Event = Event()
