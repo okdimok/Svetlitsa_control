@@ -1,7 +1,6 @@
 import os, sys, time
 from local_env import *
 from run_once import should_this_continue_running
-from shows import *
 import datetime
 import wled_common_client, importlib    
 importlib.reload(wled_common_client)

@@ -4,7 +4,6 @@ if __name__ == "__main__":
 # import os, sys, time
 from local_env import *
 # from run_once import should_this_continue_running
-# from shows import *
 from wled_common_client import Wled, Wleds
 from time import sleep
 # from multiprocessing.pool import ThreadPool
