@@ -1,5 +1,6 @@
-def get_fx_id_by_name(fx_name):
-    return _fx_id_by_name[fx_name]
+# please, import fxs from this helper module
+
+__all__ = ["fxs"]
 
 # copy the contents from the wled00/FX.h:120 below:
 _effects = """
@@ -124,10 +125,12 @@ _effects = """
 """
 
 import re
+from utils import NamingEnum, dotdict
 p = re.compile("#define FX_MODE_(\w*)\s*(\d*)")
-_fx_id_by_name = dict()
+class fxs(NamingEnum):
+    pass
 for l in _effects.split("\n"):
     if not l: continue
     m = p.match(l)
     if m:
-        _fx_id_by_name[m.group(1)] = int(m.group(2))
+        setattr(fxs, m.group(1), int(m.group(2)))

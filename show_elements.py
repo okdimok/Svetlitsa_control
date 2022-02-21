@@ -4,7 +4,7 @@ from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
 from preset_manager import get_preset_id_by_name as ps
-from fx_manager import get_fx_id_by_name as fx
+from fx_manager import fxs
 import logging
 logger = logging.getLogger(__name__)
 
