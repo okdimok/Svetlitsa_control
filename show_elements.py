@@ -3,6 +3,8 @@ import time
 from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
+from preset_manager import get_preset_id_by_name as ps
+from fx_manager import get_fx_id_by_name as fx
 import logging
 logger = logging.getLogger(__name__)
 
@@ -78,18 +80,18 @@ class PresetOnFiltered(ShowElement):
 
 
 class TotalFX(ShowElement):
-    def __init__(self, fx, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True):
+    def __init__(self, fx_id, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True):
         super().__init__(duration, eff_intensity, eff_speed, filter_lambda=filter_lambda)
-        self.fx = fx
+        self.fx_id = fx_id
 
     def activate(self):
         for i in range(3):
-            wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
+            wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx_id, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
 
 class FXOnFiltered(ShowElement):
-    def __init__(self, fx, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None, secondary_color=None, tertiary_color=None):
+    def __init__(self, fx_id, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None, secondary_color=None, tertiary_color=None):
         super().__init__(duration, eff_intensity, eff_speed, filter_lambda=filter_lambda)
-        self.fx = fx
+        self.fx_id = fx_id
         self.transition_delay = transition_delay
         self.black_transition_delay = black_transition_delay
         self.col = col
@@ -105,7 +107,7 @@ class FXOnFiltered(ShowElement):
                 if self.col is not None: kwargs["col"] = self.col
                 if self.secondary_color is not None: kwargs["secondary_color"] = self.secondary_color
                 if self.tertiary_color is not None: kwargs["tertiary_color"] = self.tertiary_color
-                wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx, 
+                wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx_id, 
                     fx_intensity = self.eff_intensity, fx_speed = self.eff_speed, 
                     transition_delay=self.transition_delay, follow_up = (i != 0),
                     **kwargs)

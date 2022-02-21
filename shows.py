@@ -5,6 +5,8 @@ from show_elements import *
 from sound_controller import Sound
 from enum import Enum
 from utils import dotdict, NamingEnum
+from preset_manager import get_preset_id_by_name as ps
+from fx_manager import get_fx_id_by_name as fx
 import logging
 logger = logging.getLogger(__name__)
 
@@ -138,7 +140,11 @@ class SilentShows(NamingEnum):
         Colorloop(20, 100),
         ])
     objects = Show([
-        FXOnFiltered(48, 5, 10, 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Police
+        FXOnFiltered(fx("POLICE"), 5 ,10, 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Police
+        FXOnFiltered(fx("TRICOLOR_CHASE"), 5, 255, 255, col=[0, 255, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Green Running
+        FXOnFiltered(fx("TRICOLOR_CHASE"), 5, 255, 255, col=[255, 0, 0], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Red Running
+        RBPills(5, filter_lambda=lambda w: "Objects" in w.name), # Red Running, 
+        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name)
         ])
 
 SilentShows.__init_names__()

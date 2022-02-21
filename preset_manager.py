@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 def get_preset_by_id(ps_id):
     return default_presets[str(ps_id)]
 
+def get_preset_id_by_name(ps_name):
+    return __preset_ids[ps_name]
+
 def _get_udp_kwargs(preset):
     kwargs = {}
     try:
@@ -88,5 +91,7 @@ default_presets = [omegaconf_universal_load(f) for f in default_presets]
 default_presets = OmegaConf.merge(*default_presets)
 
 __preset_kwargs = {}
+__preset_ids = {}
 for ps_id, preset in default_presets.items():
     __preset_kwargs[int(ps_id)] = _get_udp_kwargs(preset)
+    __preset_ids[preset.n] = int(ps_id)
