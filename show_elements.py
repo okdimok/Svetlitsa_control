@@ -61,8 +61,8 @@ class TotalPreset(ShowElement):
                 logger.warning(f"{e} while setting {self}")
 
 class PresetOnFiltered(ShowElement):
-    def __init__(self, ps_id, duration, filter_lambda=lambda w: True, transition_delay=None, black_transition_delay=1000):
-        super().__init__(duration, filter_lambda=filter_lambda)
+    def __init__(self, ps_id, duration, eff_intensity=None, eff_speed=None, filter_lambda=lambda w: True, transition_delay=None, black_transition_delay=1000):
+        super().__init__(duration, eff_intensity=eff_intensity, eff_speed=eff_speed, filter_lambda=filter_lambda)
         self.ps = ps_id
         self.transition_delay = transition_delay
         self.black_transition_delay = black_transition_delay
@@ -87,12 +87,14 @@ class TotalFX(ShowElement):
             wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
 
 class FXOnFiltered(ShowElement):
-    def __init__(self, fx, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None):
+    def __init__(self, fx, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None, secondary_color=None, tertiary_color=None):
         super().__init__(duration, eff_intensity, eff_speed, filter_lambda=filter_lambda)
         self.fx = fx
         self.transition_delay = transition_delay
         self.black_transition_delay = black_transition_delay
         self.col = col
+        self.secondary_color = secondary_color
+        self.tertiary_color = tertiary_color
 
     def activate(self):
         for i in range(3):
@@ -101,6 +103,8 @@ class FXOnFiltered(ShowElement):
             try:
                 kwargs = dict()
                 if self.col is not None: kwargs["col"] = self.col
+                if self.secondary_color is not None: kwargs["secondary_color"] = self.secondary_color
+                if self.tertiary_color is not None: kwargs["tertiary_color"] = self.tertiary_color
                 wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx, 
                     fx_intensity = self.eff_intensity, fx_speed = self.eff_speed, 
                     transition_delay=self.transition_delay, follow_up = (i != 0),
@@ -108,21 +112,21 @@ class FXOnFiltered(ShowElement):
             except Exception as e:
                 logger.warning(f"{e} while setting {self} with {self.filter_lambda}")
 
-class RYAndroid(TotalPreset):
-    def __init__(self, duration):
-        super().__init__(3, duration)
+class RYAndroid(PresetOnFiltered):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(3, duration, filter_lambda=filter_lambda)
 
-class Red(TotalPreset):
-    def __init__(self, duration):
-        super().__init__(14, duration)
+class Red(PresetOnFiltered):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(14, duration, filter_lambda=filter_lambda)
 
-class Green(TotalPreset):
-    def __init__(self, duration):
-        super().__init__(17, duration)
+class Green(PresetOnFiltered):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(17, duration, filter_lambda=filter_lambda)
 
-class Blue(TotalPreset):
-    def __init__(self, duration):
-        super().__init__(11, duration)
+class Blue(PresetOnFiltered):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(11, duration, filter_lambda=filter_lambda)
 
 class RedImmediate(PresetOnFiltered):
     def __init__(self, duration, filter_lambda=lambda w: True):
@@ -143,6 +147,12 @@ class ColorImmediate(FXOnFiltered):
 class WarmWhite(TotalPreset):
     def __init__(self, duration):
         super().__init__(20, duration)
+
+class RBPills(PresetOnFiltered):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(29, duration, transition_delay=0, black_transition_delay=0, filter_lambda=filter_lambda)
+
+
 
 # This one is deprecated: the UDP one is much more reliable in terms of synchronously setting the same mode
 # class Colorloop(TotalPreset):

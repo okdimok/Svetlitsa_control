@@ -59,13 +59,9 @@ class WledListener:
             if (name is not None): # this is an update of proper type
                 if not WledListener.check_if_ip_name_pair_is_in_wleds(ip, name, wleds): # there is some novelty
                     if ip in self._get_known_ips(): # the ip is known, but the name has changed
-                        wled_to_remove = wleds.get_by_ip(ip)
-                        wleds.remove(wled_to_remove) # removing the old wled from wleds
-                        logger.warning(f"A new WLED name with the same IP ({ip}): {wled_to_remove.name} → {name}")
+                        self._remove_all_by_ip(ip, new_name = name) # removing the old wled from wleds
                     if name in self._get_known_names(): # the ip is known, but the name has changed
-                        wled_to_remove = wleds.get_by_name(name)
-                        wleds.remove(wled_to_remove) # removing the old wled from wleds
-                        logger.warning(f"A WLED name with the same name ({name}) but a different IP: {wled_to_remove.ip} → {ip}")
+                        self._remove_all_by_name(name, new_ip=ip) # removing the old wled from wleds
                     try:
                         new_wled = Wled.from_one_ip(ip, name)
                         wleds.append(new_wled)
@@ -80,10 +76,21 @@ class WledListener:
 
     @classmethod
     def check_if_ip_name_pair_is_in_wleds(cls, ip, name, wleds):
-        wled = wleds.get_by_ip(ip)
-        if wled is None:
-            return False
-        return wled.name == name
+        for wled in wleds.filter(lambda w: w.ip == ip):
+            if wled.name == name:
+                return True
+        return False
+
+    def _remove_all_by_ip(cls, ip, new_name):
+        for wled in wleds.filter(lambda w: w.ip == ip):
+            logger.warning(f"A new WLED name with the same IP ({ip}): {wled.name} → {new_name}")
+            wleds.remove(wled)
+
+    def _remove_all_by_name(cls, name, new_ip):
+        for wled in wleds.filter(lambda w: w.name == name):
+            logger.warning(f"A WLED name with the same name ({name}) but a different IP: {wled.ip} → {new_ip}")
+            wleds.remove(wled)
+
 
     def _get_known_ips(self):
         return wleds.get_ips()

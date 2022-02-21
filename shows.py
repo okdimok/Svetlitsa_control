@@ -137,6 +137,9 @@ class SilentShows(NamingEnum):
         Colorloop(20, 50),
         Colorloop(20, 100),
         ])
+    objects = Show([
+        FXOnFiltered(48, 5, 10, 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Police
+        ])
 
 SilentShows.__init_names__()
 
@@ -178,13 +181,28 @@ ShowAndAudio.__init_names__()
 class FramesShowAndAudio(NamingEnum):
     # lenticular_triangles
     muller_lyer = Show([
-        Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
-        ], Sound.walking)
-    # convex_concave 
-    # same_different_colors 
+        Colorloop(10, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        ], Sound.muller_lyer)
+    convex_concave = Show([
+        Colorloop(20, 20, filter_lambda=lambda w: "Cubes" in w.name),
+        Red(3, filter_lambda=lambda w: "Cubes" in w.name),
+        Green(3, filter_lambda=lambda w: "Cubes" in w.name),
+        Blue(3, filter_lambda=lambda w: "Cubes" in w.name),
+        Colorloop(20, 20, filter_lambda=lambda w: "Cubes" in w.name),
+        ], Sound.convex_concave)
+    same_different_colors = Show([
+        Colorloop(15, 40, filter_lambda=lambda w: "Three-Colors" in w.name),
+        FXOnFiltered(0, 50, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
+        ], Sound.convex_concave)
     # rectangles_color 
     # rectangles_stroop
     # lenticular_caleidoscope 
     # laser_light 
 
 FramesShowAndAudio.__init_names__()
+
+class AllShows(NamingEnum):
+    pass
+
+for a, v in list(SilentShows.items()) + list(AudioOnlyShows.items()) + list(ShowAndAudio.items()) + list(FramesShowAndAudio.items()):
+    setattr(AllShows, a, v)

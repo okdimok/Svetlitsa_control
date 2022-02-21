@@ -712,6 +712,9 @@ class Wleds:
     def __iter__(self):
         return self.wleds.__iter__()
     
+    def __len__(self):
+        return self.wleds.__len__()
+    
     def __getattr__(self, attr):
         if attr not in Wled.__dict__.keys():
             raise AttributeError(f"Neither '{self.__class__.__name__}' nor Wled object has no attribute '{attr}'")
