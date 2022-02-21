@@ -3,6 +3,8 @@ import time
 from typing import Callable
 from show_elements import *
 from sound_controller import Sound
+from enum import Enum
+from utils import dotdict, NamingEnum
 import logging
 logger = logging.getLogger(__name__)
 
@@ -68,6 +70,18 @@ class Show:
     def __str__(self) -> str:
         return f"{self.__class__.__name__} {self.name}"
 
+class AudioOnlyShow:
+    sound: Sound = None
+
+    def __init__(self, sound=None) -> None:
+        self.sound = sound
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__} {self.sound}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
 
 show_1 = Show([
     ShowElement(0),
@@ -99,9 +113,7 @@ fast = [
 ] + [Red(dt), Green(dt), Blue(dt)] * 2
 fast = Show(fast, "fast")
 
-red_silent = Show([RedImmediate(5)], "red_silent", Sound.squeak)
-green = Show([GreenImmediate(5)], "green")
-blue_silent = Show([BlueImmediate(5)], "blue_silent")
+
 tube = Show([SegmentOnDMX(10, lambda w: "tube-1" in w.name)], "tube")
 
 colorloop = Show([Colorloop(10)], "colorloop_silent")
@@ -114,18 +126,65 @@ cubes = Show([
 
 ## The audio guide shows for Holodok 2022
 
-oops = Show([Off(3)], "oops", Sound.oops)
-showers = Show([
-    FXOnFiltered(0, 2, 255, 255, col=[255, 92, 119]),
-    FXOnFiltered(0, 2, 255, 255, col=[66, 170, 255]),
-]*2, "showers", Sound.showers)
-blue = Show([BlueImmediate(10)], "blue", Sound.blue)
-red = Show([RedImmediate(10)], "red", Sound.red)
-# kaleidoscope_mirrors
-color_change = Show([Colorloop(30, 50)], "color_change", Sound.color_change)
-walking = Show([
-    FXOnFiltered(0, 5, 255, 255, col=[50, 255, 50], filter_lambda=lambda w: "Cubes" in w.name),
-    FXOnFiltered(0, 5, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
-    Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
-], "walking", Sound.walking)
+## Silent Shows
 
+class SilentShows(NamingEnum):
+    red_silent = Show([RedImmediate(10)])
+    green_silent = Show([GreenImmediate(10)])
+    blue_silent = Show([BlueImmediate(10)])
+    colorloop_silent = Show([
+        Colorloop(20, 20),
+        Colorloop(20, 50),
+        Colorloop(20, 100),
+        ])
+
+SilentShows.__init_names__()
+
+## AudioOnlyShows
+
+class AudioOnlyShows(NamingEnum):
+    scandal = AudioOnlyShow(Sound.scandal)
+    spring = AudioOnlyShow(Sound.spring)
+    cozy = AudioOnlyShow(Sound.cozy)
+    yes = AudioOnlyShow(Sound.yes)
+    colorful = AudioOnlyShow(Sound.colorful)
+    important = AudioOnlyShow(Sound.important)
+    wait = AudioOnlyShow(Sound.wait)
+    forwarded = AudioOnlyShow(Sound.forwarded)
+    red_philosophy = AudioOnlyShow(Sound.red_philosophy)
+
+## Show + Audio
+
+class ShowAndAudio(NamingEnum):
+    oops = Show([Off(3)], Sound.oops)
+    showers = Show([
+        FXOnFiltered(0, 2, 255, 255, col=[255, 92, 119]),
+        FXOnFiltered(0, 2, 255, 255, col=[66, 170, 255]),
+        ]*2, Sound.showers)
+    blue = Show([BlueImmediate(10)], Sound.blue)
+    red = Show([RedImmediate(10)], Sound.red)
+    # kaleidoscope_mirrors
+    color_change = Show([Colorloop(30, 50)], Sound.color_change)
+    walking = Show([
+        FXOnFiltered(0, 5, 255, 255, col=[50, 255, 50], filter_lambda=lambda w: "Cubes" in w.name),
+        FXOnFiltered(0, 5, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
+        Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
+        ], Sound.walking)
+
+ShowAndAudio.__init_names__()
+
+## Frames Show + Audio
+
+class FramesShowAndAudio(NamingEnum):
+    # lenticular_triangles
+    muller_lyer = Show([
+        Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
+        ], Sound.walking)
+    # convex_concave 
+    # same_different_colors 
+    # rectangles_color 
+    # rectangles_stroop
+    # lenticular_caleidoscope 
+    # laser_light 
+
+FramesShowAndAudio.__init_names__()
