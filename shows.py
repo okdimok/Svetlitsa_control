@@ -126,6 +126,10 @@ cubes = Show([
     BlueImmediate(3, lambda w: "Cubes" in w.name),
 ], "cubes")
 
+warm_white = Show([
+    WarmWhite(5),
+], "warm_white")
+
 ## The audio guide shows for Holodok 2022
 
 ## Silent Shows
