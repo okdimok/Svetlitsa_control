@@ -16,6 +16,8 @@ import shows
 from sound_controller import SoundController, Sound
 from time import sleep
 from itertools import cycle
+import random
+random.seed(42)
 try:
     from gpiozero import Button
 except ModuleNotFoundError:
@@ -31,7 +33,7 @@ class MainRunner:
     sound_controller: SoundController
     _show_thread: Thread = None
     _show_lock: Lock = Lock()
-    shows_on_button: Iterable[shows.Show] = cycle([shows.ShowAndAudio.red, shows.ShowAndAudio.blue, shows.cubes, shows.tube])
+    shows_on_button: Iterable[shows.Show] = cycle(shows.ButtonShows.values())
     background_shows: Iterable[shows.Show] = cycle([shows.fast, shows.short])
     sounds: Iterable[Sound] = cycle(Sound)
     # _button_show_not_running: Event = Event()
@@ -39,6 +41,9 @@ class MainRunner:
     def __init__(self) -> None:
         self.sound_controller = SoundController()
         self.button = Button(17)
+        shows_on_button = list(shows.ButtonShows.values())
+        random.shuffle(shows_on_button)
+        self.shows_on_button = cycle(shows_on_button)
         self.button.when_activated = self.on_button
         self.wled_listener = WledListener()
 

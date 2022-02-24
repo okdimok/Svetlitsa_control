@@ -50,6 +50,7 @@ class SoundController:
         Thread(target=self.load_sounds, name=f"{self.__class__.__name__}_load_sounds").start()
         self.ambient_channel = pygame.mixer.Channel(0)
         self.overlay_channel = pygame.mixer.Channel(1)
+        self.overlay_channel.set_volume(1.0)
 
     def load_sounds(self):
         logger.info("Loading sounds...")
@@ -88,7 +89,7 @@ class SoundController:
     def play_overlay(self, sound: Sound):
         loaded_sound = self.get_sound(sound)
         if loaded_sound is not None:
-            self.ambient_channel.set_volume(0.2)
+            self.ambient_channel.set_volume(0.1)
             self.overlay_channel.play(loaded_sound, fade_ms=200)
         else:
             logging.warning(f"Trying to play sound {sound} before it is loaded")

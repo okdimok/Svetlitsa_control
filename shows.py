@@ -144,7 +144,9 @@ class SilentShows(NamingEnum):
         FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[0, 255, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Green Running
         FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[255, 0, 0], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Red Running
         RBPills(5, filter_lambda=lambda w: "Objects" in w.name), # Red Running, 
-        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name)
+        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name),
+        PresetOnFiltered(ps("Gost Parade"), 5, filter_lambda=lambda w: "Objects" in w.name),
+        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name),
         ])
 
 SilentShows.__init_names__()
@@ -165,20 +167,20 @@ class AudioOnlyShows(NamingEnum):
 ## Show + Audio
 
 class ShowAndAudio(NamingEnum):
-    oops = Show([Off(3)], Sound.oops)
+    oops = Show([Off(3)], sound=Sound.oops)
     showers = Show([
         FXOnFiltered(0, 2, 255, 255, col=[255, 92, 119]),
         FXOnFiltered(0, 2, 255, 255, col=[66, 170, 255]),
-        ]*2, Sound.showers)
-    blue = Show([BlueImmediate(10)], Sound.blue)
-    red = Show([RedImmediate(10)], Sound.red)
+        ]*2, sound=Sound.showers)
+    blue = Show([BlueImmediate(10)], sound=Sound.blue)
+    red = Show([RedImmediate(10)], sound=Sound.red)
     # kaleidoscope_mirrors
-    color_change = Show([Colorloop(30, 50)], Sound.color_change)
+    color_change = Show([Colorloop(30, 50)], sound=Sound.color_change)
     walking = Show([
         FXOnFiltered(0, 5, 255, 255, col=[50, 255, 50], filter_lambda=lambda w: "Cubes" in w.name),
         FXOnFiltered(0, 5, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
         Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
-        ], Sound.walking)
+        ], sound=Sound.walking)
 
 ShowAndAudio.__init_names__()
 
@@ -212,3 +214,15 @@ class AllShows(NamingEnum):
 
 for a, v in list(SilentShows.items()) + list(AudioOnlyShows.items()) + list(ShowAndAudio.items()) + list(FramesShowAndAudio.items()):
     setattr(AllShows, a, v)
+
+class ButtonShows(NamingEnum):
+    pass
+
+for a, v in list(SilentShows.items()) + list(AudioOnlyShows.items()) + list(ShowAndAudio.items()) + list(FramesShowAndAudio.items()):
+    setattr(ButtonShows, a, v)
+
+class BackgroundShows(NamingEnum):
+    pass
+
+for a, v in list(SilentShows.items()):
+    setattr(BackgroundShows, a, v)

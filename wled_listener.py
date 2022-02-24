@@ -6,7 +6,7 @@ from time import time
 import logging
 logger = logging.getLogger(__name__)
 
-wleds = []
+wleds = Wleds([])
 try:
     wleds = Wleds.from_one_ip(default_wled_ip())
 except Exception as e:
