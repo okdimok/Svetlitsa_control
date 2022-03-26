@@ -6,7 +6,7 @@ from time import time
 import logging
 logger = logging.getLogger(__name__)
 
-wleds = []
+wleds = Wleds([])
 try:
     wleds = Wleds.from_one_ip(default_wled_ip())
 except Exception as e:
@@ -26,7 +26,10 @@ class WledListener:
 
     def __init__(self, port=65506, parse_callback=None):
         self.datasock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        self.datasock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+        try:
+            self.datasock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1) 
+        except Exception as e:
+            logger.warning(f"Cannot reuse port: {e}")
         self.datasock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.datasock.bind(("0.0.0.0", port))
         for ip in self._get_known_ips():
