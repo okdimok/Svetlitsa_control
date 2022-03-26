@@ -206,3 +206,22 @@ class SegmentOnDMX(ShowElement):
             except Exception as e:
                 logger.warning(f"{e} while stopping {self}")
         time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
+
+class BestOnAllFrames1(ShowElement):
+    def activate(self):
+        for i in range(3):
+            pass
+            # wl.wleds.filter(lambda w: "frame" not in w.name).send_udp_sync(brightness=150, col=[255,200,200,0], follow_up = (i != 0))
+        for i in range(3):
+            try:
+                wl.wleds.filter(lambda w: "Cubes" in w.name
+                    or "Stroop" in w.name
+                    or "mirror" in w.name
+                    or "Muller-Lyer" in w.name
+                    ).send_udp_sync(fx=fxs.RAINBOW, fx_intensity = 255, fx_speed = 40, follow_up = (i != 0))
+                wl.wleds.filter(lambda w: "Paste" in w.name).send_udp_sync(fx=fxs.RAINBOW_CYCLE, fx_intensity = 127, fx_speed = 65, follow_up = (i != 0))
+                wl.wleds.filter(lambda w: "Objects" in w.name).send_udp_sync(fx=fxs.POLICE, fx_intensity = 10, fx_speed = 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0])
+                wl.wleds.filter(lambda w: "Three-Colors" in w.name).send_udp_sync(fx=fxs.STATIC, fx_intensity = 10, fx_speed = 1, brightness=150, col=[255, 255, 255], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0])
+                wl.wleds.filter(lambda w: "tube" in w.name).send_udp_sync(fx=fxs.RAINBOW_CYCLE, fx_intensity = 255, fx_speed = 255, follow_up = (i != 0))
+            except Exception as e:
+                logger.warning(f"{e} while setting {self} with {self.filter_lambda}")

@@ -37,6 +37,7 @@ class MainRunner:
     _show_lock: Lock = Lock()
     shows_on_button: Iterable[shows.Show] = cycle(shows.ButtonShows.values())
     # background_shows: Iterable[shows.Show] = cycle([shows.warm_white])
+    background_shows: Iterable[shows.Show] = cycle([shows.best_frames])
     background_shows: Iterable[shows.Show] = cycle(shows.BackgroundShows.values())
     sounds: Iterable[Sound] = cycle(Sound)
     # _button_show_not_running: Event = Event()
@@ -60,7 +61,7 @@ class MainRunner:
             self.sound_controller.stop_overlay()
             self.sound_controller.play_overlay(next_sound)
         logger.info(f"Button pressed, starting {next_show}, and sound {next_sound}")
-        with open(parent_path + "/button_pushed.log") as f:
+        with open(parent_path + "/button_pushed.log", "a") as f:
             f.write(str(datetime.datetime.now()))
         if isinstance(next_show, shows.Show):
             self.start_show(next_show)

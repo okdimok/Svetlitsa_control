@@ -41,7 +41,7 @@ class SoundController:
     sounds_ready: bool = False
     ambient_channel: pygame.mixer.Channel
     overlay_channel: pygame.mixer.Channel
-    _default_ambient_volume: float = 0.8
+    _default_ambient_volume: float = 0.35
     _ambient_volume_thread: Thread
     
     def __init__(self) -> None:
