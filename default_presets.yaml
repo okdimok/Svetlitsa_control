@@ -20,6 +20,7 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 50, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
   n: Rainbow
+  ql: "🏳‍🌈"
 '3':
   on: true
   bri: 255
@@ -34,6 +35,7 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [255, 0, 0], [8, 255, 0]], fx: 9, sx: 19, ix: 196, pal: 0, sel: true, rev: false, mi: false}]
   n: "Rainbow Slow"
+  ql: "🌈"
 '5':
   on: true
   bri: 255
@@ -48,6 +50,7 @@
   mainseg: 0
   seg: [{id: 0, grp: 1, spc: 0, on: true, col: [[0, 0, 255], [0, 255, 200], [8, 255, 0]], fx: 4, sx: 173, ix: 86, pal: 0, sel: true, rev: true, mi: false}]
   n: RandomWipe
+  ql: "🧮"
 '7':
   on: true
   bri: 255
