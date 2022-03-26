@@ -1,0 +1,10 @@
+vid: 2104220
+id:
+  mdns: wled-tube-2
+  name: WLED-tube-2
+hw:
+  led: {total: 300, ins: [{en: true, len: 300, order: 0, pin: [4], rev: false, skip: 0,
+        start: 0, type: 22}], maxpwr: 10_000}
+def:
+  ps: 0
+

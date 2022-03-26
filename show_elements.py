@@ -89,7 +89,7 @@ class TotalFX(ShowElement):
             wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx_id, fx_intensity = self.eff_intensity, fx_speed = self.eff_speed)
 
 class FXOnFiltered(ShowElement):
-    def __init__(self, fx_id, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None, secondary_color=None, tertiary_color=None):
+    def __init__(self, fx_id, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True, transition_delay=1000, black_transition_delay=1000, col=None, secondary_color=None, tertiary_color=None, brightness=None):
         super().__init__(duration, eff_intensity, eff_speed, filter_lambda=filter_lambda)
         self.fx_id = fx_id
         self.transition_delay = transition_delay
@@ -97,6 +97,7 @@ class FXOnFiltered(ShowElement):
         self.col = col
         self.secondary_color = secondary_color
         self.tertiary_color = tertiary_color
+        self.brightness = brightness
 
     def activate(self):
         for i in range(3):
@@ -107,6 +108,7 @@ class FXOnFiltered(ShowElement):
                 if self.col is not None: kwargs["col"] = self.col
                 if self.secondary_color is not None: kwargs["secondary_color"] = self.secondary_color
                 if self.tertiary_color is not None: kwargs["tertiary_color"] = self.tertiary_color
+                if self.brightness is not None: kwargs["brightness"] = self.brightness
                 wl.wleds.filter(self.filter_lambda).send_udp_sync(fx=self.fx_id, 
                     fx_intensity = self.eff_intensity, fx_speed = self.eff_speed, 
                     transition_delay=self.transition_delay, follow_up = (i != 0),
@@ -146,9 +148,9 @@ class ColorImmediate(FXOnFiltered):
     def __init__(self, col, duration, eff_intensity, eff_speed, filter_lambda=lambda w: True):
         super().__init__(0, duration, eff_intensity, eff_speed, filter_lambda=filter_lambda, transition_delay=0, black_transition_delay=0, col=col)
 
-class WarmWhite(TotalPreset):
+class WarmWhite(FXOnFiltered):
     def __init__(self, duration):
-        super().__init__(20, duration)
+        super().__init__(fxs.STATIC, duration, 100, 100, brightness=150, col=[255, 200, 200])
 
 class RBPills(PresetOnFiltered):
     def __init__(self, duration, filter_lambda=lambda w: True):
@@ -204,3 +206,22 @@ class SegmentOnDMX(ShowElement):
             except Exception as e:
                 logger.warning(f"{e} while stopping {self}")
         time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
+
+class BestOnAllFrames1(ShowElement):
+    def activate(self):
+        for i in range(3):
+            pass
+            # wl.wleds.filter(lambda w: "frame" not in w.name).send_udp_sync(brightness=150, col=[255,200,200,0], follow_up = (i != 0))
+        for i in range(3):
+            try:
+                wl.wleds.filter(lambda w: "Cubes" in w.name
+                    or "Stroop" in w.name
+                    or "mirror" in w.name
+                    or "Muller-Lyer" in w.name
+                    ).send_udp_sync(fx=fxs.RAINBOW, fx_intensity = 255, fx_speed = 40, follow_up = (i != 0))
+                wl.wleds.filter(lambda w: "Paste" in w.name).send_udp_sync(fx=fxs.RAINBOW_CYCLE, fx_intensity = 127, fx_speed = 65, follow_up = (i != 0))
+                wl.wleds.filter(lambda w: "Objects" in w.name).send_udp_sync(fx=fxs.POLICE, fx_intensity = 10, fx_speed = 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0])
+                wl.wleds.filter(lambda w: "Three-Colors" in w.name).send_udp_sync(fx=fxs.STATIC, fx_intensity = 10, fx_speed = 1, brightness=150, col=[255, 255, 255], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0])
+                wl.wleds.filter(lambda w: "tube" in w.name).send_udp_sync(fx=fxs.RAINBOW_CYCLE, fx_intensity = 255, fx_speed = 255, follow_up = (i != 0))
+            except Exception as e:
+                logger.warning(f"{e} while setting {self} with {self.filter_lambda}")

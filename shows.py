@@ -126,25 +126,34 @@ cubes = Show([
     BlueImmediate(3, lambda w: "Cubes" in w.name),
 ], "cubes")
 
+warm_white = Show([
+    WarmWhite(5),
+], "warm_white")
+
+best_frames = Show([
+    BestOnAllFrames1(15),
+], "best_frames")
+
+best_frames_long = Show([
+    BestOnAllFrames1(1500),
+], "best_frames")
+
 ## The audio guide shows for Holodok 2022
 
 ## Silent Shows
 
 class SilentShows(NamingEnum):
-    red_silent = Show([RedImmediate(10)])
-    green_silent = Show([GreenImmediate(10)])
-    blue_silent = Show([BlueImmediate(10)])
-    colorloop_silent = Show([
-        Colorloop(20, 20),
-        Colorloop(20, 50),
-        Colorloop(20, 100),
-        ])
-    objects = Show([
-        FXOnFiltered(fxs.POLICE, 5 ,10, 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Police
-        FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[0, 255, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Green Running
-        FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[255, 0, 0], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Red Running
-        RBPills(5, filter_lambda=lambda w: "Objects" in w.name), # Red Running, 
-        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name)
+    red_silent = Show([RedImmediate(2)])
+    green_silent = Show([GreenImmediate(2)])
+    blue_silent = Show([BlueImmediate(2)])
+    # colorloop_silent = Show([
+    #     Colorloop(10, 20),
+    #     Colorloop(10, 50),
+    #     Colorloop(10, 100),
+    #     ])
+
+    best_frames = Show([
+            BestOnAllFrames1(20)
         ])
 
 SilentShows.__init_names__()
@@ -165,20 +174,20 @@ class AudioOnlyShows(NamingEnum):
 ## Show + Audio
 
 class ShowAndAudio(NamingEnum):
-    oops = Show([Off(3)], Sound.oops)
+    oops = Show([Off(3)], sound=Sound.oops)
     showers = Show([
         FXOnFiltered(0, 2, 255, 255, col=[255, 92, 119]),
         FXOnFiltered(0, 2, 255, 255, col=[66, 170, 255]),
-        ]*2, Sound.showers)
-    blue = Show([BlueImmediate(10)], Sound.blue)
-    red = Show([RedImmediate(10)], Sound.red)
+        ]*2, sound=Sound.showers)
+    blue = Show([BlueImmediate(10)], sound=Sound.blue)
+    red = Show([RedImmediate(10)], sound=Sound.red)
     # kaleidoscope_mirrors
-    color_change = Show([Colorloop(30, 50)], Sound.color_change)
+    color_change = Show([Colorloop(30, 50)], sound=Sound.color_change)
     walking = Show([
         FXOnFiltered(0, 5, 255, 255, col=[50, 255, 50], filter_lambda=lambda w: "Cubes" in w.name),
         FXOnFiltered(0, 5, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
         Colorloop(10, filter_lambda=lambda w: "Stroop" in w.name),
-        ], Sound.walking)
+        ], sound=Sound.walking)
 
 ShowAndAudio.__init_names__()
 
@@ -187,21 +196,34 @@ ShowAndAudio.__init_names__()
 class FramesShowAndAudio(NamingEnum):
     # lenticular_triangles
     muller_lyer = Show([
-        Colorloop(10, filter_lambda=lambda w: "Muller-Lyer" in w.name),
-        ], Sound.muller_lyer)
+        Colorloop(10, 10, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        Red(3, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        Green(3, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        Blue(3, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        Colorloop(10, 30, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        Colorloop(20, 10, filter_lambda=lambda w: "Muller-Lyer" in w.name),
+        ], sound=Sound.muller_lyer)
     convex_concave = Show([
         Colorloop(20, 20, filter_lambda=lambda w: "Cubes" in w.name),
         Red(3, filter_lambda=lambda w: "Cubes" in w.name),
         Green(3, filter_lambda=lambda w: "Cubes" in w.name),
         Blue(3, filter_lambda=lambda w: "Cubes" in w.name),
         Colorloop(20, 20, filter_lambda=lambda w: "Cubes" in w.name),
-        ], Sound.convex_concave)
+        ], sound=Sound.convex_concave)
     same_different_colors = Show([
         Colorloop(15, 40, filter_lambda=lambda w: "Three-Colors" in w.name),
-        FXOnFiltered(0, 50, 255, 255, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
-        ], Sound.convex_concave)
-    # rectangles_color 
-    # rectangles_stroop
+        FXOnFiltered(fxs.STATIC, 50, 255, 255, brightness=200, col=[255, 255, 255], filter_lambda=lambda w: "Three-Colors" in w.name),
+        ], sound=Sound.same_different_colors)
+    rectangles_color = Show([
+        Colorloop(30, 40, filter_lambda=lambda w: "Stroop" in w.name),
+        FXOnFiltered(fxs.STATIC, 3, 255, 255, brightness=200, col=[255, 255, 255], filter_lambda=lambda w: "Stroop" in w.name),
+        Red(3, filter_lambda=lambda w: "Stroop" in w.name),
+        Green(3, filter_lambda=lambda w: "Stroop" in w.name),
+        Blue(3, filter_lambda=lambda w: "Stroop" in w.name),
+        ], sound=Sound.rectangles_color)
+    rectangles_stroop = Show([
+        FXOnFiltered(fxs.STATIC, 40, 255, 255, brightness=200, col=[255, 255, 255], filter_lambda=lambda w: "Stroop" in w.name),
+        ], sound=Sound.rectangles_stroop)
     # lenticular_caleidoscope 
     # laser_light 
 
@@ -209,6 +231,26 @@ FramesShowAndAudio.__init_names__()
 
 class AllShows(NamingEnum):
     pass
-
+  
 for a, v in list(SilentShows.items()) + list(AudioOnlyShows.items()) + list(ShowAndAudio.items()) + list(FramesShowAndAudio.items()):
     setattr(AllShows, a, v)
+
+class ButtonShows(NamingEnum):
+    objects = Show([
+        FXOnFiltered(fxs.POLICE, 5 ,10, 1, col=[255, 92, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Police
+        FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[0, 255, 119], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Green Running
+        FXOnFiltered(fxs.TRICOLOR_CHASE, 5, 255, 255, col=[255, 0, 0], secondary_color=[0,0,0,0], tertiary_color=[0,0,0,0], filter_lambda=lambda w: "Objects" in w.name), # Red Running
+        RBPills(5, filter_lambda=lambda w: "Objects" in w.name), # Red Running, 
+        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name),
+        PresetOnFiltered(ps("Gost Parade"), 5, filter_lambda=lambda w: "Objects" in w.name),
+        PresetOnFiltered(ps("Rainbow"), 5, 127, 64, filter_lambda=lambda w: "Objects" in w.name),
+        ])
+
+for a, v in list(ShowAndAudio.items())*1 + list(FramesShowAndAudio.items())*2:
+    setattr(ButtonShows, a, v)
+
+class BackgroundShows(NamingEnum):
+    pass
+
+for a, v in list(SilentShows.items()):
+    setattr(BackgroundShows, a, v)

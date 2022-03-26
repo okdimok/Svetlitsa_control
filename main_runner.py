@@ -16,6 +16,10 @@ import shows
 from sound_controller import SoundController, Sound
 from time import sleep
 from itertools import cycle
+from scripts.local_env import parent_path
+import datetime
+import random
+random.seed(42)
 try:
     from gpiozero import Button
 except ModuleNotFoundError:
@@ -31,14 +35,22 @@ class MainRunner:
     sound_controller: SoundController
     _show_thread: Thread = None
     _show_lock: Lock = Lock()
-    shows_on_button: Iterable[shows.Show] = cycle([shows.ShowAndAudio.red, shows.ShowAndAudio.blue, shows.cubes, shows.tube])
-    background_shows: Iterable[shows.Show] = cycle([shows.fast, shows.short])
+    shows_on_button: Iterable[shows.Show] = cycle(shows.ButtonShows.values())
+    # background_shows: Iterable[shows.Show] = cycle([shows.warm_white])
+    background_shows: Iterable[shows.Show] = cycle([shows.best_frames])
+    background_shows: Iterable[shows.Show] = cycle(shows.BackgroundShows.values())
     sounds: Iterable[Sound] = cycle(Sound)
     # _button_show_not_running: Event = Event()
 
     def __init__(self) -> None:
         self.sound_controller = SoundController()
         self.button = Button(17)
+        shows_on_button = list(shows.ButtonShows.values())
+        random.shuffle(shows_on_button)
+        self.shows_on_button = cycle(shows_on_button)
+        background_shows = list(shows.BackgroundShows.values())
+        random.shuffle(background_shows)
+        self.background_shows = cycle(background_shows)
         self.button.when_activated = self.on_button
         self.wled_listener = WledListener()
 
@@ -49,6 +61,8 @@ class MainRunner:
             self.sound_controller.stop_overlay()
             self.sound_controller.play_overlay(next_sound)
         logger.info(f"Button pressed, starting {next_show}, and sound {next_sound}")
+        with open(parent_path + "/button_pushed.log", "a") as f:
+            f.write(str(datetime.datetime.now()))
         if isinstance(next_show, shows.Show):
             self.start_show(next_show)
 
