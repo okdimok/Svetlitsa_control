@@ -47,6 +47,10 @@ fallback static_eth0
 ```
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.ap
 sudo cp /etc/dnsmasq.conf.orig /etc/dnsmasq.conf
+sudo systemctl disable --now dnsmasq
+sudo systemctl mask dnsmasq
 ```
 
 It turns out it is somehow important for getting UDP messages.
+
+

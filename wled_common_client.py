@@ -513,6 +513,7 @@ class Wled:
 
     def _attr_name_from_filename(self, filename):
         if not filename.endswith(".json"): raise ValueError(f"filename {filename} in the FS does not end in json, but attr name creation requested")
+        filename = filename.replace("/", "")
         return filename[:-5]
 
     def cache_fs(self):
