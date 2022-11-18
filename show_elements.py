@@ -175,6 +175,17 @@ class Off(ShowElement):
         for i in range(3):
             wl.wleds.send_udp_sync(fx=0, brightness=0)
 
+class On(ShowElement):
+    def __init__(self, duration):
+        super().__init__(duration)
+
+    def activate(self):
+        for i in range(1):
+            try:
+                wl.wleds.set_on_off(on=True)
+            except Exception as e:
+                logger.warning(f"{e} while turning on: {self}")
+
 class TotalEffect(ShowElement):
     def __init__(self, duration,  eff_intensity, eff_speed):
         super().__init__(duration, eff_intensity=eff_intensity, eff_speed=eff_speed)

@@ -3,6 +3,7 @@ logging.basicConfig(level=logging.DEBUG)
 try:
     import coloredlogs
     coloredlogs.install(logging.getLogger().getEffectiveLevel())
+    pass
 except:
     pass
 
@@ -45,10 +46,10 @@ class MainRunner:
     def __init__(self) -> None:
         self.sound_controller = SoundController()
         self.button = Button(17)
-        shows_on_button = list(shows.ButtonShows.values())
+        shows_on_button = list(shows.YerevanButtonShows.values())
         random.shuffle(shows_on_button)
         self.shows_on_button = cycle(shows_on_button)
-        background_shows = list(shows.BackgroundShows.values())
+        background_shows = list(shows.YerevanBackgroundShows.values())
         random.shuffle(background_shows)
         self.background_shows = cycle(background_shows)
         self.button.when_activated = self.on_button
@@ -78,8 +79,8 @@ class MainRunner:
         logger.debug(f"In MainRunner.start_show: started {show}")
 
     def run(self):
-        next_show = next(self.background_shows)
-        self.start_show(next_show)
+        init_show = shows.YerevanButtonShows.infinite_off
+        self.start_show(init_show)
         main_thread = threading.main_thread()
         while True:
             L = threading.enumerate()

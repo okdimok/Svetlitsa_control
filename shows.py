@@ -254,3 +254,20 @@ class BackgroundShows(NamingEnum):
 
 for a, v in list(SilentShows.items()):
     setattr(BackgroundShows, a, v)
+
+class YerevanBackgroundShows(NamingEnum):
+    main = Show([
+        On(0.1),
+        FXOnFiltered(fxs.RAINBOW, 60, 255, 1), 
+        PresetOnFiltered(ps("Rainbow Slow"), 120),
+        PresetOnFiltered(ps("RandomWipe"), 120),
+        PresetOnFiltered(ps("Rainbow Plasma"), 60),
+        ])
+
+YerevanBackgroundShows.__init_names__()
+
+class YerevanButtonShows(NamingEnum):
+    main = YerevanBackgroundShows.main
+    infinite_off = Show([Off(60*60*24*365*10)])
+
+YerevanButtonShows.__init_names__()

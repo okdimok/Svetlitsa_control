@@ -581,6 +581,14 @@ class Wled:
         else:
             self.send_udp_sync(fx=0, col=[r, g, b])
 
+    def set_on_off(self, on=True, n_seg=1):
+        new_state = {
+                "seg": [{
+                    "on": on
+                }]*n_seg
+            }
+        self.post_json_state(new_state)
+
     def set_preset(self, ps=0, eff_intensity=None, eff_speed=None):
         new_state = {
             "ps": ps,

@@ -71,8 +71,8 @@ class WledListener:
                         wleds.sort()
                         logger.info(f"adding new wled: {new_wled}")
                         logger.debug(f"new wleds: {wleds}")
-                    except:
-                        pass
+                    except Exception as e:
+                        logger.warning(f"Cannot append WLED: {e}")
             if self.parse_callback is not None:
                 self.parse_callback(bts, ip=ip, port=port, name=name)
             
