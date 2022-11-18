@@ -8,7 +8,7 @@ parent_path = os.path.dirname(file_path)
 
 # print(sys.path)
 
-def default_wled_ip(): return "192.168.0.160" # defined as a function for the sake of further changes
+def default_wled_ip(): return "192.168.0.2" # defined as a function for the sake of further changes
 
 def default_firmware_file(): return file_path + "/../../../Arduino/WLED/build_output/firmware/d1_mini.bin"
 

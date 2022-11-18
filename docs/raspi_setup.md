@@ -29,8 +29,8 @@ sudo systemctl mask hostapd
 sudo mv /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.bup
 ```
 
-Comment out the following the lines in
-[/etc/dhcpcd.conf](https://www.raspberrypi.com/documentation/computers/configuration.html#running-the-new-wireless-ap:~:text=for%20dhcpcd%20with%3A-,sudo%20nano%20/etc/dhcpcd.conf,-Go%20to%)
+Comment out the following the lines in `/etc/dhcpcd.conf`
+[see docs](https://www.raspberrypi.com/documentation/computers/configuration.html#running-the-new-wireless-ap:~:text=for%20dhcpcd%20with%3A-,sudo%20nano%20/etc/dhcpcd.conf,-Go%20to%)
 
 After the reboot, the Network part of the `sudo raspi-config` starts working again.
 
@@ -45,3 +45,8 @@ static domain_name_servers=192.168.137.1
 interface eth0
 fallback static_eth0
 ```
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.ap
+sudo cp /etc/dnsmasq.conf.orig /etc/dnsmasq.conf
+```
+
+It turns out it is somehow important for getting UDP messages.
