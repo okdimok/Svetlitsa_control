@@ -1,0 +1,18 @@
+id:
+  mdns: wled-bed
+  name: WLED-bed
+hw:
+  led: {ins: [{en: true, len: 300, order: 0, pin: [4], rev: false, skip: 0, start: 0,
+        type: 22, ref: false, rgbw: false}], maxpwr: 3000}
+light:
+  tr: {mode: false}
+def:
+  ps: 12
+  bri: 100
+um:
+  FakeNTPUsermod: {fakeSource: 130}
+  SyncRandomUsermod: { notify_other_nodes_every_s: -1}
+if:
+  mqtt: {en: true, broker: mqtt.dealgate.ru, user: UMWIdIAm17au, psk: "nuGNbO80wT7Z", pskl: 12, cid: WLED-bed,
+    topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/bed}}
+  ntp: {en: true, host: pool.ntp.org, ln: 0, lt: 0}

@@ -128,8 +128,8 @@ nw:
     ip: ??? # [192,168,0,123]
     pskl: 15
     sn: [255, 255, 255, 0]
-    ssid: Vadkovsky_TV
-    psk: vozduhoplavanie
+    ssid: Svetlitsa
+    psk: artisanillusion
 ol: # overlay
   clock: 0
   cntdwn: false

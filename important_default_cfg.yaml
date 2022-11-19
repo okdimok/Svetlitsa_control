@@ -75,8 +75,8 @@ nw:
   - gw: [0,0,0,0]
     ip: [0,0,0,0] # [192,168,0,123] for preset ip or [0,0,0,0] for DHCP
     sn: [255, 255, 255, 0]
-    ssid: Vadkovsky_TV
-    psk: vozduhoplavanie
+    ssid: Svetlitsa
+    psk: artisanillusion
 timers:
   cntdwn: 
     goal: [20, 1, 1, 0, 0, 0] # year, month, day, hour, minute, second

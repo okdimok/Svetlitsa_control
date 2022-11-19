@@ -1,0 +1,11 @@
+id:
+  mdns: wled-ac
+  name: WLED-AC
+hw:
+  led: {total: 50, ins: [{en: true, len: 50, order: 1, pin: [4], rev: false, skip: 0,
+        start: 0, type: 22}], maxpwr: 850}
+def:
+  ps: 23
+if:
+  mqtt: {en: true, broker: mqtt.dealgate.ru, user: dHf46UcqmGTX, psk: "nuGNbO80wT7Z", pskl: 12, cid: WLED_AC,
+    topics: {group: okdimok@gmail.com/wled/all, device: okdimok@gmail.com/wled/ac}}

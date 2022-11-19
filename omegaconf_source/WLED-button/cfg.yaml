@@ -2,7 +2,7 @@ id:
   mdns: wled-button
   name: WLED-button
 hw:
-  led: {total: 50, ins: [{en: true, len: 50, order: 0, pin: [4], rev: false, skip: 0,
+  led: {total: 50, ins: [{en: true, len: 51, order: 0, pin: [4], rev: false, skip: 0,
         start: 0, type: 22}], maxpwr: 850}
 def:
   ps: 2
