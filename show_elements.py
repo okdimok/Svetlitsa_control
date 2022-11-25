@@ -1,4 +1,4 @@
-from threading import Event, Timer, Lock
+from threading import Event, Timer, Lock, Thread
 import time
 from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
@@ -200,7 +200,7 @@ class SegmentOnDMX(ShowElement):
         for wled in wl.wleds.filter(self.filter_lambda):
             try:
                 wled.dmx.start() # this sets the n_leds
-                n_leds = self.tube.dmx.n_leds
+                n_leds = wled.dmx.n_leds
                 data = []
                 data += [0, 0, 0] * (n_leds//3 )
                 data += [255, 255, 255] * (n_leds//3 )
@@ -208,6 +208,65 @@ class SegmentOnDMX(ShowElement):
                 wled.dmx.set_data(data)
             except Exception as e:
                 logger.warning(f"{e} while setting {self}")
+
+    def deactivate(self):
+        logging.debug("Deactivating sACN senders.")
+        for wled in wl.wleds.filter(self.filter_lambda):
+            try:
+                wled.dmx.stop() # this sets the n_leds
+            except Exception as e:
+                logger.warning(f"{e} while stopping {self}")
+        time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
+
+class DMXRace(ShowElement):
+    def __init__(self, duration, filter_lambda=lambda w: True):
+        super().__init__(duration, filter_lambda=filter_lambda)
+        self.wled_lines = wl.wleds.filter(self.filter_lambda)
+        self.n_leds=0
+
+    def activate(self):
+        for i in range(3):
+            wl.wleds.send_udp_sync(brightness=255, col=[0,0,0,0], follow_up = (i != 0))
+        self.wled_lines = wl.wleds.filter(self.filter_lambda)
+        for wled in self.wled_lines:
+            try:
+                wled.dmx.start() # this sets the n_leds
+                n_leds = wled.dmx.n_leds
+                self.n_leds = n_leds
+                data = []
+                data += [0, 0, 0] * (n_leds)
+                wled.dmx.set_data(data)
+            except Exception as e:
+                logger.warning(f"{e} while setting {self}")
+        self.current_progress = [0] * len(self.wled_lines)
+
+    def celebrate_winner(self, wled):
+        print(f"{wled.name} won!")
+        pass
+
+    def iterate(self):
+        self.start_time = time.time()
+        champion_found = False
+        while not champion_found:
+            self.current_progress[0] += 1
+            for progress, wled in zip(self.current_progress, self.wled_lines):
+                data = self.get_data_from_progress(progress)
+                wled.dmx.set_data(data)
+                if (progress >= self.n_leds):
+                    champion_found = True
+                    self.celebrate_winner(wled)
+            time.sleep(1/60)
+
+    def get_data_from_progress(self, progress, col1 = [255, 0, 0], col2=[0,0,0]):
+        data = []
+        data += col1 * (progress)
+        data += col2 * (self.n_leds - progress)
+        return data
+
+    def sleep(self):
+        self._sleep_timer = Thread(target=self.iterate, args=[]) # No name for timers:(  name=f"{self.__class__.__name__}_sleep_timer")
+        self._sleep_timer.start()
+        self._sleep_timer.join()
 
     def deactivate(self):
         logging.debug("Deactivating sACN senders.")
