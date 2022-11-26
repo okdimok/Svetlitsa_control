@@ -1,5 +1,7 @@
 from threading import Event, Timer, Lock, Thread
 import time
+from math import floor
+from random import randint
 from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
@@ -244,11 +246,18 @@ class DMXRace(ShowElement):
         print(f"{wled.name} won!")
         pass
 
+    def step_progress(self):
+        step_every = self.duration/self.n_leds/len(self.current_progress)
+        need_steps = floor((time.time() - self.last_step)/step_every)
+        for i in range(need_steps):
+            self.current_progress[randint(0, len(self.current_progress) - 1)] += 1
+            self.last_step = time.time()
+
     def iterate(self):
-        self.start_time = time.time()
+        self.last_step = time.time()
         champion_found = False
         while not champion_found:
-            self.current_progress[0] += 1
+            self.step_progress()
             for progress, wled in zip(self.current_progress, self.wled_lines):
                 data = self.get_data_from_progress(progress)
                 wled.dmx.set_data(data)
