@@ -1,7 +1,7 @@
 from threading import Event, Timer, Lock, Thread
 import time
 from math import floor
-from random import randint
+from random import randint, choices
 from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
@@ -221,10 +221,27 @@ class SegmentOnDMX(ShowElement):
         time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
 
 class DMXRace(ShowElement):
+    color_map = {
+        "красный": [255, 0, 0],
+        "жёлтый": [255, 176, 0], # #ffb000
+        "зелёный": [0, 255, 0],
+        "синий": [0, 0, 255],
+        "розовый": [255, 110, 149], # #ff6e95
+        "голубой": [120, 176, 255], # #78b0ff
+        "оранжевый": [255, 102, 0], # #ff6600
+        # "": [], # 
+        # "": [], # 
+        # "": [], # 
+        # "": [], # 
+        # "": [], # 
+    }
+
     def __init__(self, duration, filter_lambda=lambda w: True):
         super().__init__(duration, filter_lambda=filter_lambda)
         self.wled_lines = wl.wleds.filter(self.filter_lambda)
         self.n_leds=0
+        DMXRace.last_winner = None
+        DMXRace.last_color = None
 
     def activate(self):
         for i in range(3):
@@ -239,12 +256,13 @@ class DMXRace(ShowElement):
                 data += [0, 0, 0] * (n_leds)
                 wled.dmx.set_data(data)
             except Exception as e:
-                logger.warning(f"{e} while setting {self}")
+                logger.warning(f"{e} while  setting {self}")
         self.current_progress = [0] * len(self.wled_lines)
 
-    def celebrate_winner(self, wled):
-        print(f"{wled.name} won!")
-        pass
+    def celebrate_winner(self, wled, color):
+        print(f"{wled.name} won! Winning color: {color}")
+        DMXRace.last_winner = wled
+        DMXRace.last_color = color
 
     def step_progress(self):
         step_every = self.duration/self.n_leds/len(self.current_progress)
@@ -254,16 +272,19 @@ class DMXRace(ShowElement):
             self.last_step = time.time()
 
     def iterate(self):
+        if not len(self.wled_lines):
+            logger.warning(f"DMXRace: no matching wleds connected.")
         self.last_step = time.time()
         champion_found = False
+        self.colors = list(choices(list(DMXRace.color_map.items()) , k=len(self.wled_lines))) 
         while not champion_found:
             self.step_progress()
-            for progress, wled in zip(self.current_progress, self.wled_lines):
-                data = self.get_data_from_progress(progress)
+            for progress, wled, color in zip(self.current_progress, self.wled_lines, self.colors):
+                data = self.get_data_from_progress(progress, col1=color[1])
                 wled.dmx.set_data(data)
                 if (progress >= self.n_leds):
                     champion_found = True
-                    self.celebrate_winner(wled)
+                    self.celebrate_winner(wled, color)
             time.sleep(1/60)
 
     def get_data_from_progress(self, progress, col1 = [255, 0, 0], col2=[0,0,0]):

@@ -53,4 +53,15 @@ sudo systemctl mask dnsmasq
 
 It turns out it is somehow important for getting UDP messages.
 
+# Bluetooth
+https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b
+
+```
+BH pi@raspberrypi:~$ bluetoothctl
+[bluetooth]# power on
+[bluetooth]# scan on
+[bluetooth]# pair 5C:FB:7C:B3:EB:FF
+[bluetooth]# trust 5C:FB:7C:B3:EB:FF
+[bluetooth]# connect 5C:FB:7C:B3:EB:FF
+```
 
