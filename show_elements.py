@@ -1,7 +1,7 @@
 from threading import Event, Timer, Lock, Thread
 import time
 from math import floor
-from random import randint, choices
+from random import randint, sample
 from wled_common_client import Wled, Wleds, WledDMX
 from scripts.local_env import default_wled_ip
 import wled_listener as wl
@@ -276,7 +276,7 @@ class DMXRace(ShowElement):
             logger.warning(f"DMXRace: no matching wleds connected.")
         self.last_step = time.time()
         champion_found = False
-        self.colors = list(choices(list(DMXRace.color_map.items()) , k=len(self.wled_lines))) 
+        self.colors = list(sample(list(DMXRace.color_map.items()) , k=len(self.wled_lines))) 
         while not champion_found:
             self.step_progress()
             for progress, wled, color in zip(self.current_progress, self.wled_lines, self.colors):
