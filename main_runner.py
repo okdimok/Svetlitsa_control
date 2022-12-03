@@ -29,8 +29,7 @@ except ModuleNotFoundError:
         def __init__(self, pin) -> None:
             pass
 
-
-class MainRunner:
+class ActivateOneShowOnButton:
     current_show: shows.Show = None
     button: Button
     sound_controller: SoundController
@@ -97,4 +96,5 @@ class MainRunner:
             with self._show_lock:
                 if (not has_been_cancelled): self.current_show = next(self.background_shows)
 
-    
+class MainRunner(ActivateOneShowOnButton):
+    pass

@@ -271,3 +271,9 @@ class YerevanButtonShows(NamingEnum):
     infinite_off = Show([Off(60*60*24*365*10)])
 
 YerevanButtonShows.__init_names__()
+
+# class DMXRaceShows(NamingEnum):
+#     race = Show([], sound=)
+#     pass
+
+# DMXRaceShows.__init__names__()

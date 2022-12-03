@@ -35,6 +35,14 @@ class Sound(Enum):
     wait = auto()
     walking = auto()
     yes = auto()
+    
+    красный = auto()
+    жёлтый = auto()
+    зелёный = auto()
+    синий = auto()
+    розовый = auto()
+    голубой = auto()
+    оранжевый = auto()
 
 class SoundController:
     sounds: Dict[str, pygame.mixer.Sound]

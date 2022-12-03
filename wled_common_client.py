@@ -48,12 +48,11 @@ class WledDMX:
         if self.sender is None:
             self.sender = sacn.sACNsender()
         strips = self.wled.cfg["hw"]["led"]["ins"]
-        assert len(strips) == 1
-        for strip in strips:
-            self.n_leds = strip["len"]
-            self.n_universes = ceil(self.n_leds / WledDMX.LEDS_PER_UNIVERSE)
-            for i in range(1, self.n_universes+1):
-                self.sender.activate_output(i)
+        # assert len(strips) == 1 # Assertion is no longer valid and needed
+        self.n_leds = sum(strip["len"] for strip in strips)
+        self.n_universes = ceil(self.n_leds / WledDMX.LEDS_PER_UNIVERSE)
+        for i in range(1, self.n_universes+1):
+            self.sender.activate_output(i)
         for sender in self.get_senders():
             sender.destination = self.wled.ip
         self.sender.start()
