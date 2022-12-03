@@ -287,6 +287,7 @@ class DMXRace(ShowElement):
     def iterate(self):
         if not len(self.wled_lines):
             logger.warning(f"DMXRace: no matching wleds connected.")
+            return
         self.last_step = time.time()
         champion_found = False
         champion_substrip = None
