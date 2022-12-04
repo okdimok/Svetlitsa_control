@@ -84,6 +84,23 @@ class AudioOnlyShow:
     def __repr__(self) -> str:
         return self.__str__()
 
+class DMXRaceShow(Show):
+    def __init__(self, runner=None) -> None:
+        self.dmxrace = DMXRace(5)
+        self.dmxrace.sample_colors()
+        self.dmxrace_intro = DMXRaceIntro(5.1)
+        self.dmxrace_winner = DMXRaceWinner(5.1, self.dmxrace)
+        elements = [self.dmxrace_intro, self.dmxrace, self.dmxrace_winner]
+        super().__init__(elements, "DMXRaceShow")
+        self.runner = runner
+
+    def run_once(self):
+        self.dmxrace.sample_colors()
+        self.dmxrace_intro.colors = self.dmxrace.colors
+        self.dmxrace_winner.colors = self.dmxrace.colors
+        # self.sound_controller.play_overlay(soub)
+        super().run_once()
+
 
 show_1 = Show([
     ShowElement(0),

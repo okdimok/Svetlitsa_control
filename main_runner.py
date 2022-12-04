@@ -62,7 +62,7 @@ class ActivateOneShowOnButton:
             self.sound_controller.play_overlay(next_sound)
         logger.info(f"Button pressed, starting {next_show}, and sound {next_sound}")
         with open(parent_path + "/button_pushed.log", "a") as f:
-            f.write(str(datetime.datetime.now()))
+            f.write(f"{str(datetime.datetime.now())}\n")
         if isinstance(next_show, shows.Show):
             self.start_show(next_show)
 
@@ -96,5 +96,12 @@ class ActivateOneShowOnButton:
             with self._show_lock:
                 if (not has_been_cancelled): self.current_show = next(self.background_shows)
 
-class MainRunner(ActivateOneShowOnButton):
+class LightBetRunner(ActivateOneShowOnButton):
+    def __init__(self) -> None:
+        dmxrace_show = shows.ShowWithInteractiveAudio([], "dmxrace_show", self)
+        shows_on_button = []
+        random.shuffle(shows_on_button)
+        self.shows_on_button = cycle(shows_on_button)
+
+class MainRunner(LightBetRunner):
     pass

@@ -242,18 +242,21 @@ class DMXRace(ShowElement):
         }
         filter_lambda = lambda w: w.name in self.substripes_map.keys()
         super().__init__(duration, filter_lambda=filter_lambda)
-        self.wled_lines = wl.wleds.filter(self.filter_lambda)
         self.n_leds=50
+        self.set_lines()
+        self.last_winner = None
+        self.last_color = None
+        self.last_substrip_winner = None
+
+    def set_lines(self):
+        self.wled_lines = wl.wleds.filter(self.filter_lambda)
         self.n_lines = sum(len(self.substripes_map[w.name]) for w in self.wled_lines)
-        DMXRace.last_winner = None
-        DMXRace.last_color = None
 
     def activate(self):
         rnd.seed(time.time())
         for i in range(3):
             wl.wleds.send_udp_sync(brightness=255, col=[0,0,0,0], follow_up = (i != 0))
-        self.wled_lines = wl.wleds.filter(self.filter_lambda)
-        self.n_lines = sum(len(self.substripes_map[w.name]) for w in self.wled_lines)
+        self.set_lines()
         self.current_progress = []
         for wled in self.wled_lines:
             try:
@@ -265,15 +268,16 @@ class DMXRace(ShowElement):
                 data = []
                 data += [0, 0, 0] * (total_n_leds)
                 wled.dmx.set_data(data)
-                self.current_progress += [0] * len(substripes)
+                self.current_progress += [5] * len(substripes)
             except Exception as e:
                 logger.warning(f"{e} while  setting {self} for {wled}")
         
 
     def celebrate_winner(self, wled, color, champion_substrip):
         print(f"{wled.name} substrip {champion_substrip} won! Winning color: {color}")
-        DMXRace.last_winner = wled
-        DMXRace.last_color = color
+        self.last_winner = wled
+        self.last_color = color
+        self.last_substrip_winner = champion_substrip
 
     def step_progress(self):
         step_every = self.duration/self.n_leds/len(self.current_progress)
@@ -283,16 +287,18 @@ class DMXRace(ShowElement):
             self.last_step = time.time()
             # print(self.current_progress)
         # self.current_progress = [49, 0, 1]
+    
+    def sample_colors(self):
+        self.colors = list(rnd.sample(list(DMXRace.color_map.items()) , k=self.n_lines))
 
     def iterate(self):
         if not len(self.wled_lines):
-            logger.warning(f"DMXRace: no matching wleds connected.")
+            logger.warning(f"{self}: no matching wleds connected.")
             return
         self.last_step = time.time()
         champion_found = False
         champion_substrip = None
         champion_color = None
-        self.colors = list(rnd.sample(list(DMXRace.color_map.items()) , k=self.n_lines))
         while not champion_found:
             self.step_progress()
             cur_line = 0
@@ -333,6 +339,55 @@ class DMXRace(ShowElement):
             except Exception as e:
                 logger.warning(f"{e} while stopping {self}")
         time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
+
+class DMXRaceIntro(DMXRace):
+    def step_progress(self):
+        period = 0.5
+        cutoff = 0.8
+        is_on = (((time.time() - self.last_step) % period ) / period) < cutoff
+        self.current_progress = [5 if is_on else 0] * self.n_lines
+
+    def iterate(self):
+        if not len(self.wled_lines):
+            logger.warning(f"{self}: no matching wleds connected.")
+            return
+        self.last_step = time.time()
+        while time.time() - self.last_step < self.duration:
+            self.step_progress()
+            cur_line = 0
+            for wled in self.wled_lines:
+                substripes = self.substripes_map[wled.name]
+                data = []
+                for i, n_leds in enumerate(substripes):
+                    progress = self.current_progress[cur_line]
+                    color = self.colors[cur_line]
+                    data += self.get_data_from_progress(progress, col1=color[1])
+                    cur_line += 1
+                wled.dmx.set_data(data)
+            time.sleep(1/60)
+
+class DMXRaceWinner(DMXRaceIntro):
+    def __init__(self, duration, dmxrace):
+        super().__init__(duration)
+        self.dmxrace = dmxrace
+
+    def step_progress(self):
+        self.current_progress = self.dmxrace.current_progress.copy()
+        period = 0.5
+        cutoff = 0.8
+        is_on = (((time.time() - self.last_step) % period ) / period) < cutoff
+        winner_index = None
+        cur_line = 0
+        for wled in self.wled_lines:
+            substripes = self.substripes_map[wled.name]
+            if wled != self.dmxrace.last_winner:
+                cur_line += len(substripes)
+                continue
+            winner_index = cur_line + self.dmxrace.last_substrip_winner
+            break
+        self.current_progress[winner_index] = self.dmxrace.n_leds if is_on else 0
+
+
 
 class BestOnAllFrames1(ShowElement):
     def activate(self):
