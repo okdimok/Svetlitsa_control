@@ -59,7 +59,7 @@ class SoundController:
     _overlays_timer: Timer = Timer(0, lambda: True)
     
     def __init__(self) -> None:
-        pygame.mixer.init()  # Initialize the mixer module.
+        pygame.mixer.init(buffer=2**11)  # Initialize the mixer module.
         self.sounds = dict()
         Thread(target=self.load_sounds, name=f"{self.__class__.__name__}_load_sounds").start()
         self.ambient_channel = pygame.mixer.Channel(0)
