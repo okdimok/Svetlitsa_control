@@ -2,8 +2,8 @@ from math import log
 from time import sleep
 from xml.dom.pulldom import parseString
 import pygame
-from typing import Dict
-from threading import Thread
+from typing import Dict, List
+from threading import Thread, Timer
 import logging
 logger = logging.getLogger(__name__)
 from enum import Enum, auto
@@ -43,6 +43,7 @@ class Sound(Enum):
     розовый = auto()
     голубой = auto()
     оранжевый = auto()
+
     добро_пожаловать = auto()
     старт = auto()
     победитель = auto()
@@ -55,6 +56,7 @@ class SoundController:
     overlay_channel: pygame.mixer.Channel
     _default_ambient_volume: float = 0.35
     _ambient_volume_thread: Thread
+    _overlays_timer: Timer = Timer(0, lambda: True)
     
     def __init__(self) -> None:
         pygame.mixer.init()  # Initialize the mixer module.
@@ -63,6 +65,7 @@ class SoundController:
         self.ambient_channel = pygame.mixer.Channel(0)
         self.overlay_channel = pygame.mixer.Channel(1)
         self.overlay_channel.set_volume(1.0)
+        self._overlays_timer.start()
 
     def load_sounds(self):
         logger.info("Loading sounds...")
@@ -98,13 +101,43 @@ class SoundController:
         self._ambient_volume_thread = Thread(target=self._ambient_volume_loop, name=f"{self.__class__.__name__}_ambient_volume")
         self._ambient_volume_thread.start()
 
-    def play_overlay(self, sound: Sound):
+    def play_overlay(self, sound: Sound, force=True):
+        if force:
+            self._overlays_timer.cancel()
         loaded_sound = self.get_sound(sound)
         if loaded_sound is not None:
             self.ambient_channel.set_volume(0.1)
             self.overlay_channel.play(loaded_sound, fade_ms=200)
         else:
             logging.warning(f"Trying to play sound {sound} before it is loaded")
+
+    def play_overlays(self, sounds: List[Sound]) -> float:
+        self._overlays_timer.cancel()
+        sounds_iter = iter(sounds)
+        def play_next():
+            try:
+                sound = next(sounds_iter)
+            except StopIteration:
+                return
+            try:
+                l = self.get_sound(sound).get_length()
+            except:
+                return
+            self.play_overlay(sound, force=False)
+            print(f"{self} {sound}")
+            self._overlays_timer = Timer(l, play_next)
+            self._overlays_timer.start()
+        play_next()
+        return self._get_cumulative_duration(sounds)
+
+    def _get_cumulative_duration(self, sounds: List[Sound]):
+        l = 0
+        for sound in sounds:
+            try:
+                l += self.get_sound(sound).get_length()
+            except:
+                pass
+        return l
 
     def stop_overlay(self):
         self.overlay_channel.stop()

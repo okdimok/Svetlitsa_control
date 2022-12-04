@@ -7,6 +7,7 @@ from scripts.local_env import default_wled_ip
 import wled_listener as wl
 from preset_manager import get_preset_id_by_name as ps
 from fx_manager import fxs
+from sound_controller import Sound
 import logging
 logger = logging.getLogger(__name__)
 
@@ -236,7 +237,7 @@ class DMXRace(ShowElement):
         # "": [], # 
     }
 
-    def __init__(self, duration):
+    def __init__(self, duration, runner = None):
         self.substripes_map = {
             "WLED-Light-Bet-1": [50, 50, 50]
         }
@@ -247,6 +248,11 @@ class DMXRace(ShowElement):
         self.last_winner = None
         self.last_color = None
         self.last_substrip_winner = None
+        self.runner = runner
+
+    def play_sound(self):
+        if self.runner:
+            self.runner.sound_controller.play_overlay(Sound.старт)
 
     def set_lines(self):
         self.wled_lines = wl.wleds.filter(self.filter_lambda)
@@ -256,6 +262,7 @@ class DMXRace(ShowElement):
         rnd.seed(time.time())
         for i in range(3):
             wl.wleds.send_udp_sync(brightness=255, col=[0,0,0,0], follow_up = (i != 0))
+        self.play_sound()
         self.set_lines()
         self.current_progress = []
         for wled in self.wled_lines:
@@ -347,6 +354,15 @@ class DMXRaceIntro(DMXRace):
         is_on = (((time.time() - self.last_step) % period ) / period) < cutoff
         self.current_progress = [5 if is_on else 0] * self.n_lines
 
+    def play_sound(self):
+        if self.runner:
+            sounds = [Sound.добро_пожаловать]
+            for c in self.colors:
+                sounds += [Sound[c[0]]]
+            sounds += [Sound.старт]
+            sound_duration = self.runner.sound_controller.play_overlays(sounds)
+            self.duration = sound_duration
+
     def iterate(self):
         if not len(self.wled_lines):
             logger.warning(f"{self}: no matching wleds connected.")
@@ -367,9 +383,18 @@ class DMXRaceIntro(DMXRace):
             time.sleep(1/60)
 
 class DMXRaceWinner(DMXRaceIntro):
-    def __init__(self, duration, dmxrace):
-        super().__init__(duration)
+    def __init__(self, duration, dmxrace, runner):
+        super().__init__(duration, runner)
         self.dmxrace = dmxrace
+
+    def play_sound(self):
+        if self.runner:
+            sounds = [Sound.победитель]
+            sounds += [Sound[self.dmxrace.last_color[0]]]
+            sounds += [Sound.финиш]
+            sound_duration = self.runner.sound_controller.play_overlays(sounds)
+            self.duration = sound_duration
+
 
     def step_progress(self):
         self.current_progress = self.dmxrace.current_progress.copy()
