@@ -124,7 +124,7 @@ class SoundController:
             except:
                 return
             self.play_overlay(sound, force=False)
-            print(f"{self} {sound}")
+            logger.debug(f"{self.__class__} {sound}")
             self._overlays_timer = Timer(l, play_next)
             self._overlays_timer.start()
         play_next()

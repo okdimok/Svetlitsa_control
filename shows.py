@@ -88,7 +88,7 @@ class DMXRaceShow(Show):
     def __init__(self, runner=None) -> None:
         self.dmxrace = DMXRace(5, runner)
         self.dmxrace.sample_colors()
-        self.dmxrace_intro = DMXRaceIntro(30.1, runner)
+        self.dmxrace_intro = DMXRaceIntro(30.1, self.dmxrace, runner)
         self.dmxrace_winner = DMXRaceWinner(5.1, self.dmxrace, runner)
         elements = [self.dmxrace_intro, self.dmxrace, self.dmxrace_winner]
         super().__init__(elements, "DMXRaceShow")
