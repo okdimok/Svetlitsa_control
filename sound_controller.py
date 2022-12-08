@@ -46,6 +46,7 @@ class Sound(Enum):
 
     добро_пожаловать = auto()
     старт = auto()
+    гонка_фон = auto()
     победитель = auto()
     финиш = auto()
 
@@ -71,6 +72,7 @@ class SoundController:
         logger.info("Loading sounds...")
         self.sounds[Sound.ambient_blues] = pygame.mixer.Sound('sounds/Ambient_Blues_1.mp3')  # Load a sound.
         self.sounds[Sound.squeak] = pygame.mixer.Sound('sounds/mixkit-tropical-bird-squeak-27.wav')  # Load a sound.
+        self.sounds[Sound.гонка_фон] = pygame.mixer.Sound('sounds/Elvis Herod - Danny Glover.mp3')
         for sound in Sound:
             if sound in self.sounds.keys():
                 continue

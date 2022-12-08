@@ -252,7 +252,7 @@ class DMXRace(ShowElement):
 
     def play_sound(self):
         if self.runner:
-            self.runner.sound_controller.play_overlay(Sound.старт)
+            self.runner.sound_controller.play_overlay(Sound.гонка_фон)
 
     def set_lines(self):
         self.wled_lines = wl.wleds.filter(self.filter_lambda)
