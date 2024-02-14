@@ -11,7 +11,7 @@ if __name__ == "__main__":
         logger.critical("Another instance is already running, exiting")
         sys.exit(1)
     logger.info(f"Running from crontab {os.getpid()} at {datetime.datetime.now()}")
-    from main_runner import LightBetRunner
-    runner = LightBetRunner()
+    from main_runner import MainRunner
+    runner = MainRunner()
     runner.run()
     logger.critical(f"Stopping from crontab {os.getpid()} at {datetime.datetime.now()}")

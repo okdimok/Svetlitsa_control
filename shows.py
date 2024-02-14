@@ -86,6 +86,7 @@ class AudioOnlyShow:
 
 class DMXRaceShow(Show):
     def __init__(self, runner=None) -> None:
+        # TODO update times dynamically
         self.dmxrace = DMXRace(5, runner)
         self.dmxrace.sample_colors()
         self.dmxrace_intro = DMXRaceIntro(30.1, self.dmxrace, runner)
@@ -274,7 +275,7 @@ for a, v in list(SilentShows.items()):
 
 class YerevanBackgroundShows(NamingEnum):
     main = Show([
-        On(0.1),
+        On(0.5), # this is TCP, so takes longer
         FXOnFiltered(fxs.RAINBOW, 60, 255, 1), 
         PresetOnFiltered(ps("Rainbow Slow"), 120),
         PresetOnFiltered(ps("RandomWipe"), 120),
