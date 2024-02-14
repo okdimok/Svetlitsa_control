@@ -239,7 +239,8 @@ class DMXRace(ShowElement):
 
     def __init__(self, duration, runner = None):
         self.substripes_map = {
-            "WLED-Light-Bet-1": [50, 50, 50]
+            "WLED-Light-Bet-1": [50, 50, 50],
+            "WLED-Light-Bet-2": [50, 50],
         }
         filter_lambda = lambda w: w.name in self.substripes_map.keys()
         super().__init__(duration, filter_lambda=filter_lambda)
