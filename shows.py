@@ -276,6 +276,8 @@ for a, v in list(SilentShows.items()):
 class YerevanBackgroundShows(NamingEnum):
     main = Show([
         On(0.5), # this is TCP, so takes longer
+        FXOnFiltered(fxs.RAINBOW, 1, 255, 1), 
+        FXOnFiltered(fxs.RAINBOW, 1, 255, 1), 
         FXOnFiltered(fxs.RAINBOW, 60, 255, 1), 
         PresetOnFiltered(ps("Rainbow Slow"), 120),
         PresetOnFiltered(ps("RandomWipe"), 120),
