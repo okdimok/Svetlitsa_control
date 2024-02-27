@@ -1,6 +1,6 @@
 # Raspberry Pi Config
 
-It seems I've been using these commands to set up raspberry as an AP. I think I've been following [the official docs](https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-routed-wireless-access-point).
+I've been using these commands to set up raspberry as an AP. I think I've been following [the official docs](https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-routed-wireless-access-point).
 
 ```
   714  2022-03-26 13:05:27 sudo apt install hostapd
@@ -14,6 +14,9 @@ It seems I've been using these commands to set up raspberry as an AP. I think I'
   722  2022-03-26 13:20:49 sudo vim /etc/sysctl.d/routed-ap.conf
   723  2022-03-26 13:21:43 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
   724  2022-03-26 13:22:09 sudo netfilter-persistent save
+  (wled-env) BH pi@raspberrypi:~/Svetlitsa_control(master)$ sudo netfilter-persistent save
+  run-parts: executing /usr/share/netfilter-persistent/plugins.d/15-ip4tables save
+  run-parts: executing /usr/share/netfilter-persistent/plugins.d/25-ip6tables save
   725  2022-03-26 13:22:52 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
   726  2022-03-26 13:23:01 sudo vim /etc/dnsmasq.conf
   727  2022-03-26 13:24:01 sudo nano /etc/dnsmasq.conf

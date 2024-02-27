@@ -104,7 +104,7 @@ class LightBetRunner(ActivateOneShowOnButton):
         shows_on_button = [dmxrace_show]
         random.shuffle(shows_on_button)
         self.shows_on_button = cycle(shows_on_button)
-        background_shows = [dmxrace_show, shows.Show([show_elements.Red(5)], "red")]
+        background_shows = list(shows.YerevanBackgroundShows.values())
         random.shuffle(background_shows)
         self.background_shows = cycle(background_shows)
         self.init_show = shows.Show([show_elements.Red(5)], "red")
