@@ -176,10 +176,11 @@ class Off(ShowElement):
 
     def activate(self):
         for i in range(3):
-            wl.wleds.send_udp_sync(fx=0, brightness=0)
+            wl.wleds.send_udp_sync(fx=1, brightness=0)
 
 class On(ShowElement):
     def __init__(self, duration):
+        duration = max(duration, 1.0)
         super().__init__(duration)
 
     def activate(self):
@@ -194,8 +195,9 @@ class TotalEffect(ShowElement):
         super().__init__(duration, eff_intensity=eff_intensity, eff_speed=eff_speed)
 
 class SegmentOnDMX(ShowElement):
-    def __init__(self, duration, filter_lambda=lambda w: True):
+    def __init__(self, duration, filter_lambda=lambda w: True, colors=[[120, 192, 255], [255, 255, 255], [0, 0, 255]]):
         super().__init__(duration, filter_lambda=filter_lambda)
+        self.colors = colors
 
     def activate(self):
         for i in range(3):
@@ -205,9 +207,9 @@ class SegmentOnDMX(ShowElement):
                 wled.dmx.start() # this sets the n_leds
                 n_leds = wled.dmx.n_leds
                 data = []
-                data += [0, 0, 0] * (n_leds//3 )
-                data += [255, 255, 255] * (n_leds//3 )
-                data += [255, 255, 0] * (n_leds-len(data)//3 )
+                data += self.colors[0] * (n_leds//3 )
+                data += self.colors[1] * (n_leds//3 )
+                data += self.colors[2] * (n_leds-len(data)//3 )
                 wled.dmx.set_data(data)
             except Exception as e:
                 logger.warning(f"{e} while setting {self}")
@@ -224,11 +226,11 @@ class SegmentOnDMX(ShowElement):
 class DMXRace(ShowElement):
     color_map = {
         "красный": [255, 0, 0],
-        "жёлтый": [255, 176, 0], # #ffb000
+        "жёлтый": [255, 255, 0], # #ffff00
         "зелёный": [0, 255, 0],
         "синий": [0, 0, 255],
-        "розовый": [255, 110, 149], # #ff6e95
-        "голубой": [120, 176, 255], # #78b0ff
+        "розовый": [255, 50, 149], # #ff6e95
+        "голубой": [50, 100, 255], 
         "оранжевый": [255, 102, 0], # #ff6600
         # "": [], # 
         # "": [], # 
@@ -239,11 +241,15 @@ class DMXRace(ShowElement):
 
     def __init__(self, duration, runner = None):
         self.substripes_map = {
-            "WLED-Light-Bet-1": [50, 50, 50]
+            "Light-Bet-1": [120],
+            "Light-Bet-2": [120],
+            "Light-Bet-3": [120],
+            "Light-Bet-4": [120],
+            "Light-Bet-5": [120],
         }
         filter_lambda = lambda w: w.name in self.substripes_map.keys()
         super().__init__(duration, filter_lambda=filter_lambda)
-        self.n_leds=50
+        self.n_leds=120
         self.set_lines()
         self.last_winner = None
         self.last_color = None
@@ -252,7 +258,7 @@ class DMXRace(ShowElement):
 
     def play_sound(self):
         if self.runner:
-            self.runner.sound_controller.play_overlay(Sound.старт)
+            self.runner.sound_controller.play_overlay(Sound.гонка_фон)
 
     def set_lines(self):
         self.wled_lines = wl.wleds.filter(self.filter_lambda)

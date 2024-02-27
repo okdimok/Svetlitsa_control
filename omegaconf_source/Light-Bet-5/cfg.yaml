@@ -1,0 +1,13 @@
+vid: 2402120
+id:
+  mdns: wled-light-bet-5
+  name: Light-Bet-5
+nw:
+  ins: [{gw: [0, 0, 0, 0], ip: [0, 0, 0, 0], sn: [255, 255, 255, 0], ssid: Svetlitsa,
+      psk: artisanillusion, pskl: 15}]
+hw:
+  led: {total: 120, ledma: 0, rgbwm: 255, ins: [{en: true, len: 120, order: 0, pin: [
+          2], rev: false, skip: 0, start: 0, type: 22, ref: false, rgbwm: 0, freq: 0}],
+    maxpwr: 1000, cct: false, cr: false, cb: 0, fps: 42, ld: false}
+def:
+  ps: 0

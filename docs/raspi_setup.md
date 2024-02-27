@@ -56,7 +56,7 @@ sudo systemctl mask dnsmasq
 
 It turns out it is somehow important for getting UDP messages.
 
-# Bluetooth
+# Bluetooth audio doesn't work in 2024 yet
 https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b
 
 ```
@@ -68,3 +68,18 @@ BH pi@raspberrypi:~$ bluetoothctl
 [bluetooth]# connect 5C:FB:7C:B3:EB:FF
 ```
 
+Than following [ChatGPT](https://chat.openai.com/share/3a5cdd6b-2276-44fe-8672-a2eb474704a9)
+```
+pacmd list-sinks
+pacmd set-default-sink bluez_sink.5C_FB_7C_B3_EB_FF
+```
+Following [some message on a forum](https://forums.raspberrypi.com/viewtopic.php?t=203756#p1265959) 
+
+Edit /boot/config.txt and comment out the following line: "dtparam=audio=on" so that it looks like "#dtparam=audio=on" (without the quotes).
+This means that the built-in audio is disabled and so the BT speaker becomes the default (only) choice for audio playback.
+
+Now reboot the RPi.
+
+Connect the BT speaker again (using bluetoothctl) : note, for reasons that are not clear to me I have to disconnect it first, then reconnect it.
+
+And now the audio, such as mplayer, automatically uses the BT speaker.

@@ -599,7 +599,7 @@ class Wled:
             if eff_speed is not None: seg['sx'] = eff_speed
             new_state["seg"] = seg
             
-        self.post_json_si(new_state)
+        self.post_json_state(new_state)
 
     def set_preset_udp(self, ps_id=0, eff_intensity=None, eff_speed=None, follow_up=None, transition_delay=None):
         kwargs = get_udp_kwargs(ps_id, eff_intensity=eff_intensity, eff_speed=eff_speed, follow_up=follow_up, transition_delay=transition_delay)
