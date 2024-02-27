@@ -224,7 +224,7 @@ class SegmentOnDMX(ShowElement):
         time.sleep(WledDMX.SEND_OUT_INTERVAL + 0.2 ) # remember to set the timeout in WLED to + 0.1
 
 class DMXRace(ShowElement):
-    color_map = {
+    color_map_ru = {
         "красный": [255, 0, 0],
         "жёлтый": [255, 255, 0], # #ffff00
         "зелёный": [0, 255, 0],
@@ -238,6 +238,18 @@ class DMXRace(ShowElement):
         # "": [], # 
         # "": [], # 
     }
+
+    color_map_en = {
+        "lb_red": [255, 0, 0],
+        "lb_yellow": [255, 255, 0], # #ffff00
+        "lb_green": [0, 255, 0],
+        "lb_blue": [0, 0, 255],
+        "lb_pink": [255, 50, 149], # #ff6e95
+        "lb_light_blue": [50, 100, 255], 
+        "lb_orange": [255, 102, 0], # #ff6600
+    }
+
+    color_map = color_map_en
 
     def __init__(self, duration, runner = None):
         self.substripes_map = {
@@ -372,10 +384,12 @@ class DMXRaceIntro(DMXRace):
 
     def play_sound(self):
         if self.runner:
-            sounds = [Sound.добро_пожаловать]
+            # sounds = [Sound.добро_пожаловать]
+            sounds = [Sound.lb_welcome]
             for c in self.colors:
                 sounds += [Sound[c[0]]]
-            sounds += [Sound.старт]
+            # sounds += [Sound.старт]
+            sounds += [Sound.lb_start]
             sound_duration = self.runner.sound_controller.play_overlays(sounds)
             if sound_duration > 0:
                 self.duration = sound_duration
@@ -409,9 +423,11 @@ class DMXRaceWinner(DMXRaceIntro):
         if self.runner:
             sounds = []
             if self.dmxrace.last_color is not None:
-                sounds += [Sound.победитель]
+                # sounds += [Sound.победитель]
+                sounds += [Sound.lb_winner]
                 sounds += [Sound[self.dmxrace.last_color[0]]]
-            sounds += [Sound.финиш]
+            # sounds += [Sound.финиш]
+            sounds += [Sound.lb_finish]
             sound_duration = self.runner.sound_controller.play_overlays(sounds)
             if sound_duration > 0:
                 self.duration = sound_duration

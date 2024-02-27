@@ -50,6 +50,20 @@ class Sound(Enum):
     победитель = auto()
     финиш = auto()
 
+    lb_red = auto()
+    lb_yellow = auto()
+    lb_green = auto()
+    lb_blue = auto()
+    lb_pink = auto()
+    lb_light_blue = auto()
+    lb_orange = auto()
+
+    lb_welcome = auto()
+    lb_start = auto()
+    # гонка_фон = auto()
+    lb_winner = auto()
+    lb_finish = auto()
+
 class SoundController:
     sounds: Dict[str, pygame.mixer.Sound]
     sounds_ready: bool = False
